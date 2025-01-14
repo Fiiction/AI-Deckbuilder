@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7ea7cc55df5c124459f2ce6cf540a43d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/NueTooltip/TooltipText.prefab
+  uploadId: 527454

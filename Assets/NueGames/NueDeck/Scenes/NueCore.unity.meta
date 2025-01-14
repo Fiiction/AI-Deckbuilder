@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8730f6846a1505f4cbae9e87de5abdc9
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scenes/NueCore.unity
+  uploadId: 527454

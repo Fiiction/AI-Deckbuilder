@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 78760bbc1c1c4dd5b137cbdf81cf2ec7
+timeCreated: 1631303513
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/Card/CardActions/IncreaseStrengthAction.cs
+  uploadId: 527454

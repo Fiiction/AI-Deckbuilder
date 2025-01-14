@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2af475f5121b73d4c99b67551230aa48
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/EnemyIntentionData/Attack Intention.asset
+  uploadId: 527454

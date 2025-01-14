@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 17618a948bca4085bf0c7198d386efa4
+timeCreated: 1641044602
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/NueTooltip/Core/TooltipText.cs
+  uploadId: 527454

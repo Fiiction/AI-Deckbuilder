@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 036311fd7fba31149957b48b3f26905c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/Collection/CardUI.prefab
+  uploadId: 527454

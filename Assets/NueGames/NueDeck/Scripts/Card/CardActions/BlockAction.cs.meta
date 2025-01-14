@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 7c108411acae419d9cdc8500c5dba279
+timeCreated: 1631303444
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/Card/CardActions/BlockAction.cs
+  uploadId: 527454

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1d13a4519e7f5e449ada40af494fdc9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Characters/Enemies/EnemyExample.asset
+  uploadId: 527454

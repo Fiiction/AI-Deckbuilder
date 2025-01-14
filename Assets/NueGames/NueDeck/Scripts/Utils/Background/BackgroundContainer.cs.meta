@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: bcdc73948eb84c99ac115b05edf3d4b6
+timeCreated: 1661090318
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/Utils/Background/BackgroundContainer.cs
+  uploadId: 527454

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fff49e05c687f044b8abe0f7eff8f17f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/FX/Materials/StrenghtFxMaterial.mat
+  uploadId: 527454

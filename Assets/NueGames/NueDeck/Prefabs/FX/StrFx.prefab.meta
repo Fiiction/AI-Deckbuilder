@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a966665c25c808a4fa9a24cbbd6bbb67
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/FX/StrFx.prefab
+  uploadId: 527454

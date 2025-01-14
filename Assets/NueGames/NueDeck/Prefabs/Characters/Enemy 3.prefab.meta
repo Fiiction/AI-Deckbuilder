@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 12422914cfeeb1349afec0d663b87504
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/Characters/Enemy 3.prefab
+  uploadId: 527454

@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 28aa9b88539046bcb527e0cab61c5bef
+timeCreated: 1644178608
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/Card/CardActions/LifeStealAction.cs
+  uploadId: 527454

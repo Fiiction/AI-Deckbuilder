@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: fb26f8d5682c4e7fb25e6c2609c75b5a
+timeCreated: 1631993563
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/EnemyBehaviour/EnemyActions/EnemyPoisonAction.cs
+  uploadId: 527454

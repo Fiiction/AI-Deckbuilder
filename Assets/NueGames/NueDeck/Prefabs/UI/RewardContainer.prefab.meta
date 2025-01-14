@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7728fa9ef774a574fa112e56a3a8c0ef
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/UI/RewardContainer.prefab
+  uploadId: 527454

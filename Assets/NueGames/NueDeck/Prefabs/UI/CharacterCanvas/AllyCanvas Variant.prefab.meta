@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 06cd4b0ebbcba2f4896b474ce827c4bc
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/UI/CharacterCanvas/AllyCanvas Variant.prefab
+  uploadId: 527454

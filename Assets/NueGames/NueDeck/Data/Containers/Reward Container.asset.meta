@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 576255f7c5abd6d44800bc419cf6fbf8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Containers/Reward Container.asset
+  uploadId: 527454

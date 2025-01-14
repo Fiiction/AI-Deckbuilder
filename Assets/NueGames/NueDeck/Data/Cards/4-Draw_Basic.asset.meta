@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7c3fef23d2fb177478906e53364bf7fc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Cards/4-Draw_Basic.asset
+  uploadId: 527454

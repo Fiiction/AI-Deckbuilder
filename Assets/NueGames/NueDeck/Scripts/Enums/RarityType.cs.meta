@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: a1442dd0ede9485db7a663567dceb721
+timeCreated: 1661109335
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/Enums/RarityType.cs
+  uploadId: 527454

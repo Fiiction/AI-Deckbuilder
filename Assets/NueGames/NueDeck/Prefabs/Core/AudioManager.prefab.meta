@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 40773ab897252994d865149455abef40
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/Core/AudioManager.prefab
+  uploadId: 527454

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2d30565e54caf3e40a21dfdac091b79e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Sound/ButtonSoundProfile.asset
+  uploadId: 527454

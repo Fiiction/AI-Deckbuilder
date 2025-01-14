@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 8d12ef8afed44d81bfba4a9aa0382982
+timeCreated: 1648928413
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/Utils/FloatingText.cs
+  uploadId: 527454

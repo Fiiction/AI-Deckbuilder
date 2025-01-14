@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7e15e2a10065ab54c8eaf26154af0156
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Sound/EnemyDeathSoundProfile.asset
+  uploadId: 527454

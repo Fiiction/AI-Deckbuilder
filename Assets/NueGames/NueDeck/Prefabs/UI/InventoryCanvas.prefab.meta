@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 266a4aa1df17dff44ab9c52b6bc694ab
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/UI/InventoryCanvas.prefab
+  uploadId: 527454

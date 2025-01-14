@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5d6b018bf7dec554ba0a2eabfd89d3b1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Cards/8-Skill_EarnMana.asset
+  uploadId: 527454

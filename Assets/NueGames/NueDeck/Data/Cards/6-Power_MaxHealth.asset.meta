@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9706119fd5cc9f34e90cb73be068200c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Cards/6-Power_MaxHealth.asset
+  uploadId: 527454

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dceaed87f54c54143aea01eb53e65e50
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/FX/AttackFx.prefab
+  uploadId: 527454

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b03aa86ece2bc1b4a9afba4ab8e5a0d0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Data/Containers/Status Icons.asset
+  uploadId: 527454

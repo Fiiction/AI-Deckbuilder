@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: b1d212282bd641ed8e457ee6599e52d6
+timeCreated: 1631131547
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Scripts/Card/CardActions/HealAction.cs
+  uploadId: 527454

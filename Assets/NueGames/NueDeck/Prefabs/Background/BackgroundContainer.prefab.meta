@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7dded3f0431e1f64eb84e4fa994b54a6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/Background/BackgroundContainer.prefab
+  uploadId: 527454

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a1d31c6911c7d4840b472c3489c4f5b8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/FX/HealFx.prefab
+  uploadId: 527454

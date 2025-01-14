@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 040de7b5bec1dba4aa47eec3843c56ec
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/UI/CombatLosePanel.prefab
+  uploadId: 527454

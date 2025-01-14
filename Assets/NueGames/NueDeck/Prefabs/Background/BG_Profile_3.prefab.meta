@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 53a1827e1180fc54cbdbee34cca34a11
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221223
+  packageName: Nue Deck - Roguelike Card Game Template
+  packageVersion: 2.1.0
+  assetPath: Assets/NueGames/NueDeck/Prefabs/Background/BG_Profile_3.prefab
+  uploadId: 527454
