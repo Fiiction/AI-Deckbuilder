@@ -111,17 +111,18 @@ namespace NueGames.NueDeck.Scripts.Card
         {
             SpendMana(CardData.ManaCost);
             
-            foreach (var playerAction in CardData.CardActionDataList)
-            {
-                yield return new WaitForSeconds(playerAction.ActionDelay);
-                var targetList = DetermineTargets(self,targetCharacter, allEnemies, allAllies, playerAction);
-                Debug.Log("Action: " + playerAction.CardActionType);
-                foreach (var target in targetList)
-                    CardActionProcessor.GetAction(playerAction.CardActionType)
-                        .DoAction(new CardActionParameters(playerAction.ActionValue,
-                            target,self,CardData,this, playerAction.StrParameter));
-            }
+            // foreach (var playerAction in CardData.CardActionDataList)
+            // {
+            //     yield return new WaitForSeconds(playerAction.ActionDelay);
+            //     var targetList = DetermineTargets(self,targetCharacter, allEnemies, allAllies, playerAction);
+            //     Debug.Log("Action: " + playerAction.CardActionType);
+            //     foreach (var target in targetList)
+            //         CardActionProcessor.GetAction(playerAction.CardActionType)
+            //             .DoAction(new CardActionParameters(playerAction.ActionValue,
+            //                 target,self,CardData,this, playerAction.StrParameter));
+            // }
             CollectionManager.OnCardPlayed(this);
+            yield break;
         }
 
         private static List<CharacterBase> DetermineTargets(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies,
@@ -298,16 +299,17 @@ namespace NueGames.NueDeck.Scripts.Card
         #region Tooltip
         protected virtual void ShowTooltipInfo()
         {
-            if (!descriptionRoot) return;
-            if (CardData.KeywordsList.Count<=0) return;
-           
-            var tooltipManager = TooltipManager.Instance;
-            foreach (var cardDataSpecialKeyword in CardData.KeywordsList)
-            {
-                var specialKeyword = tooltipManager.SpecialKeywordData.SpecialKeywordBaseList.Find(x=>x.SpecialKeyword == cardDataSpecialKeyword);
-                if (specialKeyword != null)
-                    ShowTooltipInfo(tooltipManager,specialKeyword.GetContent(),specialKeyword.GetHeader(),descriptionRoot,CursorType.Default,CollectionManager ? CollectionManager.HandController.cam : Camera.main);
-            }
+            return;
+            // if (!descriptionRoot) return;
+            // if (CardData.KeywordsList.Count<=0) return;
+            //
+            // var tooltipManager = TooltipManager.Instance;
+            // foreach (var cardDataSpecialKeyword in CardData.KeywordsList)
+            // {
+            //     var specialKeyword = tooltipManager.SpecialKeywordData.SpecialKeywordBaseList.Find(x=>x.SpecialKeyword == cardDataSpecialKeyword);
+            //     if (specialKeyword != null)
+            //         ShowTooltipInfo(tooltipManager,specialKeyword.GetContent(),specialKeyword.GetHeader(),descriptionRoot,CursorType.Default,CollectionManager ? CollectionManager.HandController.cam : Camera.main);
+            // }
         }
         public virtual void ShowTooltipInfo(TooltipManager tooltipManager, string content, string header = "", Transform tooltipStaticTransform = null, CursorType targetCursor = CursorType.Default,Camera cam = null, float delayShow =0)
         {

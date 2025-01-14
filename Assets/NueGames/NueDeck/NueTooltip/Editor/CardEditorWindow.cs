@@ -46,9 +46,9 @@ namespace NueGames.NueDeck.Editor
             CardSprite = SelectedCardData.CardSprite;
             UsableWithoutTarget = SelectedCardData.UsableWithoutTarget;
             ExhaustAfterPlay = SelectedCardData.ExhaustAfterPlay;
-            CardActionDataList = SelectedCardData.CardActionDataList.Count>0 ? new List<CardActionData>(SelectedCardData.CardActionDataList) : new List<CardActionData>();
-            CardDescriptionDataList = SelectedCardData.CardDescriptionDataList.Count>0 ? new List<CardDescriptionData>(SelectedCardData.CardDescriptionDataList) : new List<CardDescriptionData>();
-            SpecialKeywordsList = SelectedCardData.KeywordsList.Count>0 ? new List<SpecialKeywords>(SelectedCardData.KeywordsList) : new List<SpecialKeywords>();
+            // CardActionDataList = SelectedCardData.CardActionDataList.Count>0 ? new List<CardActionData>(SelectedCardData.CardActionDataList) : new List<CardActionData>();
+            // CardDescriptionDataList = SelectedCardData.CardDescriptionDataList.Count>0 ? new List<CardDescriptionData>(SelectedCardData.CardDescriptionDataList) : new List<CardDescriptionData>();
+            // SpecialKeywordsList = SelectedCardData.KeywordsList.Count>0 ? new List<SpecialKeywords>(SelectedCardData.KeywordsList) : new List<SpecialKeywords>();
             AudioType = SelectedCardData.AudioType;
             CardRarity = SelectedCardData.Rarity;
         }
@@ -161,9 +161,9 @@ namespace NueGames.NueDeck.Editor
             str.Append(count + 1).Append("_").Append("new_card_name");
             clone.EditId(str.ToString());
             clone.EditCardName(str.ToString());
-            clone.EditCardActionDataList(new List<CardActionData>());
-            clone.EditCardDescriptionDataList(new List<CardDescriptionData>());
-            clone.EditSpecialKeywordsList(new List<SpecialKeywords>());
+            // clone.EditCardActionDataList(new List<CardActionData>());
+            // clone.EditCardDescriptionDataList(new List<CardDescriptionData>());
+            // clone.EditSpecialKeywordsList(new List<SpecialKeywords>());
             clone.EditRarity(RarityType.Common);
             var path = str.Insert(0, CardDataDefaultPath).Append(".asset").ToString();
             var uniquePath = AssetDatabase.GenerateUniqueAssetPath(path);
@@ -510,9 +510,9 @@ namespace NueGames.NueDeck.Editor
             SelectedCardData.EditCardSprite(CardSprite);
             SelectedCardData.EditUsableWithoutTarget(UsableWithoutTarget);
             SelectedCardData.EditExhaustAfterPlay(ExhaustAfterPlay);
-            SelectedCardData.EditCardActionDataList(CardActionDataList);
-            SelectedCardData.EditCardDescriptionDataList(CardDescriptionDataList);
-            SelectedCardData.EditSpecialKeywordsList(SpecialKeywordsList);
+            // SelectedCardData.EditCardActionDataList(CardActionDataList);
+            // SelectedCardData.EditCardDescriptionDataList(CardDescriptionDataList);
+            // SelectedCardData.EditSpecialKeywordsList(SpecialKeywordsList);
             SelectedCardData.EditAudioType(AudioType);
             EditorUtility.SetDirty(SelectedCardData);
             AssetDatabase.SaveAssets();

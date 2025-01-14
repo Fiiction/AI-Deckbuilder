@@ -24,11 +24,11 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
         [Header("Action Settings")]
         [SerializeField] private bool usableWithoutTarget;
         [SerializeField] private bool exhaustAfterPlay;
-        [SerializeField] private List<CardActionData> cardActionDataList;
+        // [SerializeField] private List<CardActionData> cardActionDataList;
         
-        [Header("Description")]
-        [SerializeField] private List<CardDescriptionData> cardDescriptionDataList;
-        [SerializeField] private List<SpecialKeywords> specialKeywordsList;
+        // [Header("Description")]
+        // [SerializeField] private List<CardDescriptionData> cardDescriptionDataList;
+        // [SerializeField] private List<SpecialKeywords> specialKeywordsList;
         
         [Header("Fx")]
         [SerializeField] private AudioActionType audioType;
@@ -40,9 +40,9 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
         public string CardName => cardName;
         public string CardDescription => description;
         public Sprite CardSprite => cardSprite;
-        public List<CardActionData> CardActionDataList => cardActionDataList;
-        public List<CardDescriptionData> CardDescriptionDataList => cardDescriptionDataList;
-        public List<SpecialKeywords> KeywordsList => specialKeywordsList;
+        // public List<CardActionData> CardActionDataList => cardActionDataList;
+        // public List<CardDescriptionData> CardDescriptionDataList => cardDescriptionDataList;
+        // public List<SpecialKeywords> KeywordsList => specialKeywordsList;
         public AudioActionType AudioType => audioType;
         public string MyDescription { get; set; }
         public RarityType Rarity => rarity;
@@ -54,16 +54,17 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
         #region Methods
         public void UpdateDescription()
         {
-            var str = new StringBuilder();
-
-            foreach (var descriptionData in cardDescriptionDataList)
-            {
-                str.Append(descriptionData.UseModifier
-                    ? descriptionData.GetModifiedValue(this)
-                    : descriptionData.GetDescription());
-            }
-            
-            MyDescription = str.ToString();
+            // var str = new StringBuilder();
+            //
+            // foreach (var descriptionData in cardDescriptionDataList)
+            // {
+            //     str.Append(descriptionData.UseModifier
+            //         ? descriptionData.GetModifiedValue(this)
+            //         : descriptionData.GetDescription());
+            // }
+            //
+            // MyDescription = str.ToString();
+            MyDescription = description;
         }
         #endregion
 
@@ -76,12 +77,12 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
         public void EditCardSprite(Sprite newSprite) => cardSprite = newSprite;
         public void EditUsableWithoutTarget(bool newStatus) => usableWithoutTarget = newStatus;
         public void EditExhaustAfterPlay(bool newStatus) => exhaustAfterPlay = newStatus;
-        public void EditCardActionDataList(List<CardActionData> newCardActionDataList) =>
-            cardActionDataList = newCardActionDataList;
-        public void EditCardDescriptionDataList(List<CardDescriptionData> newCardDescriptionDataList) =>
-            cardDescriptionDataList = newCardDescriptionDataList;
-        public void EditSpecialKeywordsList(List<SpecialKeywords> newSpecialKeywordsList) =>
-            specialKeywordsList = newSpecialKeywordsList;
+        // public void EditCardActionDataList(List<CardActionData> newCardActionDataList) =>
+        //     cardActionDataList = newCardActionDataList;
+        // public void EditCardDescriptionDataList(List<CardDescriptionData> newCardDescriptionDataList) =>
+        //     cardDescriptionDataList = newCardDescriptionDataList;
+        // public void EditSpecialKeywordsList(List<SpecialKeywords> newSpecialKeywordsList) =>
+        //     specialKeywordsList = newSpecialKeywordsList;
         public void EditAudioType(AudioActionType newAudioActionType) => audioType = newAudioActionType;
 #endif
 
@@ -174,51 +175,52 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
 
         public string GetModifiedValue(CardData cardData)
         {
-            if (cardData.CardActionDataList.Count <= 0) return "";
-            
-            if (ModifiedActionValueIndex>=cardData.CardActionDataList.Count)
-                modifiedActionValueIndex = cardData.CardActionDataList.Count - 1;
-
-            if (ModifiedActionValueIndex<0)
-                modifiedActionValueIndex = 0;
-            
-            var str = new StringBuilder();
-            var value = cardData.CardActionDataList[ModifiedActionValueIndex].ActionValue;
-            var modifer = 0;
-            if (CombatManager)
-            {
-                var player = CombatManager.CurrentMainAlly;
-               
-                if (player)
-                {
-                    modifer = player.characterStats.StatusDict[ModiferStats].StatusValue;
-                    value += modifer;
-
-                    if (modifer != 0)
-                    {
-                        if (usePrefixOnModifiedValue)
-                            str.Append(modifiedValuePrefix);
-                    }
-                }
-            }
-           
-            str.Append(value);
-
-            if (EnableOverrideColor)
-            {
-                if (OverrideColorOnValueScaled)
-                {
-                    if (modifer != 0)
-                        str.Replace(str.ToString(),ColorExtentions.ColorString(str.ToString(),OverrideColor));
-                }
-                else
-                {
-                    str.Replace(str.ToString(),ColorExtentions.ColorString(str.ToString(),OverrideColor));
-                }
-               
-            }
-            
-            return str.ToString();
+            return "";
+            // if (cardData.CardActionDataList.Count <= 0) return "";
+            //
+            // if (ModifiedActionValueIndex>=cardData.CardActionDataList.Count)
+            //     modifiedActionValueIndex = cardData.CardActionDataList.Count - 1;
+            //
+            // if (ModifiedActionValueIndex<0)
+            //     modifiedActionValueIndex = 0;
+            //
+            // var str = new StringBuilder();
+            // var value = cardData.CardActionDataList[ModifiedActionValueIndex].ActionValue;
+            // var modifer = 0;
+            // if (CombatManager)
+            // {
+            //     var player = CombatManager.CurrentMainAlly;
+            //    
+            //     if (player)
+            //     {
+            //         modifer = player.characterStats.StatusDict[ModiferStats].StatusValue;
+            //         value += modifer;
+            //
+            //         if (modifer != 0)
+            //         {
+            //             if (usePrefixOnModifiedValue)
+            //                 str.Append(modifiedValuePrefix);
+            //         }
+            //     }
+            // }
+            //
+            // str.Append(value);
+            //
+            // if (EnableOverrideColor)
+            // {
+            //     if (OverrideColorOnValueScaled)
+            //     {
+            //         if (modifer != 0)
+            //             str.Replace(str.ToString(),ColorExtentions.ColorString(str.ToString(),OverrideColor));
+            //     }
+            //     else
+            //     {
+            //         str.Replace(str.ToString(),ColorExtentions.ColorString(str.ToString(),OverrideColor));
+            //     }
+            //    
+            // }
+            //
+            // return str.ToString();
         }
 
         #region Editor
@@ -235,32 +237,33 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
 
         public string GetModifiedValueEditor(CardData cardData)
         {
-            if (cardData.CardActionDataList.Count <= 0) return "";
-            
-            if (ModifiedActionValueIndex>=cardData.CardActionDataList.Count)
-                modifiedActionValueIndex = cardData.CardActionDataList.Count - 1;
-
-            if (ModifiedActionValueIndex<0)
-                modifiedActionValueIndex = 0;
-            
-            var str = new StringBuilder();
-            var value = cardData.CardActionDataList[ModifiedActionValueIndex].ActionValue;
-            if (CombatManager)
-            {
-                var player = CombatManager.CurrentMainAlly;
-                if (player)
-                {
-                    var modifer =player.characterStats.StatusDict[ModiferStats].StatusValue;
-                    value += modifer;
-                
-                    if (modifer!= 0)
-                        str.Append("*");
-                }
-            }
-           
-            str.Append(value);
-          
-            return str.ToString();
+            return "";
+            // if (cardData.CardActionDataList.Count <= 0) return "";
+            //
+            // if (ModifiedActionValueIndex>=cardData.CardActionDataList.Count)
+            //     modifiedActionValueIndex = cardData.CardActionDataList.Count - 1;
+            //
+            // if (ModifiedActionValueIndex<0)
+            //     modifiedActionValueIndex = 0;
+            //
+            // var str = new StringBuilder();
+            // var value = cardData.CardActionDataList[ModifiedActionValueIndex].ActionValue;
+            // if (CombatManager)
+            // {
+            //     var player = CombatManager.CurrentMainAlly;
+            //     if (player)
+            //     {
+            //         var modifer =player.characterStats.StatusDict[ModiferStats].StatusValue;
+            //         value += modifer;
+            //     
+            //         if (modifer!= 0)
+            //             str.Append("*");
+            //     }
+            // }
+            //
+            // str.Append(value);
+            //
+            // return str.ToString();
         }
         
         public void EditDescriptionText(string newText) => descriptionText = newText;
