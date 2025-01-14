@@ -129,16 +129,16 @@ namespace NueGames.NueDeck.Scripts.Characters
                 TriggerStatus((StatusType) i);
             
             // Process all custom effects
-            var removeEffectList = new List<string>();
-            foreach (var i in Effects)
-            {
-                i.Value.effectValue--;
-                if(i.Value.effectValue <= 0)
-                    removeEffectList.Add(i.Key);
-            }
-            foreach (var i in removeEffectList)
-                Effects.Remove(i);
-            OnCustomEffectsChanged?.Invoke(Effects);
+            // var removeEffectList = new List<string>();
+            // foreach (var i in Effects)
+            // {
+            //     i.Value.effectValue--;
+            //     if(i.Value.effectValue <= 0)
+            //         removeEffectList.Add(i.Key);
+            // }
+            // foreach (var i in removeEffectList)
+            //     Effects.Remove(i);
+            // OnCustomEffectsChanged?.Invoke(Effects);
         }
         
         public void SetCurrentHealth(int targetCurrentHealth)

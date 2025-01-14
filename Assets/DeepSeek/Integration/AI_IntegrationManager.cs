@@ -9,6 +9,7 @@ public class AI_IntegrationManager : MonoBehaviour
     
     public DeepseekParams deepseekParams;
     [SerializeField, TextArea(8, 12)] private string initialPrompt;
+    [SerializeField, TextArea(8, 12)] private string startGamePrompt;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private List<Message> _conversationSoFar = new();
@@ -36,11 +37,16 @@ public class AI_IntegrationManager : MonoBehaviour
             }, null, null);
         
     }
+
+    public void SendStartGamePrompt()
+    {
+        Request(startGamePrompt, _ => { });
+    }
     
     void Start()
     {
         instance = this;
-        Request(initialPrompt, str => { });
+        Request(initialPrompt, _ => { });
     }
 
     // Update is called once per frame

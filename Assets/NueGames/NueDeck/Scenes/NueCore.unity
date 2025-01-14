@@ -437,8 +437,8 @@ MonoBehaviour:
     or \"AllEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##) \r\n}"
   prompt3_CustomEffect: "For the effect \"Add Custom Status\", what's the name of
     status, the target and the numeric value of this effect:\r\n\r\nPlease reply
-    with following json format: (content in parentheses are comments)\r\n{\r\n\t\"name\":
-    \"buffname\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
+    with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
+    \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
     etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\")\r\n\t\"value\":
     3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
   cardName: 
@@ -473,6 +473,24 @@ MonoBehaviour:
   initialPrompt: "We are simulating a deckbuilding card game like Slay the Spire.
     \r\nI will give you informations of a card usage, and request you to reply with
     what's the consequence of the action.\nPlease reply with \"I understand.\""
+  startGamePrompt: 'Now player enters a fight.
+
+    Player can spend 3 manas to use
+    cards on each turn. Cards represent protagonist''s actions.
+
+    Most cards cost
+    1 mana. Very powerful moves will cost 2 or 3 mana. 0-mana cards represent swift
+    but weaker moves.
+
+    The effects of a card include dealing damage to target,
+    healing the user, adding tacks of "block" (blocking same amount of upcoming damage),
+    applying buff to user or casting debuff to targets.
+
+    Typically, one cost
+    cards are worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff. Cards
+    with higher rarity can be stronger.
+
+    Please reply with "I understand."'
 --- !u!4 &1597128619
 Transform:
   m_ObjectHideFlags: 0

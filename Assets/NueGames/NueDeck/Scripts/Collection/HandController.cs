@@ -277,7 +277,8 @@ namespace NueGames.NueDeck.Scripts.Collection
                     Quaternion.LookRotation(cardForward, cardUp), 80f * Time.deltaTime);
                 cardTransform.position = cardPos;
 
-                CombatManager.HighlightCardTarget(_heldCard.CardData.CardActionDataList[0].ActionTargetType);
+                CombatManager.HighlightCardTarget(_heldCard.CardData.UsableWithoutTarget);
+                //CombatManager.HighlightCardTarget(_heldCard.CardData.CardActionDataList[0].ActionTargetType);
 
                 //if (!canSelectCards || cardTransform.position.y <= transform.position.y + 0.5f) {
                 if (!GameManager.PersistentGameplayData.CanSelectCards || _mouseInsideHand)
@@ -342,12 +343,8 @@ namespace NueGames.NueDeck.Scripts.Collection
 
                 if (character != null)
                 {
-                    var checkEnemy = (_heldCard.CardData.CardActionDataList[0].ActionTargetType == ActionTargetType.Enemy &&
-                                      character.GetCharacterType() == CharacterType.Enemy);
-                    var checkAlly = (_heldCard.CardData.CardActionDataList[0].ActionTargetType == ActionTargetType.Ally &&
-                                     character.GetCharacterType() == CharacterType.Ally);
-
-                    if (checkEnemy || checkAlly)
+                    var checkEnemy = (character.GetCharacterType() == CharacterType.Enemy);
+                    if (checkEnemy)
                     {
                         _canUse = true;
                         selfCharacter = CombatManager.CurrentMainAlly;

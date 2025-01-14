@@ -78,6 +78,7 @@ namespace NueGames.NueDeck.Scripts.Managers
 
         public void StartCombat()
         {
+            AI_IntegrationManager.instance.SendStartGamePrompt();
             BuildEnemies();
             BuildAllies();
             backgroundContainer.OpenSelectedBackground();
@@ -168,6 +169,18 @@ namespace NueGames.NueDeck.Scripts.Managers
         {
             GameManager.PersistentGameplayData.CurrentMana += target;
             UIManager.CombatCanvas.SetPileTexts();
+        }
+        public void HighlightCardTarget(bool usableWithoutTarget)
+        {
+            if (!usableWithoutTarget)
+            {
+                foreach (var currentEnemy in CurrentEnemiesList)
+                    currentEnemy.EnemyCanvas.SetHighlight(true);
+            }
+            else
+            {
+                return;
+            }
         }
         public void HighlightCardTarget(ActionTargetType targetTypeTargetType)
         {
