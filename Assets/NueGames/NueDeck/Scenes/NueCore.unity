@@ -302,6 +302,108 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4c5d93acf671e48b2593ed75c25a5f, type: 3}
+--- !u!1 &551255182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 551255183}
+  - component: {fileID: 551255184}
+  m_Layer: 0
+  m_Name: CardEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &551255183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551255182}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1597128619}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &551255184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551255182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db81833cc9a238a4b93475a910009467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prompt1_withTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
+    following card:
+
+
+
+    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
+
+
+
+    targeting
+    following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##
+
+
+
+    What
+    will happen? please describe with natural language within 20 words.'
+  prompt1_noTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
+    following card:
+
+
+
+    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
+
+
+
+    What
+    will happen? please describe with natural language within 20 words.'
+  prompt2: "Now answer with following structure, what will be the effect(s) of this
+    card?\r\n\r\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
+    Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
+    stacks of block, blocking same amount of upcoming damage\r\r\n- Draw: draw cards\r\n-
+    Gain Mana: gain mana to do more actions in this turn\r\n- Steal Life: steal life
+    from the target like a vampire\r\n- Stun: stunning the object, prevent it to
+    move in following rounds\r\n- Destroy the Card: destroying the card used permanently\r\n-
+    Add Custom Status: add custom buff or debuff to object\r\n\r\nThe object of each
+    of these effects can be the user, the targeted enemy or all enemies, which will
+    be chosen later.\r\n\r\nPlease reply with following json format:\r\n{\r\n\t\"effects\":
+    [\"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
+  prompt3_Normal: "For the effect \"##EffectName##\", what's the target and the numeric
+    value of this effect:\r\n\r\nPlease reply with following json format: (content
+    in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
+    or \"AllEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##) \r\n}"
+  prompt3_CustomEffect: "For the effect \"Add Custom Status\", what's the name of
+    status, the target and the numeric value of this effect:\r\n\r\nPlease reply
+    with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
+    \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
+    etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\")\r\n\t\"value\":
+    3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
+  cardName: 
+  cardDesc: 
+  userName: 
+  userDesc: 
+  targetName: 
+  targetDesc: 
+  userStatusStr: 
+  targetStatusStr: 
+  prompt1Sent: 
+  actionDatas: []
 --- !u!1001 &612046287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -373,7 +475,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1597128619}
   - component: {fileID: 1597128618}
-  - component: {fileID: 1597128617}
   m_Layer: 0
   m_Name: AIManager
   m_TagString: Untagged
@@ -381,76 +482,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1597128617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597128616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db81833cc9a238a4b93475a910009467, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prompt1_withTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
-    following card:
-
-
-
-    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
-
-
-
-    targeting
-    following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##
-
-
-
-    What
-    will happen? please describe with natural language within 20 words.'
-  prompt1_noTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
-    following card:
-
-
-
-    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
-
-
-
-    What
-    will happen? please describe with natural language within 20 words.'
-  prompt2: "Now answer with following structure, what will be the effect(s) of this
-    card?\r\n\r\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
-    Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
-    stacks of block, blocking same amount of upcoming damage\r\r\n- Draw: draw cards\r\n-
-    Gain Mana: gain mana to do more actions in this turn\r\n- Steal Life: steal life
-    from the target like a vampire\r\n- Stun: stunning the object, prevent it to
-    move in following rounds\r\n- Destroy the Card: destroying the card used permanently\r\n-
-    Add Custom Status: add custom buff or debuff to object\r\n\r\nThe object of each
-    of these effects can be the user, the targeted enemy or all enemies, which will
-    be chosen later.\r\n\r\nPlease reply with following json format:\r\n{\r\n\t\"effects\":
-    [\"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
-  prompt3_Normal: "For the effect \"##EffectName##\", what's the target and the numeric
-    value of this effect:\r\n\r\nPlease reply with following json format: (content
-    in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
-    or \"AllEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##) \r\n}"
-  prompt3_CustomEffect: "For the effect \"Add Custom Status\", what's the name of
-    status, the target and the numeric value of this effect:\r\n\r\nPlease reply
-    with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
-    \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
-    etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\")\r\n\t\"value\":
-    3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
-  cardName: 
-  cardDesc: 
-  userName: 
-  userDesc: 
-  targetName: 
-  targetDesc: 
-  userStatusStr: 
-  targetStatusStr: 
-  prompt1Sent: 
-  actionDatas: []
 --- !u!114 &1597128618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,7 +534,8 @@ Transform:
   m_LocalPosition: {x: 793.40314, y: 567.471, z: -6.0503793}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 551255183}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1736434731
