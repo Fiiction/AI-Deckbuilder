@@ -9,13 +9,19 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
         public override CardActionType ActionType => CardActionType.Draw;
         public override void DoAction(CardActionParameters actionParameters)
         {
+            
+            int value = Mathf.RoundToInt(actionParameters.Value); 
             if (CollectionManager != null)
-                CollectionManager.DrawCards(Mathf.RoundToInt(actionParameters.Value));
+                CollectionManager.DrawCards(Mathf.RoundToInt(value));
             else
                 Debug.LogError("There is no CollectionManager");
-            
+
             if (FxManager != null)
+            {
                 FxManager.PlayFx(actionParameters.SelfCharacter.transform, FxType.Buff);
+                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
+                    "<Color=#ffff77>Draw cards: " + value +"</color>");
+            }
 
             if (AudioManager != null) 
                 AudioManager.PlayOneShot(actionParameters.CardData.AudioType);

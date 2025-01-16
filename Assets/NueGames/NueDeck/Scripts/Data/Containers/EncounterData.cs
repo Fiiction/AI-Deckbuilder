@@ -13,39 +13,21 @@ namespace NueGames.NueDeck.Scripts.Data.Containers
     public class EncounterData : ScriptableObject
     {
         [Header("Settings")] 
-        [SerializeField] private bool encounterRandomlyAtStage;
-        [SerializeField] private List<EnemyEncounterStage> enemyEncounterList;
+        //[SerializeField] private bool encounterRandomlyAtStage;
+        [SerializeField] private List<EnemyEncounter> enemyEncounterList;
 
-        public bool EncounterRandomlyAtStage => encounterRandomlyAtStage;
-        public List<EnemyEncounterStage> EnemyEncounterList => enemyEncounterList;
+        //public bool EncounterRandomlyAtStage => encounterRandomlyAtStage;
+        public List<EnemyEncounter> EnemyEncounterList => enemyEncounterList;
 
-        public EnemyEncounter GetEnemyEncounter(int stageId = 0,int encounterId =0,bool isFinal = false)
+        public EnemyEncounter GetEnemyEncounter(int encounterId =0)
         {
-            var selectedStage = EnemyEncounterList.First(x => x.StageId == stageId);
-            if (isFinal) return selectedStage.BossEncounterList.RandomItem();
-           
-            return EncounterRandomlyAtStage
-                ? selectedStage.EnemyEncounterList.RandomItem()
-                : selectedStage.EnemyEncounterList[encounterId] ?? selectedStage.EnemyEncounterList.RandomItem();
+            if(encounterId<0 || encounterId>=EnemyEncounterList.Count)
+                return null;
+            return EnemyEncounterList[encounterId];
         }
         
     }
 
-
-    [Serializable]
-    public class EnemyEncounterStage
-    {
-        [SerializeField] private string name;
-        [SerializeField] private int stageId;
-        [SerializeField] private List<EnemyEncounter> bossEncounterList;
-        [SerializeField] private List<EnemyEncounter> enemyEncounterList;
-        public string Name => name;
-        public int StageId => stageId;
-        public List<EnemyEncounter> BossEncounterList => bossEncounterList;
-        public List<EnemyEncounter> EnemyEncounterList => enemyEncounterList;
-    }
-    
-    
     [Serializable]
     public class EnemyEncounter : EncounterBase
     {

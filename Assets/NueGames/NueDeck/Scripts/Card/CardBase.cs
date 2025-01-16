@@ -72,29 +72,35 @@ namespace NueGames.NueDeck.Scripts.Card
         #region Card Methods
         public virtual void Use(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies)
         {
-            if (!IsPlayable) return;
+            if (!IsPlayable || aiPending) return;
          
             StartCoroutine(CardAIUseRoutine(self, targetCharacter, allEnemies, allAllies));
         }
 
+        public static bool aiPending = false;
         private bool aiCardEffectFinished = false;
         private List<CardActionData> aiCardActionDataList = new();
 
         public void AICardEffectCallback(List<CardActionData> ad)
         {
             aiCardEffectFinished = true;
+            Debug.Log("Action Cnt: " + ad.Count);
             aiCardActionDataList = ad;
         }
         
         //AI Card Actions
         private IEnumerator CardAIUseRoutine(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies)
         {
+            if(aiPending) Debug.LogError("Multiple card ai use at same time!!");
+            aiPending = true;
             SpendMana(CardData.ManaCost);
             aiCardEffectFinished = false;
             aiCardActionDataList = new();
             AI_CardEffect.instance.CardUse(this, self, targetCharacter, AICardEffectCallback);
             
             yield return new WaitWhile(() => aiCardEffectFinished == false);
+            aiPending = false;
+            
             foreach (var playerAction in aiCardActionDataList)
             {
                 yield return new WaitForSeconds(playerAction.ActionDelay);
@@ -104,6 +110,7 @@ namespace NueGames.NueDeck.Scripts.Card
                     CardActionProcessor.GetAction(playerAction.CardActionType)
                         .DoAction(new CardActionParameters(playerAction.ActionValue,
                             target,self,CardData,this, playerAction.StrParameter));
+                yield return new WaitForSeconds(0.5f);
             }
             CollectionManager.OnCardPlayed(this);
         }

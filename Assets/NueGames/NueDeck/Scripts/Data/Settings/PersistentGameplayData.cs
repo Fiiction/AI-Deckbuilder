@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NueGames.NueDeck.Scripts.Characters;
 using NueGames.NueDeck.Scripts.Data.Collection;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NueGames.NueDeck.Scripts.Data.Settings
 {
@@ -19,8 +20,7 @@ namespace NueGames.NueDeck.Scripts.Data.Settings
         [SerializeField] private bool canSelectCards;
         [SerializeField] private bool isRandomHand;
         [SerializeField] private List<AllyBase> allyList;
-        [SerializeField] private int currentStageId;
-        [SerializeField] private int currentEncounterId;
+        [FormerlySerializedAs("currentEncounterId")] [SerializeField] private int currentLevel;
         [SerializeField] private bool isFinalEncounter;
         [SerializeField] private List<CardData> currentCardsList;
         [SerializeField] private List<AllyHealthData> allyHealthDataDataList;
@@ -58,8 +58,7 @@ namespace NueGames.NueDeck.Scripts.Data.Settings
             CanSelectCards = true;
             IsRandomHand = _gameplayData.IsRandomHand;
             AllyList = new List<AllyBase>(_gameplayData.InitalAllyList);
-            CurrentEncounterId = 0;
-            CurrentStageId = 0;
+            CurrentLevel = 0;
             CurrentGold = 0;
             CurrentCardsList = new List<CardData>();
             IsFinalEncounter = false;
@@ -110,16 +109,11 @@ namespace NueGames.NueDeck.Scripts.Data.Settings
             set => allyList = value;
         }
 
-        public int CurrentStageId
-        {
-            get => currentStageId;
-            set => currentStageId = value;
-        }
 
-        public int CurrentEncounterId
+        public int CurrentLevel
         {
-            get => currentEncounterId;
-            set => currentEncounterId = value;
+            get => currentLevel;
+            set => currentLevel = value;
         }
 
         public bool IsFinalEncounter

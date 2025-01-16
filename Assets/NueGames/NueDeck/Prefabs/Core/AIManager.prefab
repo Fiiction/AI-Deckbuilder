@@ -64,13 +64,14 @@ MonoBehaviour:
     following card:
 
 
-
-    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
-
+    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana.
 
 
     What
-    will happen? please describe with natural language within 20 words.'
+    will happen? Please consider the card used in the past. Describe with natural
+    language within 20 words.
+
+'
   prompt2: "Now answer with following structure, what will be the effect(s) of this
     card?\r\n\r\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
     Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
@@ -80,8 +81,10 @@ MonoBehaviour:
     move in following rounds\r\n- Destroy the Card: destroying the card used permanently\r\n-
     Add Custom Status: add custom buff or debuff to object\r\n\r\nThe object of each
     of these effects can be the user, the targeted enemy or all enemies, which will
-    be chosen later.\r\n\r\nPlease reply with following json format:\r\n{\r\n\t\"effects\":
-    [\"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
+    be chosen later.\nYou can choose one same effect 2 or more times, if it's dealt
+    on different objects, or casting 2 different custom effect at the same time.\r\n\r\nPlease
+    reply with following json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Draw\",
+    \"Steal Life\"]\r\n}"
   prompt3_Normal: "For the effect \"##EffectName##\", what's the target and the numeric
     value of this effect:\r\n\r\nPlease reply with following json format: (content
     in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
@@ -302,7 +305,7 @@ MonoBehaviour:
     sampler_name: DPM++ 2M
     scheduler: Karras
     prompt: ', white background, simple background, detailed anime style,game icon,
-      <lora:anime_game_icon:1>'
+      <lora:anime_game_icon:0.8>'
     negative_prompt: lowres, bad anatomy, bad hands, text, error, missing fingers,
       extra digit, fewer digits, cropped, worst quality, low quality, normal quality,
       jpeg artifacts, signature, watermark, username, blurry, lowres, bad anatomy,

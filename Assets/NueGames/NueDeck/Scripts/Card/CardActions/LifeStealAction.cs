@@ -11,9 +11,7 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
         {
             if (!actionParameters.TargetCharacter) return;
 
-            var value = Mathf.RoundToInt(actionParameters.Value +
-                                         actionParameters.SelfCharacter.characterStats.StatusDict[StatusType.Strength]
-                                             .StatusValue);
+            int value = Mathf.RoundToInt(actionParameters.Value); 
             actionParameters.TargetCharacter.characterStats.Damage(value);
             actionParameters.SelfCharacter.characterStats.Heal(value);
             
@@ -21,7 +19,8 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             {
                 FxManager.PlayFx(actionParameters.TargetCharacter.transform,FxType.Attack);
                 FxManager.PlayFx(actionParameters.SelfCharacter.transform,FxType.Heal);
-                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,value.ToString());
+                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
+                    "<Color=#cc1111><b>Life Steal: " + value +"</b></color>");
             }
            
             if (AudioManager != null) 

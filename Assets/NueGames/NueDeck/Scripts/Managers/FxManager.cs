@@ -44,7 +44,7 @@ namespace NueGames.NueDeck.Scripts.Managers
 
         #region Public Methods
 
-        public void SpawnFloatingText(Transform targetTransform,string text, int xDir =0, int yDir =-1)
+        public void SpawnFloatingText(Transform targetTransform, string text, int xDir =0, int yDir =-1)
         {
             var cloneText =Instantiate(floatingTextPrefab, targetTransform.position, Quaternion.identity);
             

@@ -14,14 +14,15 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             var targetCharacter = actionParameters.TargetCharacter;
             var selfCharacter = actionParameters.SelfCharacter;
             
-            var value = actionParameters.Value + selfCharacter.characterStats.StatusDict[StatusType.Strength].StatusValue; 
+            var value = Mathf.RoundToInt(actionParameters.Value); 
             
-            targetCharacter.characterStats.Damage(Mathf.RoundToInt(value));
+            targetCharacter.characterStats.Damage(value);
 
             if (FxManager != null)
             {
                 FxManager.PlayFx(actionParameters.TargetCharacter.transform,FxType.Attack);
-                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,value.ToString());
+                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
+                    "<Color=#ff5555>Damage: " +value +"</color>");
             }
            
             if (AudioManager != null) 

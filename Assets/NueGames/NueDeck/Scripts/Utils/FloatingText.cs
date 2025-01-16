@@ -30,8 +30,8 @@ namespace NueGames.NueDeck.Scripts.Utils
                 timer += Time.deltaTime;
                 transform.localScale = scaleCurve.Evaluate(timer / duration)*initalScale;
                 var pos =transform.position;
-                pos.x += xForceCurve.Evaluate(timer / duration)*xDir*Time.deltaTime;
-                pos.y += yForceCurve.Evaluate(timer / duration)*yDir*Time.deltaTime;
+                pos.x += xForceCurve.Evaluate(timer / duration)*xDir * 0.5f *Time.deltaTime;
+                pos.y += yForceCurve.Evaluate(timer / duration)*yDir * 0.5f *Time.deltaTime;
                 transform.position = pos;
                 yield return waitFrame;
             }

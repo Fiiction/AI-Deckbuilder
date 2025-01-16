@@ -6,6 +6,7 @@ using NueGames.NueDeck.Scripts.Data.Containers;
 using NueGames.NueDeck.Scripts.Enums;
 using NueGames.NueDeck.Scripts.NueExtentions;
 using UnityEngine;
+using NueGames.NueDeck.Scripts.Managers;
 
 namespace NueGames.NueDeck.Scripts.UI.Reward
 {
@@ -33,31 +34,32 @@ namespace NueGames.NueDeck.Scripts.UI.Reward
         {
             rewardPanelRoot.gameObject.SetActive(true);
         }
-        public void BuildReward(RewardType rewardType)
+
+        public void BuildRewards()
+        {
+            int level = GameManager.PersistentGameplayData.CurrentLevel;
+            Debug.Log("Build Rewards: Level " + level);
+            if (level <= 1)
+            {
+                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[0]);
+                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[1]);
+                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[2]);
+            }
+            else if (level == 2)
+            {
+                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[3]);
+                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[4]);
+                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[5]);
+            }
+        }
+
+        void BuildSingleCardReward(CardData cardData)
         {
             var rewardClone = Instantiate(rewardContainerPrefab, rewardRoot);
             _currentRewardsList.Add(rewardClone);
-            
-            switch (rewardType)
-            {
-                case RewardType.Gold:
-                    var rewardGold = rewardContainerData.GetRandomGoldReward(out var goldRewardData);
-                    rewardClone.BuildReward(goldRewardData.RewardSprite,goldRewardData.RewardDescription);
-                    rewardClone.RewardButton.onClick.AddListener(()=>GetGoldReward(rewardClone,rewardGold));
-                    break;
-                case RewardType.Card:
-                    var rewardCardList = rewardContainerData.GetRandomCardRewardList(out var cardRewardData);
-                    _cardRewardList.Clear();
-                    foreach (var cardData in rewardCardList)
-                        _cardRewardList.Add(cardData);
-                    rewardClone.BuildReward(cardRewardData.RewardSprite,cardRewardData.RewardDescription);
-                    rewardClone.RewardButton.onClick.AddListener(()=>GetCardReward(rewardClone,3));
-                    break;
-                case RewardType.Relic:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(rewardType), rewardType, null);
-            }
+            _cardRewardList.Add(cardData);
+            rewardClone.BuildReward(cardData);
+            rewardClone.RewardButton.onClick.AddListener(()=>GetCardReward(rewardClone,3));
         }
         
         public override void ResetCanvas()
@@ -71,7 +73,7 @@ namespace NueGames.NueDeck.Scripts.UI.Reward
         {
             foreach (var rewardContainer in _currentRewardsList)
                 Destroy(rewardContainer.gameObject);
-
+        
             _currentRewardsList?.Clear();
         }
 
@@ -89,34 +91,12 @@ namespace NueGames.NueDeck.Scripts.UI.Reward
         #endregion
         
         #region Private Methods
-        private void GetGoldReward(RewardContainer rewardContainer,int amount)
-        {
-            GameManager.PersistentGameplayData.CurrentGold += amount;
-            _currentRewardsList.Remove(rewardContainer);
-            UIManager.InformationCanvas.SetGoldText(GameManager.PersistentGameplayData.CurrentGold);
-            Destroy(rewardContainer.gameObject);
-        }
 
         private void GetCardReward(RewardContainer rewardContainer,int amount = 3)
         {
-            ChoicePanel.gameObject.SetActive(true);
-            
-            for (int i = 0; i < amount; i++)
-            {
-                Transform spawnTransform = choice2DCardSpawnRoot;
-              
-                var choice = Instantiate(choiceCardUIPrefab, spawnTransform);
-                
-                var reward = _cardRewardList.RandomItem();
-                choice.BuildReward(reward);
-                choice.OnCardChose += ResetChoice;
-                
-                _cardRewardList.Remove(reward);
-                _spawnedChoiceList.Add(choice);
-                _currentRewardsList.Remove(rewardContainer);
-                
-            }
-            
+            for(int i = 0; i < amount; i++)
+                GameManager.Instance.AddCardToDeck(rewardContainer.cardData);
+            _currentRewardsList.Remove(rewardContainer);
             Destroy(rewardContainer.gameObject);
         }
         #endregion

@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4080055910638251644, guid: 0f20f68f48abf2844b9f1fb520647c03, type: 3}
       propertyPath: m_Text
-      value: skillful archer with power of dragon from Overwatch, Hanzo Shimada
+      value: delightful little witch with magic of life's essence
       objectReference: {fileID: 0}
     - target: {fileID: 4080055910638251644, guid: 0f20f68f48abf2844b9f1fb520647c03, type: 3}
       propertyPath: m_LineType
@@ -528,7 +528,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6263400374580583019, guid: 0f20f68f48abf2844b9f1fb520647c03, type: 3}
       propertyPath: m_Text
-      value: Hanzo
+      value: Primula
       objectReference: {fileID: 0}
     - target: {fileID: 8043291946114467503, guid: 0f20f68f48abf2844b9f1fb520647c03, type: 3}
       propertyPath: m_text

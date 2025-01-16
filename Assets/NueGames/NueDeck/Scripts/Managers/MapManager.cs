@@ -23,9 +23,9 @@ namespace NueGames.NueDeck.Scripts.Managers
             for (int i = 0; i < EncounterButtonList.Count; i++)
             {
                 var btn = EncounterButtonList[i];
-                if (GameManager.PersistentGameplayData.CurrentEncounterId == i)
+                if (GameManager.PersistentGameplayData.CurrentLevel == i)
                     btn.SetStatus(EncounterButtonStatus.Active);
-                else if (GameManager.PersistentGameplayData.CurrentEncounterId > i)
+                else if (GameManager.PersistentGameplayData.CurrentLevel > i)
                     btn.SetStatus(EncounterButtonStatus.Completed);
                 else
                     btn.SetStatus(EncounterButtonStatus.Passive);

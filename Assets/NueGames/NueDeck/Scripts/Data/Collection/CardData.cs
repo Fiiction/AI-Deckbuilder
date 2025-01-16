@@ -71,6 +71,7 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
             manaCost = _manaCost;
             usableWithoutTarget = !_needTarget;
             rarity = _rarity;
+            
         }
 
         public void SetCardSprite(Sprite _sprite)

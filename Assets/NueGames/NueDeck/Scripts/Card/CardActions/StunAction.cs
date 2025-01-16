@@ -11,12 +11,15 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
         {
             if (!actionParameters.TargetCharacter) return;
 
-            var value = actionParameters.Value;
-            actionParameters.TargetCharacter.characterStats.ApplyStatus(StatusType.Stun,Mathf.RoundToInt(value));
+            int value = Mathf.RoundToInt(actionParameters.Value); 
+            actionParameters.TargetCharacter.characterStats.ApplyStatus(StatusType.Stun,
+                value);
 
             if (FxManager != null)
             {
                 FxManager.PlayFx(actionParameters.TargetCharacter.transform,FxType.Stun);
+                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
+                    "<Color=#cc77ff>Stun: " + value +"</color>");
             }
            
             if (AudioManager != null) 

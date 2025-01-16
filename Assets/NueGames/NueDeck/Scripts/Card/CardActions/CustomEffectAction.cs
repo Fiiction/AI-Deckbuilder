@@ -15,16 +15,17 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             var targetCharacter = actionParameters.TargetCharacter;
             var selfCharacter = actionParameters.SelfCharacter;
             
-            var value = actionParameters.Value + selfCharacter.characterStats.StatusDict[StatusType.Strength].StatusValue; 
+            int value = Mathf.RoundToInt(actionParameters.Value); 
             
             Debug.Log("Custom Effect Action:\n" + actionParameters.StrParam);
             targetCharacter.characterStats.ApplyCustomEffect
-                (actionParameters.StrParam, Mathf.RoundToInt(actionParameters.Value));
+                (actionParameters.StrParam, value);
 
             if (FxManager != null)
             {
-                FxManager.PlayFx(actionParameters.TargetCharacter.transform,FxType.Attack);
-                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,value.ToString());
+                FxManager.PlayFx(actionParameters.TargetCharacter.transform,FxType.Buff);
+                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
+                    actionParameters.StrParam +" " +value);
             }
            
             if (AudioManager != null) 

@@ -208,18 +208,18 @@ public class AI_CardEffect : MonoBehaviour
     
     public static CardActionType StringToActionType(string str)
     {
-        switch (str)
+        switch (str.ToLower())
         {
-           case "Deal Damage": return CardActionType.Attack;
-           case "Heal": return CardActionType.Heal;
-           case "Add Block": return CardActionType.Block;
-           case "Increase Strength": return CardActionType.IncreaseStrength;
-           case "Draw": return CardActionType.Draw;
-           case "Gain Mana": return CardActionType.EarnMana;
-           case "Steal Life": return CardActionType.LifeSteal;
-           case "Stun": return CardActionType.Stun;
-           case "Destroy the Card": return CardActionType.Exhaust;
-           case "Add Custom Status": return CardActionType.CustomEffect;
+           case "deal damage": return CardActionType.Attack;
+           case "heal": return CardActionType.Heal;
+           case "add block": return CardActionType.Block;
+           case "increase strength": return CardActionType.IncreaseStrength;
+           case "draw": return CardActionType.Draw;
+           case "gain mana": return CardActionType.EarnMana;
+           case "steal life": return CardActionType.LifeSteal;
+           case "stun": return CardActionType.Stun;
+           case "destroy the card": return CardActionType.Exhaust;
+           case "add custom status": return CardActionType.CustomEffect;
            default: 
                Debug.LogWarning("Unknown card action type: " + str);
                return CardActionType.Attack;
@@ -267,11 +267,11 @@ public class AI_CardEffect : MonoBehaviour
     }
     public static ActionTargetType StringToActionTarget(string str)
     {
-        switch (str)
+        switch (str.ToLower())
         {
             case "self": return ActionTargetType.Self;
-            case "targetEnemy": return ActionTargetType.Enemy;
-            case "allEnemies": return ActionTargetType.AllEnemies;
+            case "targetenemy": return ActionTargetType.Enemy;
+            case "allenemies": return ActionTargetType.AllEnemies;
             default:
                 Debug.LogWarning("Unknown card action target: " + str);
                 return ActionTargetType.AllEnemies;

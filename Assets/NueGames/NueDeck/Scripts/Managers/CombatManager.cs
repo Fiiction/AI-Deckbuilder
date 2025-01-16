@@ -224,9 +224,7 @@ namespace NueGames.NueDeck.Scripts.Managers
         private void BuildEnemies()
         {
             CurrentEncounter = GameManager.EncounterData.GetEnemyEncounter(
-                GameManager.PersistentGameplayData.CurrentStageId,
-                GameManager.PersistentGameplayData.CurrentEncounterId,
-                GameManager.PersistentGameplayData.IsFinalEncounter);
+                GameManager.PersistentGameplayData.CurrentLevel);
             
             var enemyList = CurrentEncounter.EnemyList;
             for (var i = 0; i < enemyList.Count; i++)
@@ -281,12 +279,13 @@ namespace NueGames.NueDeck.Scripts.Managers
             else
             {
                 CurrentMainAlly.characterStats.ClearAllStatus();
-                GameManager.PersistentGameplayData.CurrentEncounterId++;
+                GameManager.PersistentGameplayData.CurrentLevel++;
                 UIManager.CombatCanvas.gameObject.SetActive(false);
                 UIManager.RewardCanvas.gameObject.SetActive(true);
                 UIManager.RewardCanvas.PrepareCanvas();
-                UIManager.RewardCanvas.BuildReward(RewardType.Gold);
-                UIManager.RewardCanvas.BuildReward(RewardType.Card);
+                UIManager.RewardCanvas.BuildRewards();
+                // UIManager.RewardCanvas.BuildReward(RewardType.Gold);
+                // UIManager.RewardCanvas.BuildReward(RewardType.Card);
             }
            
         }

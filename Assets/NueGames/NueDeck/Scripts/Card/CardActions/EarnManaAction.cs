@@ -9,13 +9,18 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
         public override CardActionType ActionType => CardActionType.EarnMana;
         public override void DoAction(CardActionParameters actionParameters)
         {
+            int value = Mathf.RoundToInt(actionParameters.Value); 
             if (CombatManager != null)
-                CombatManager.IncreaseMana(Mathf.RoundToInt(actionParameters.Value));
+                CombatManager.IncreaseMana(Mathf.RoundToInt(value));
             else
                 Debug.LogError("There is no CombatManager");
 
             if (FxManager != null)
+            {
                 FxManager.PlayFx(actionParameters.SelfCharacter.transform, FxType.Buff);
+                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
+                    "<Color=#4499ee>Add mana: " + value +"</color>");
+            }
             
             if (AudioManager != null) 
                 AudioManager.PlayOneShot(actionParameters.CardData.AudioType);

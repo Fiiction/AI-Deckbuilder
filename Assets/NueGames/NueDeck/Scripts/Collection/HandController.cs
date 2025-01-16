@@ -309,8 +309,7 @@ namespace NueGames.NueDeck.Scripts.Collection
             //Remove highlights
             CombatManager.DeactivateCardHighlights();
             bool backToHand = true;
-                
-            if (GameManager.PersistentGameplayData.CanUseCards && GameManager.PersistentGameplayData.CurrentMana >= _heldCard.CardData.ManaCost)
+            if (!CardBase.aiPending &&GameManager.PersistentGameplayData.CanUseCards && GameManager.PersistentGameplayData.CurrentMana >= _heldCard.CardData.ManaCost)
             {
                 RaycastHit hit;
                 var mainRay = _mainCam.ScreenPointToRay(mousePos);

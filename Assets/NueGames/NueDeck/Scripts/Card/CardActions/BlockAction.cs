@@ -14,13 +14,15 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
                 : actionParameters.SelfCharacter;
             
             if (!newTarget) return;
-            
-            newTarget.characterStats.ApplyStatus(StatusType.Block,
-                Mathf.RoundToInt(actionParameters.Value + actionParameters.SelfCharacter.characterStats
-                    .StatusDict[StatusType.Dexterity].StatusValue));
+            var value = Mathf.RoundToInt(actionParameters.Value); 
+            newTarget.characterStats.ApplyStatus(StatusType.Block, value);
 
-            if (FxManager != null) 
+            if (FxManager != null)
+            {
                 FxManager.PlayFx(newTarget.transform, FxType.Block);
+                FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
+                    "<Color=#8888ee>Block: " +value +"</color>");
+            }
             
             if (AudioManager != null) 
                 AudioManager.PlayOneShot(actionParameters.CardData.AudioType);
