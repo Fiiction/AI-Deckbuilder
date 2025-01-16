@@ -12,6 +12,12 @@ namespace NueGames.NueDeck.Scripts.Data.Characters
 
         public string CharacterID => characterID;
 
+        public void SetNameAndDesc(string _name, string _desc)
+        {
+            characterName = _name;
+            characterDescription = _desc;
+        }
+        
         public string CharacterName => characterName;
 
         public string CharacterDescription => characterDescription;

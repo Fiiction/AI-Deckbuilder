@@ -44,9 +44,6 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
 
         public Sprite CardSprite => cardSprite;
 
-        // public List<CardActionData> CardActionDataList => cardActionDataList;
-        // public List<CardDescriptionData> CardDescriptionDataList => cardDescriptionDataList;
-        // public List<SpecialKeywords> KeywordsList => specialKeywordsList;
         public AudioActionType AudioType => audioType;
         public string MyDescription { get; set; }
         public RarityType Rarity => rarity;
@@ -59,21 +56,27 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
 
         public void UpdateDescription()
         {
-            // var str = new StringBuilder();
-            //
-            // foreach (var descriptionData in cardDescriptionDataList)
-            // {
-            //     str.Append(descriptionData.UseModifier
-            //         ? descriptionData.GetModifiedValue(this)
-            //         : descriptionData.GetDescription());
-            // }
-            //
-            // MyDescription = str.ToString();
             MyDescription = description;
         }
 
         #endregion
 
+        private static int generationCnt = 0;
+        public CardData(string _name, string _desc, int _manaCost,
+            bool _needTarget, RarityType _rarity = RarityType.Common)
+        {
+            cardName = _name;
+            id = "AI_" + (generationCnt++).ToString() +"_" + _name;
+            description = _desc;
+            manaCost = _manaCost;
+            usableWithoutTarget = !_needTarget;
+            rarity = _rarity;
+        }
+
+        public void SetCardSprite(Sprite _sprite)
+        {
+            cardSprite = _sprite;
+        }
 
     }
 

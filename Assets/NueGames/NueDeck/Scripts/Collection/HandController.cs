@@ -179,7 +179,7 @@ namespace NueGames.NueDeck.Scripts.Collection
                 // Handle Card Position & Rotation
                 //Vector3 cardUp = p - (transform.position + Vector3.down * 7);
                 var cardUp = GetCurveNormal(_a, _b, _c, t);
-                var cardPos = p + (mouseHoveringOnSelected ? cardTransform.up * 0.3f : Vector3.zero);
+                var cardPos = p + (mouseHoveringOnSelected ? cardTransform.up * 0.65f : Vector3.zero);
                 var cardForward = Vector3.forward;
 
                 /* Card Tilt is disabled when in hand as they can clip through eachother :(

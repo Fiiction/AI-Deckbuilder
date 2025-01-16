@@ -1,12 +1,6 @@
 using NueGames.NueDeck.Scripts.Enums;
 using NueGames.NueDeck.Scripts.Characters;
 using NueGames.NueDeck.Scripts.Data.Collection;
-using NueGames.NueDeck.Scripts.Managers;
-using NueGames.NueDeck.Scripts.NueExtentions;
-using NueGames.NueDeck.Scripts.Utils;
-using NueGames.NueDeck.ThirdParty.NueTooltip.Core;
-using NueGames.NueDeck.ThirdParty.NueTooltip.CursorSystem;
-using NueGames.NueDeck.ThirdParty.NueTooltip.Interfaces;
 using UnityEngine;
 using Newtonsoft.Json;
 using System;
@@ -15,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NueGames.NueDeck.Scripts.Card;
 using NueGames.NueDeck.Scripts.Card.CardActions;
-using UnityEditor.U2D.Animation;
 
 public class AI_CardEffect : MonoBehaviour
 {
@@ -146,13 +139,13 @@ public class AI_CardEffect : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        instance = this;
     }
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        instance = this;
     }
 
     // Update is called once per frame

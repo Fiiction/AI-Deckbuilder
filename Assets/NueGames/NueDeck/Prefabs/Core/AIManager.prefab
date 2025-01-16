@@ -1,0 +1,443 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &245239240643104206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 719324921148517846}
+  - component: {fileID: 6549583421798582084}
+  m_Layer: 0
+  m_Name: CardEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &719324921148517846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245239240643104206}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1346780695339633065}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6549583421798582084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245239240643104206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db81833cc9a238a4b93475a910009467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prompt1_withTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
+    following card:
+
+
+
+    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
+
+
+
+    targeting
+    following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##
+
+
+
+    What
+    will happen? please describe with natural language within 20 words.'
+  prompt1_noTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
+    following card:
+
+
+
+    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
+
+
+
+    What
+    will happen? please describe with natural language within 20 words.'
+  prompt2: "Now answer with following structure, what will be the effect(s) of this
+    card?\r\n\r\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
+    Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
+    stacks of block, blocking same amount of upcoming damage\r\r\n- Draw: draw cards\r\n-
+    Gain Mana: gain mana to do more actions in this turn\r\n- Steal Life: steal life
+    from the target like a vampire\r\n- Stun: stunning the object, prevent it to
+    move in following rounds\r\n- Destroy the Card: destroying the card used permanently\r\n-
+    Add Custom Status: add custom buff or debuff to object\r\n\r\nThe object of each
+    of these effects can be the user, the targeted enemy or all enemies, which will
+    be chosen later.\r\n\r\nPlease reply with following json format:\r\n{\r\n\t\"effects\":
+    [\"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
+  prompt3_Normal: "For the effect \"##EffectName##\", what's the target and the numeric
+    value of this effect:\r\n\r\nPlease reply with following json format: (content
+    in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
+    or \"AllEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##) \r\n}"
+  prompt3_CustomEffect: "For the effect \"Add Custom Status\", what's the name of
+    status, the target and the numeric value of this effect:\r\n\r\nPlease reply
+    with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
+    \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
+    etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\")\r\n\t\"value\":
+    3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
+  cardName: 
+  cardDesc: 
+  userName: 
+  userDesc: 
+  targetName: 
+  targetDesc: 
+  userStatusStr: 
+  targetStatusStr: 
+  prompt1Sent: 
+  actionDatas: []
+--- !u!1 &1605598397388320318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3172584515651884973}
+  - component: {fileID: 8688350936388443906}
+  m_Layer: 0
+  m_Name: DeckGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3172584515651884973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605598397388320318}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1346780695339633065}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8688350936388443906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605598397388320318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f99d277d073513e41b17436db9f0b404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prompt_description: 'In this game, player can spend 3 manas to use cards on each
+    turn. Cards represent protagonist''s actions.
+
+    Most cards cost 1 mana. Very
+    powerful moves will cost 2 or 3 mana. 0-mana cards represent swift but weaker
+    moves.
+
+    The effects of a card include dealing damage to target, healing the
+    user, adding tacks of "block" (blocking same amount of upcoming damage), applying
+    buff to user or casting debuff to targets.
+
+    Typically, one cost cards are
+    worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff. Cards with
+    higher rarity can be stronger.
+
+
+
+    The protagonist is ##HeroName##, ##HeroDesc##.
+    Now I need you to generate the starting deck for the player.
+
+    The starting
+    deck contains 4 copies of a basic attack card, 4 copies of a basic defence(blocking)
+    card, 2 copies of a special supporting card, and 2 copies of a special offence
+    card.
+
+    Please consider what''s the hero''s play style in a turn-based card
+    game.
+
+    Please tell me with natural language, what could be the name, narrative
+    design, visual, and the effect in gameplay of those 4 unique cards.
+
+'
+  prompt_basicCard1: "Now please specify the design of the basic attack card.\r\nPlease
+    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
+    \"Punch\",\r\n\t\"description\": \"Punch the targeted enemy with mighty power.\",\r\n\t\"manaCost\":
+    1,\r\n\t\"needTarget\": true,\r\n\t\"prompt\": \"Punch, dynamic, sense of power,
+    big fist, single fist with sense of power,\" (prompt for card image generation)\r\n}"
+  prompt_basicCard2: "Now please specify the design of the basic defence(blocking)
+    card.\r\nPlease reply with following json format: (content in parentheses are
+    comments)\r\n{\r\n\t\"cardName\": \"Arcane Barrier\",\r\n\t\"description\": \"Focus
+    arcane energy to form a barrier, neutralizing upcoming damage.\",\r\n\t\"manaCost\":
+    1,\r\n\t\"needTarget\": false,(if this card need a single enemy as target)\r\n\t\"prompt\":
+    \"Arcane Barrier, magical power, blue sphere, blue aura, magical,\" (prompt for
+    card image generation)\r\n}"
+  prompt_basicCard3: "Now please specify the design of the special supporting card.\r\nPlease
+    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
+    \"Energy Charge\",\r\n\t\"description\": \"Charge up electro energy, enpower
+    future attacks in this game.\",\r\n\t\"manaCost\": 2,\r\n\t\"needTarget\": false,
+    (if this card need a single enemy as target)\r\n\t\"prompt\": \"Charging Energy,
+    gathering energy, cybernetic,\" (prompt for card image generation)\r\n}"
+  prompt_basicCard4: "Now please specify the design of the special offensive card.\r\nPlease
+    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
+    \"Arcane Cascade\",\r\n\t\"description\": \"Spend a huge amount of arcane energy,
+    deal a lot of damage to all enemies.\",\r\n\t\"manaCost\": 3,\r\n\t\"needTarget\":
+    false, (if this card need a single enemy as target)\r\n\t\"prompt\": \"Arcane
+    Cascade, huge barrage with magical shoots, magical attack,\" (prompt for card
+    image generation)\r\n}"
+  rareCardCnt: 6
+  prompt_rareDescription: 'Now I need you to design the rare cards for the hero ##HeroName##,
+    ##HeroDesc##.
+
+    You need to design ##RareCnt## rare cards. They should cover
+    different intents (attack, defense, strengthening, resources, support, etc.),
+    and different costs.
+
+    These rare cards can be relatively stronger and more
+    creatively designed than the basic cards, and their effects can be compounded.
+
+    Please
+    think about the hero''s narrative and play style in this game before designing.
+
+    Describe
+    your process of synthesizing and designing these rare cards, and then describe
+    the design of ##Total## cards in natural language. Don''t reply with json.'
+  prompt_rareCard: "Now I need you to specify the design of ##Number## out of ##Total##
+    rare cards.\r\n\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
+    \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
+    0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
+    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation)\r\n}\r\n"
+  rareCards: []
+  cardGenerated: 0
+--- !u!1 &1824853098471007931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7330174554457206087}
+  - component: {fileID: 2876732879309474101}
+  - component: {fileID: 3314437959526451652}
+  m_Layer: 0
+  m_Name: ImageGeneration
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7330174554457206087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824853098471007931}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1346780695339633065}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2876732879309474101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824853098471007931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 044898d9d36fd2d4289299eabe089585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterConfig:
+    sampler_name: DPM++ 2M
+    scheduler: Karras
+    prompt: ', solo, character art, character illustration, ((full-body portrait)),
+      ((full body)), (full-length picture), (best quality), ((masterpiece)), (highres),
+      illustration, original, white background,  simple background,  standing,no
+      background, detailed face, amazing quality, clean color, celluloid, anime'
+    negative_prompt: ",NSFW, (closeup:2), (bust shot:2), (half shot:2), lowres, bad
+      anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits,
+      cropped, worst quality, low quality, normal quality, jpeg artifacts, signature,
+      watermark, username, blurry, lowres, bad anatomy, bad hands, text, error, extra
+      digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg
+      artifacts, signature, watermark, username, blurry, ugly,pregnant,vore,duplicate,morbid,mut
+      ilated,tran nsexual, hermaphrodite,long neck,mutated hands,poorly drawn hands,poorly
+      drawn face,mutation,deformed,blurry,bad anatomy,bad proportions,malformed limbs,extra
+      limbs,cloned face,disfigured,gross proportions, (((missing arms))),(((missing
+      legs))), (((extra arms))),(((extra legs))),pubic hair, plump,bad legs,error
+      legs,username,blurry,bad feet, messy\r"
+    seed: 0
+    steps: 28
+    cfg_scale: 6.5
+    width: 720
+    height: 1080
+    restore_faces: 0
+    batch_size: 1
+  cardConfig:
+    sampler_name: DPM++ 2M
+    scheduler: Karras
+    prompt: ', white background, simple background, detailed anime style,game icon,
+      <lora:anime_game_icon:1>'
+    negative_prompt: lowres, bad anatomy, bad hands, text, error, missing fingers,
+      extra digit, fewer digits, cropped, worst quality, low quality, normal quality,
+      jpeg artifacts, signature, watermark, username, blurry, lowres, bad anatomy,
+      bad hands, text, error, extra digit, fewer digits, cropped, worst quality,
+      low quality, normal quality, jpeg artifacts, signature, watermark, username,
+      blurry, ugly,pregnant,vore,duplicate,morbid,mut ilated,tran nsexual, hermaphrodite,long
+      neck,mutated hands,poorly drawn hands,poorly drawn face,mutation,deformed,blurry,bad
+      anatomy,bad proportions,malformed limbs,extra limbs,cloned face,disfigured,gross
+      proportions, (((missing arms))),(((missing legs))), (((extra arms))),(((extra
+      legs))),pubic hair, plump,bad legs,error legs,username,blurry,bad feet
+    seed: 0
+    steps: 16
+    cfg_scale: 7
+    width: 512
+    height: 512
+    restore_faces: 0
+    batch_size: 1
+  rembgConfig:
+    model: isnet-anime
+    input_image: 
+    return_mask: 0
+    alpha_matting: 0
+    alpha_matting_foreground_threshold: 239
+    alpha_matting_background_threshold: 10
+    alpha_matting_erode_size: 10
+  heroSprite: {fileID: 0}
+  heroSpriteSet: 0
+  heroImgGenerated: 0
+  cardImgGenerated: 0
+--- !u!114 &3314437959526451652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824853098471007931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54287f5cd9e9184478eae44895413919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rootEndpoint: http://127.0.0.1:7860
+--- !u!1 &5281550219195299841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1346780695339633065}
+  - component: {fileID: 4603018598675367754}
+  m_Layer: 0
+  m_Name: AIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1346780695339633065
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281550219195299841}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 793.40314, y: 567.471, z: -6.0503793}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 719324921148517846}
+  - {fileID: 3172584515651884973}
+  - {fileID: 7330174554457206087}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4603018598675367754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281550219195299841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acec668d880580a45872d7300b77d6a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heroName: Hanzo
+  heroDesc: the skillful Japanese archer from Overwatch, Hanzo Shimada
+  heroStory: 
+  heroPrompts: 
+  initInformation: 
+  initPercentage: 0
+  initFinished: 0
+  deepseekParams:
+    apiKey: sk-7bf38df2ed1245ce9dfd5ab62346449c
+    temperature: 1
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  initialPrompt: "We are simulating a deckbuilding card game like Slay the Spire.
+    \r\nI will give you informations of a card usage, and request you to reply with
+    what's the consequence of the action. Also, I will need you to help me with prompts
+    of Stable Diffusion image generation for characters and cards.\r\nThe protagonist
+    is ##HeroName##, who is ##HeroDesc##. Please help me with a brief background
+    story (within 50 words) and prompts for image generation of the hero. If it comes
+    from an existing fictional work (game, comic, etc.), refer to the original work's
+    setting.\nThe prompt for image generation should include the characters' appearance,
+    outfit, and the art style of original work, etc..\r\r\nPlease reply with following
+    json structure: (example is a reply for the character Hanzo from Overwatch)\r\n{\r\n\t\"backgroundStory\":
+    \"Mastering his skills as a bowman and an assassin, Hanzo Shimada strives to
+    prove himself as a warrior without peer. He has a cynical view on the nature
+    of the world, and believes that compassion has no place in battle\",\r\n\t\"prompt\":
+    \"Hanzo, 1 man, archer, Japanese, Traditional Japanese Outfit, holding a bow,
+    Character from Overwatch, \"\r\n}"
+  startGamePrompt: 'Now player enters a fight.
+
+    Player can spend 3 manas to use
+    cards on each turn. Cards represent protagonist''s actions.
+
+    Most cards cost
+    1 mana. Very powerful moves will cost 2 or 3 mana. 0-mana cards represent swift
+    but weaker moves.
+
+    The effects of a card include dealing damage to target,
+    healing the user, adding tacks of "block" (blocking same amount of upcoming damage),
+    applying buff to user or casting debuff to targets.
+
+    Typically, one cost
+    cards are worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff. Cards
+    with higher rarity can be stronger.
+
+    Please reply with "I understand."'
+  _conversationSoFar: []
+  _cardGenConversationSoFar: []

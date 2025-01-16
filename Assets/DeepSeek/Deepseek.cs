@@ -10,6 +10,7 @@ public enum Role {
     AI,
 }
 
+[Serializable]
 public struct Message {
     public string text;
     public Role role;

@@ -248,9 +248,9 @@ MonoBehaviour:
   cardUprightWhenSelected: 1
   cardTilt: 1
   selectionSpacing: 1
-  curveStart: {x: 2, y: -0.7, z: 0}
-  curveEnd: {x: -2, y: -0.7, z: 0}
-  handOffset: {x: 0, y: -0.3}
+  curveStart: {x: 2, y: -0.4, z: 0}
+  curveEnd: {x: -2, y: -0.4, z: 0}
+  handOffset: {x: 0, y: 0}
   handSize: {x: 9, y: 1.7}
   discardTransform: {fileID: 1301813272609245044}
   exhaustTransform: {fileID: 7325747974993925843}

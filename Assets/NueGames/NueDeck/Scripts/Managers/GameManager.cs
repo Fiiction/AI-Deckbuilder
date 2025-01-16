@@ -66,16 +66,22 @@ namespace NueGames.NueDeck.Scripts.Managers
             clone.SetCard(targetData);
             return clone;
         }
+
+        public void AddCardToDeck(CardData card)
+        {
+            PersistentGameplayData.CurrentCardsList.Add(card);
+        }
+        
         public void SetInitalHand()
         {
             PersistentGameplayData.CurrentCardsList.Clear();
             
-            if (PersistentGameplayData.IsRandomHand)
-                for (var i = 0; i < GameplayData.RandomCardCount; i++)
-                    PersistentGameplayData.CurrentCardsList.Add(GameplayData.AllCardsList.RandomItem());
-            else
-                foreach (var cardData in GameplayData.InitalDeck.CardList)
-                    PersistentGameplayData.CurrentCardsList.Add(cardData);
+            // if (PersistentGameplayData.IsRandomHand)
+            //     for (var i = 0; i < GameplayData.RandomCardCount; i++)
+            //         PersistentGameplayData.CurrentCardsList.Add(GameplayData.AllCardsList.RandomItem());
+            // else
+            //     foreach (var cardData in GameplayData.InitalDeck.CardList)
+            //         PersistentGameplayData.CurrentCardsList.Add(cardData);
         }
         public void NextEncounter()
         {
