@@ -21,7 +21,7 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             {
                 FxManager.PlayFx(newTarget.transform, FxType.Block);
                 FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
-                    "<Color=#8888ee>Block: " +value +"</color>");
+                    "<Color=#8888ee>" +value +"</color>");
             }
             
             if (AudioManager != null) 

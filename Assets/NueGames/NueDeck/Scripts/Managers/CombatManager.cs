@@ -294,7 +294,7 @@ namespace NueGames.NueDeck.Scripts.Managers
         #region Routines
         private IEnumerator EnemyTurnRoutine()
         {
-            var waitDelay = new WaitForSeconds(0.1f);
+            var waitDelay = new WaitForSeconds(0.6f);
 
             foreach (var currentEnemy in CurrentEnemiesList)
             {

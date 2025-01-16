@@ -18,6 +18,12 @@ namespace NueGames.NueDeck.Scripts.Card
                 canvas.worldCamera = CollectionManager.HandController.cam;
         }
         
+        public override void HideCard()
+        {
+            canvas.enabled = false;
+            canvas.worldCamera = null;
+        }
+        
         public override void SetInactiveMaterialState(bool isInactive)
         {
             base.SetInactiveMaterialState(isInactive);

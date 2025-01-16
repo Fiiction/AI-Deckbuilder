@@ -58,24 +58,24 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0.9390386
-      outSlope: 0.9390386
+      inSlope: 0.10178476
+      outSlope: 0.10178476
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.14245407
-      value: 1.1337699
-      inSlope: -0.9101545
-      outSlope: -0.9101545
+      time: 0.27995306
+      value: 1.028495
+      inSlope: -0.08332314
+      outSlope: -0.08332314
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.0460527
+      outWeight: 0.18878162
     - serializedVersion: 3
-      time: 0.38376564
-      value: 0.1784764
+      time: 0.90042824
+      value: 0.6400853
       inSlope: -1.4771193
       outSlope: -1.4771193
       tangentMode: 0
@@ -85,8 +85,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -0.2896242
-      outSlope: -0.2896242
+      inSlope: -6.4283814
+      outSlope: -6.4283814
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!1 &1855711273740538389
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,8 +274,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e9fc5b7b7ff4c434788a330dc1c1237f, type: 2}
+  m_sharedMaterial: {fileID: -5369721503522001802, guid: e9fc5b7b7ff4c434788a330dc1c1237f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

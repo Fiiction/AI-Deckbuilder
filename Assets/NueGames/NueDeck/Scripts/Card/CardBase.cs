@@ -67,6 +67,10 @@ namespace NueGames.NueDeck.Scripts.Card
                 rarityRoot.gameObject.SetActive(rarityRoot.Rarity == CardData.Rarity);
         }
         
+        public virtual void HideCard()
+        {
+        }
+
         #endregion
         
         #region Card Methods
@@ -92,6 +96,7 @@ namespace NueGames.NueDeck.Scripts.Card
         private IEnumerator CardAIUseRoutine(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies)
         {
             if(aiPending) Debug.LogError("Multiple card ai use at same time!!");
+            float startTime = Time.time;
             aiPending = true;
             SpendMana(CardData.ManaCost);
             aiCardEffectFinished = false;
@@ -99,8 +104,9 @@ namespace NueGames.NueDeck.Scripts.Card
             AI_CardEffect.instance.CardUse(this, self, targetCharacter, AICardEffectCallback);
             
             yield return new WaitWhile(() => aiCardEffectFinished == false);
+            Debug.Log("CardEffect Time: " + (Time.time - startTime).ToString("0.##"));
             aiPending = false;
-            
+            HideCard();
             foreach (var playerAction in aiCardActionDataList)
             {
                 yield return new WaitForSeconds(playerAction.ActionDelay);

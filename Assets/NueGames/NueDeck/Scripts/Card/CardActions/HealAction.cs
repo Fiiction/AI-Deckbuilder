@@ -23,7 +23,7 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             {
                 FxManager.PlayFx(newTarget.transform, FxType.Heal);
                 FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
-                    "<Color=#77f288>Heal: " + value +"</color>");
+                    "<Color=#77f288>+" + value +"</color>");
             }
             
             if (AudioManager != null) 

@@ -282,7 +282,8 @@ MonoBehaviour:
     prompt: ', solo, character art, character illustration, ((full-body portrait)),
       ((full body)), (full-length picture), (best quality), ((masterpiece)), (highres),
       illustration, original, white background,  simple background,  standing,no
-      background, detailed face, amazing quality, clean color, celluloid, anime'
+      background, detailed face, amazing quality, clean color, celluloid, anime, 
+      <lora:anime_sdxl_v2:0.8>, <lora:fgo_sprites_xl_lora:0.7>'
     negative_prompt: ",NSFW, (closeup:2), (bust shot:2), (half shot:2), lowres, bad
       anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits,
       cropped, worst quality, low quality, normal quality, jpeg artifacts, signature,
@@ -304,8 +305,8 @@ MonoBehaviour:
   cardConfig:
     sampler_name: DPM++ 2M
     scheduler: Karras
-    prompt: ', white background, simple background, detailed anime style,game icon,
-      <lora:anime_game_icon:0.8>'
+    prompt: ', white background, simple background, detailed anime style, flat colors,
+      game icon, <lora:anime_game_icon:0.9>'
     negative_prompt: lowres, bad anatomy, bad hands, text, error, missing fingers,
       extra digit, fewer digits, cropped, worst quality, low quality, normal quality,
       jpeg artifacts, signature, watermark, username, blurry, lowres, bad anatomy,

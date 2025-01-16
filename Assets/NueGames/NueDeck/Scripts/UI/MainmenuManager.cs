@@ -10,6 +10,7 @@ public class MainmenuManager : MonoBehaviour
     public TMP_Text initInfoText;
     public TMP_Text percentageText;
     private bool initProcessing = false;
+    float initStartTime;
     public void StartGame()
     {
         Debug.Log("StartGame");
@@ -20,6 +21,7 @@ public class MainmenuManager : MonoBehaviour
         AI_IntegrationManager.instance.Init();
         initProcessing = true;
         goButton.SetActive(false);
+        initStartTime = Time.time;
     }
     
     
@@ -34,8 +36,10 @@ public class MainmenuManager : MonoBehaviour
     {
         if (initProcessing)
         {
+            float initTime = Time.time - initStartTime;
             initInfoText.text = AI_IntegrationManager.instance.initInformation;
-            percentageText.text = "... " + AI_IntegrationManager.instance.initPercentage + "%";
+            percentageText.text = initTime.ToString("0.#") + 
+                                  "s ... " + AI_IntegrationManager.instance.initPercentage + "%";
             if(AI_IntegrationManager.instance.initFinished)
                 SceneManager.LoadScene(1);
                 

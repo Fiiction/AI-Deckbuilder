@@ -22,7 +22,7 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             {
                 FxManager.PlayFx(actionParameters.TargetCharacter.transform,FxType.Attack);
                 FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
-                    "<Color=#ff5555>Damage: " +value +"</color>");
+                    "<Color=#ff5555>-" +value +"</color>");
             }
            
             if (AudioManager != null) 
