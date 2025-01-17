@@ -28,8 +28,6 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
                     actionParameters.StrParam +" " +value);
             }
            
-            if (AudioManager != null) 
-                AudioManager.PlayOneShot(actionParameters.CardData.AudioType);
         }
     }
 }

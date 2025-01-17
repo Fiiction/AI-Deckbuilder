@@ -22,8 +22,6 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
                     "<Color=#cc77ff>Stun: " + value +"</color>");
             }
            
-            if (AudioManager != null) 
-                AudioManager.PlayOneShot(actionParameters.CardData.AudioType);
         }
     }
 }

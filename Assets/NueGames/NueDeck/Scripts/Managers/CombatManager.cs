@@ -84,10 +84,28 @@ namespace NueGames.NueDeck.Scripts.Managers
             backgroundContainer.OpenSelectedBackground();
           
             CollectionManager.SetGameDeck();
-           
+            turnIndex = 0;
             UIManager.CombatCanvas.gameObject.SetActive(true);
             UIManager.InformationCanvas.gameObject.SetActive(true);
             CurrentCombatStateType = CombatStateType.AllyTurn;
+        }
+
+        public int turnIndex = 0;
+        public void AllyTurnStarted()
+        {
+            OnAllyTurnStarted?.Invoke();
+                    
+            if (CurrentMainAlly.characterStats.IsStunned)
+            {
+                EndTurn();
+                return;
+            }
+                    
+            GameManager.PersistentGameplayData.CurrentMana = GameManager.PersistentGameplayData.MaxMana;
+                   
+            CollectionManager.DrawCards(GameManager.PersistentGameplayData.DrawCount);
+                    
+            GameManager.PersistentGameplayData.CanSelectCards = true;
         }
         
         private void ExecuteCombatState(CombatStateType targetStateType)
@@ -97,21 +115,12 @@ namespace NueGames.NueDeck.Scripts.Managers
                 case CombatStateType.PrepareCombat:
                     break;
                 case CombatStateType.AllyTurn:
-
-                    OnAllyTurnStarted?.Invoke();
                     
-                    if (CurrentMainAlly.characterStats.IsStunned)
-                    {
-                        EndTurn();
-                        return;
-                    }
-                    
-                    GameManager.PersistentGameplayData.CurrentMana = GameManager.PersistentGameplayData.MaxMana;
-                   
-                    CollectionManager.DrawCards(GameManager.PersistentGameplayData.DrawCount);
-                    
-                    GameManager.PersistentGameplayData.CanSelectCards = true;
-                    
+                    turnIndex++;
+                    if(turnIndex > 1)
+                        AI_CardEffect.instance.AllyTurnStartEffects(CurrentMainAlly, AllyTurnStarted);
+                    else
+                        AllyTurnStarted();
                     break;
                 case CombatStateType.EnemyTurn:
 
@@ -182,42 +191,6 @@ namespace NueGames.NueDeck.Scripts.Managers
                 return;
             }
         }
-        public void HighlightCardTarget(ActionTargetType targetTypeTargetType)
-        {
-            switch (targetTypeTargetType)
-            {
-                case ActionTargetType.Enemy:
-                    foreach (var currentEnemy in CurrentEnemiesList)
-                        currentEnemy.EnemyCanvas.SetHighlight(true);
-                    break;
-                case ActionTargetType.Self:
-                    foreach (var currentAlly in CurrentAlliesList)
-                        currentAlly.AllyCanvas.SetHighlight(true);
-                    break;
-                case ActionTargetType.Ally:
-                    foreach (var currentAlly in CurrentAlliesList)
-                        currentAlly.AllyCanvas.SetHighlight(true);
-                    break;
-                case ActionTargetType.AllEnemies:
-                    foreach (var currentEnemy in CurrentEnemiesList)
-                        currentEnemy.EnemyCanvas.SetHighlight(true);
-                    break;
-                case ActionTargetType.AllAllies:
-                    foreach (var currentAlly in CurrentAlliesList)
-                        currentAlly.AllyCanvas.SetHighlight(true);
-                    break;
-                case ActionTargetType.RandomEnemy:
-                    foreach (var currentEnemy in CurrentEnemiesList)
-                        currentEnemy.EnemyCanvas.SetHighlight(true);
-                    break;
-                case ActionTargetType.RandomAlly:
-                    foreach (var currentAlly in CurrentAlliesList)
-                        currentAlly.AllyCanvas.SetHighlight(true);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(targetTypeTargetType), targetTypeTargetType, null);
-            }
-        }
         #endregion
         
         #region Private Methods
@@ -284,8 +257,6 @@ namespace NueGames.NueDeck.Scripts.Managers
                 UIManager.RewardCanvas.gameObject.SetActive(true);
                 UIManager.RewardCanvas.PrepareCanvas();
                 UIManager.RewardCanvas.BuildRewards();
-                // UIManager.RewardCanvas.BuildReward(RewardType.Gold);
-                // UIManager.RewardCanvas.BuildReward(RewardType.Card);
             }
            
         }

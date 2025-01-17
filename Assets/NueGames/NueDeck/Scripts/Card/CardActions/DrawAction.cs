@@ -23,8 +23,6 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
                     "<Color=#ffff77>Draw cards: " + value +"</color>");
             }
 
-            if (AudioManager != null) 
-                AudioManager.PlayOneShot(actionParameters.CardData.AudioType);
         }
     }
 }

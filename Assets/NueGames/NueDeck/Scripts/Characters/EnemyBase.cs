@@ -75,7 +75,8 @@ namespace NueGames.NueDeck.Scripts.Characters
                 yield break;
             
             EnemyCanvas.IntentImage.gameObject.SetActive(false);
-            if (NextAbility.Intention.EnemyIntentionType == EnemyIntentionType.Attack || NextAbility.Intention.EnemyIntentionType == EnemyIntentionType.Debuff)
+            if (NextAbility.Intention.EnemyIntentionType == EnemyIntentionType.Attack 
+                || NextAbility.Intention.EnemyIntentionType == EnemyIntentionType.Debuff)
             {
                 yield return StartCoroutine(AttackRoutine(NextAbility));
             }
@@ -101,7 +102,9 @@ namespace NueGames.NueDeck.Scripts.Characters
             
             yield return StartCoroutine(MoveToTargetRoutine(waitFrame, startPos, endPos, startRot, endRot, 5));
           
-            targetAbility.ActionList.ForEach(x=>EnemyActionProcessor.GetAction(x.ActionType).DoAction(new EnemyActionParameters(x.ActionValue,target,this)));
+            targetAbility.ActionList.ForEach(
+                x=>EnemyActionProcessor.GetAction(x.ActionType).
+                    DoAction(new EnemyActionParameters(x.ActionValue,target,this)));
             
             yield return StartCoroutine(MoveToTargetRoutine(waitFrame, endPos, startPos, endRot, startRot, 5));
         }

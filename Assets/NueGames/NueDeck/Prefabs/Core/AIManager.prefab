@@ -44,9 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db81833cc9a238a4b93475a910009467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt1_withTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
+  prompt1_withTarget: 'The player, as ##PlayerName## ##PlayerCustomStatus##, using
     following card:
-
 
 
     ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
@@ -60,7 +59,7 @@ MonoBehaviour:
 
     What
     will happen? please describe with natural language within 20 words.'
-  prompt1_noTarget: 'The player,who is ##PlayerDesc####PlayerCustomStatus##, using
+  prompt1_noTarget: 'The player, as ##PlayerName## ##PlayerCustomStatus##, using
     following card:
 
 
@@ -79,12 +78,13 @@ MonoBehaviour:
     Gain Mana: gain mana to do more actions in this turn\r\n- Steal Life: steal life
     from the target like a vampire\r\n- Stun: stunning the object, prevent it to
     move in following rounds\r\n- Destroy the Card: destroying the card used permanently\r\n-
-    Add Custom Status: add custom buff or debuff to object\r\n\r\nThe object of each
-    of these effects can be the user, the targeted enemy or all enemies, which will
-    be chosen later.\nYou can choose one same effect 2 or more times, if it's dealt
-    on different objects, or casting 2 different custom effect at the same time.\r\n\r\nPlease
-    reply with following json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Draw\",
-    \"Steal Life\"]\r\n}"
+    Add Custom Status: add custom buff or debuff to object. Please store any effects
+    that need to be checked out in the future as custom status\r\n\r\nThe object
+    of each of these effects can be the user, the targeted enemy or all enemies,
+    which will be chosen later.\nYou can choose one same effect 2 or more times,
+    if it's dealt on different objects, or casting 2 different custom effect at the
+    same time.\r\n\r\nPlease reply with following json format:\r\n{\r\n\t\"effects\":
+    [\"Deal Damage\", \"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
   prompt3_Normal: "For the effect \"##EffectName##\", what's the target and the numeric
     value of this effect:\r\n\r\nPlease reply with following json format: (content
     in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
@@ -95,6 +95,11 @@ MonoBehaviour:
     \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
     etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\")\r\n\t\"value\":
     3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
+  prompt_StartTurn1: "Now player, ##PlayerDesc## ##PlayerCustomStatus##, starts a
+    new turn.\r\nAccording the custom status they have and cards they played, will
+    there be effects at the start of the turn?\r\nPlease reply with following json
+    format:\r\n{\r\n\t\"effects\": [\"Deal Damage\",  \"Draw\", \"Gain Mana\"]\r\n}\r\nif
+    there won't be turn-start effects, reply with:\r\n{\r\n\t\"effects\": []\r\n}"
   cardName: 
   cardDesc: 
   userName: 
@@ -425,23 +430,24 @@ MonoBehaviour:
     of the world, and believes that compassion has no place in battle\",\r\n\t\"prompt\":
     \"Hanzo, 1 man, archer, Japanese, Traditional Japanese Outfit, holding a bow,
     Character from Overwatch, \"\r\n}"
-  startGamePrompt: 'Now player enters a fight.
+  startGamePrompt: 'Now player as ##HeroName##, ##HeroDesc##, enters a fight.
 
-    Player can spend 3 manas to use
-    cards on each turn. Cards represent protagonist''s actions.
+    Player
+    can spend 3 manas to use cards on each turn. Cards represent protagonist''s actions.
 
-    Most cards cost
-    1 mana. Very powerful moves will cost 2 or 3 mana. 0-mana cards represent swift
-    but weaker moves.
+    Most
+    cards cost 1 mana. Very powerful moves will cost 2 or 3 mana. 0-mana cards represent
+    swift but weaker moves.
 
-    The effects of a card include dealing damage to target,
-    healing the user, adding tacks of "block" (blocking same amount of upcoming damage),
-    applying buff to user or casting debuff to targets.
+    The effects of a card include dealing damage to
+    target, healing the user, adding tacks of "block" (blocking same amount of upcoming
+    damage), applying buff to user or casting debuff to targets.
 
-    Typically, one cost
-    cards are worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff. Cards
-    with higher rarity can be stronger.
+    Typically,
+    one cost cards are worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff.
+    Cards with higher rarity can be stronger.
 
     Please reply with "I understand."'
   _conversationSoFar: []
   _cardGenConversationSoFar: []
+  gameStartPending: 0

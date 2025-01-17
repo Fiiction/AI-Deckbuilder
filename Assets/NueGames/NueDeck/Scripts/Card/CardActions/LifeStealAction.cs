@@ -23,8 +23,6 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
                     "<Color=#cc1111><b>Life Steal: " + value +"</b></color>");
             }
            
-            if (AudioManager != null) 
-                AudioManager.PlayOneShot(actionParameters.CardData.AudioType);
         }
     }
 }

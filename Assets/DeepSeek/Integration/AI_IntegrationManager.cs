@@ -67,9 +67,13 @@ public class AI_IntegrationManager : MonoBehaviour
             }, null, null);
         
     }
+    public bool gameStartPending = false;
     public void SendStartGamePrompt()
     {
-        Request(startGamePrompt, _ => { });
+        gameStartPending = true;
+        Request(startGamePrompt.Replace("##HeroName##", heroName)
+            .Replace("##HeroDesc##", heroDesc),
+            _ => { gameStartPending = false; });
     }
 
     public void InitialResponse(string s)

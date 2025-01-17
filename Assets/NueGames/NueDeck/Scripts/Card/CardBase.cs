@@ -138,7 +138,7 @@ namespace NueGames.NueDeck.Scripts.Card
             yield break;
         }
 
-        private static List<CharacterBase> DetermineTargets(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies,
+        public static List<CharacterBase> DetermineTargets(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies,
             CardActionData playerAction)
         {
             List<CharacterBase> targetList = new List<CharacterBase>();

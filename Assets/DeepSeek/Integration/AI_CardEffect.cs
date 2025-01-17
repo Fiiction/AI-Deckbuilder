@@ -1,6 +1,7 @@
 using NueGames.NueDeck.Scripts.Enums;
 using NueGames.NueDeck.Scripts.Characters;
 using NueGames.NueDeck.Scripts.Data.Collection;
+using NueGames.NueDeck.Scripts.Managers;
 using UnityEngine;
 using Newtonsoft.Json;
 using System;
@@ -21,6 +22,7 @@ public class AI_CardEffect : MonoBehaviour
     [SerializeField, TextArea(25,35)] private string prompt2;
     [SerializeField, TextArea(15,20)] private string prompt3_Normal;
     [SerializeField, TextArea(15,20)] private string prompt3_CustomEffect;
+    [SerializeField, TextArea(15,20)] private string prompt_StartTurn1;
 
 
 
@@ -39,6 +41,9 @@ public class AI_CardEffect : MonoBehaviour
     
     public List<CardActionData> actionDatas = new();
     
+    
+    
+    
     IEnumerator CardUseCoroutine(CardBase card, CharacterBase self, CharacterBase targetCharacter,
         Action<List<CardActionData>> callback)
     {
@@ -48,8 +53,6 @@ public class AI_CardEffect : MonoBehaviour
         
         cardName = card.CardData.CardName;
         cardDesc = card.CardData.CardDescription;
-        if(! self is AllyBase)
-            Debug.LogError($"{nameof(self)} is not an AllyBase");
         var userData = (self as AllyBase).AllyCharacterData;
 
         userName = userData.CharacterName;
@@ -65,6 +68,7 @@ public class AI_CardEffect : MonoBehaviour
             targetStatusStr = CharacterStatusString(targetCharacter);
             
             prompt1Sent = prompt1_withTarget.Replace("##PlayerDesc##", userDesc);
+            prompt1Sent = prompt1Sent.Replace("##PlayerName##", userName);
             prompt1Sent = prompt1Sent.Replace("##PlayerCustomStatus##", userStatusStr);
             prompt1Sent = prompt1Sent.Replace("##CardName##", cardName);
             prompt1Sent = prompt1Sent.Replace("##CardDesc##", cardDesc);
@@ -99,6 +103,8 @@ public class AI_CardEffect : MonoBehaviour
             if (i == "Add Custom Status")
             {
                 prompt3Sent = prompt3_CustomEffect;
+                if (targetCharacter == null)
+                    prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
                 AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
                 yield return new WaitWhile( () => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
@@ -110,6 +116,8 @@ public class AI_CardEffect : MonoBehaviour
             {
                 CardActionType actionType = StringToActionType(i);
                 prompt3Sent = prompt3_Normal.Replace("##EffectName##", i);
+                if (targetCharacter == null)
+                    prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
                 prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
                 AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
                 yield return new WaitWhile( () => reply3 == "");
@@ -123,11 +131,88 @@ public class AI_CardEffect : MonoBehaviour
         callback?.Invoke(actionDatas);
     }
     
-    
     public void CardUse(CardBase card, CharacterBase self, CharacterBase targetCharacter, 
         Action<List<CardActionData>> callback)
     {
         StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
+    }
+
+    IEnumerator AllyTurnStartEffectsCoroutine(CharacterBase self, Action callback)
+    {
+        float tick = Time.time;
+        //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
+        reply1 = "";
+        reply2 = "";
+        actionDatas = new();
+        
+        var userData = (self as AllyBase).AllyCharacterData;
+
+        userName = userData.CharacterName;
+        userDesc = userData.CharacterDescription;
+        userStatusStr = CharacterStatusString(self);
+        
+        prompt1Sent = prompt_StartTurn1.Replace("##PlayerDesc##", userDesc)
+            .Replace("##PlayerCustomStatus##", userStatusStr);
+        
+        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;});
+        
+        yield return new WaitWhile( () => reply1 == "");
+        
+        ActionArray actionArray = Decode<ActionArray>(reply1);
+        foreach (var i in actionArray.effects)
+        {
+            string reply3 = "";
+            string prompt3Sent;
+            if (i == "Add Custom Status")
+            {
+                prompt3Sent = prompt3_CustomEffect;
+                prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
+                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
+                yield return new WaitWhile( () => reply3 == "");
+                CustomEffectParams p = Decode<CustomEffectParams>(reply3);
+                var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
+                    p.value, p.buffname);
+                actionDatas.Add(ad);
+            }
+            else
+            {
+                CardActionType actionType = StringToActionType(i);
+                prompt3Sent = prompt3_Normal.Replace("##EffectName##", i);
+                prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
+                prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
+                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
+                yield return new WaitWhile( () => reply3 == "");
+                ActionParams p = Decode<ActionParams>(reply3);
+                var ad = new CardActionData(actionType, StringToActionTarget(p.target),
+                    p.value, "");
+                actionDatas.Add(ad);
+            }
+            Debug.Log("<color=cyan><b>Ally Turn Start: "+actionDatas.Count+" "+ (Time.time-tick).ToString("0.##") + "</b></color>");
+            
+        }
+
+        // --- Virtual Card Use ---
+        foreach (var i in actionDatas)
+        {
+            var targetList = CardBase.DetermineTargets(self,null, 
+                CombatManager.Instance.CurrentEnemiesList,
+                CombatManager.Instance.CurrentAlliesList, i);
+            Debug.Log("Action: " + i.CardActionType);
+            foreach (var target in targetList)
+                CardActionProcessor.GetAction(i.CardActionType)
+                    .DoAction(new CardActionParameters(i.ActionValue,
+                        target,self,null, null, i.StrParameter));
+            yield return new WaitForSeconds(0.5f);
+        }
+        
+        
+        callback?.Invoke();
+        yield break;
+    }
+    public void AllyTurnStartEffects(CharacterBase self, Action callback)
+    {
+        
+        StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
     }
     
     
