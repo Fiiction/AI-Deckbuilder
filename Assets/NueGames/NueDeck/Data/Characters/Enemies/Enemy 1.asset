@@ -13,23 +13,15 @@ MonoBehaviour:
   m_Name: Enemy 1
   m_EditorClassIdentifier: 
   characterID: enemy_1
-  characterName: Enemy 1
+  characterName: Alien John
   characterDescription: an alien rogue
   maxHealth: 25
   enemyPrefab: {fileID: 243822687015991123, guid: c973aeb67e007d54c97fd480d7f50773, type: 3}
   followAbilityPattern: 1
   enemyAbilityList:
   - name: Attack Single
+    desc: Deal 4~7 damage to player
     intention: {fileID: 11400000, guid: 2af475f5121b73d4c99b67551230aa48, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 0
-      minActionValue: 10
-      maxActionValue: 10
   - name: Block
+    desc: Add 5 block to himself
     intention: {fileID: 11400000, guid: b0b1e7f2f78bb444eb1666e4accf22ee, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 3
-      minActionValue: 3
-      maxActionValue: 5

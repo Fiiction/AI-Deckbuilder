@@ -4,7 +4,7 @@
     {
         Attack,
         Heal,
-        Poison,
+        CustomEffect,
         Block
     }
 }

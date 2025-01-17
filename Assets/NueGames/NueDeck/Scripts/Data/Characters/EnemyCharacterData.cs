@@ -42,13 +42,15 @@ namespace NueGames.NueDeck.Scripts.Data.Characters
     {
         [Header("Settings")]
         [SerializeField] private string name;
+        [SerializeField] private string desc;
         [SerializeField] private EnemyIntentionData intention;
-        [SerializeField] private bool hideActionValue;
-        [SerializeField] private List<EnemyActionData> actionList;
+        // [SerializeField] private bool hideActionValue;
+        // [SerializeField] private List<EnemyActionData> actionList;
         public string Name => name;
+        public string Desc => desc;
         public EnemyIntentionData Intention => intention;
-        public List<EnemyActionData> ActionList => actionList;
-        public bool HideActionValue => hideActionValue;
+        // public List<EnemyActionData> ActionList => actionList;
+        // public bool HideActionValue => hideActionValue;
     }
     
     [Serializable]

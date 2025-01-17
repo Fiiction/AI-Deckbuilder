@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using NueGames.NueDeck.Scripts.Data.Characters;
 using NueGames.NueDeck.Scripts.Data.Containers;
-using NueGames.NueDeck.Scripts.EnemyBehaviour;
 using NueGames.NueDeck.Scripts.Enums;
 using NueGames.NueDeck.Scripts.Interfaces;
 using NueGames.NueDeck.Scripts.Managers;
@@ -16,7 +15,7 @@ namespace NueGames.NueDeck.Scripts.Characters
         [SerializeField] protected EnemyCharacterData enemyCharacterData;
         [SerializeField] protected EnemyCanvas enemyCanvas;
         [SerializeField] protected SoundProfileData deathSoundProfileData;
-        protected EnemyAbilityData NextAbility;
+        public EnemyAbilityData NextAbility;
         
         public EnemyCharacterData EnemyCharacterData => enemyCharacterData;
         public EnemyCanvas EnemyCanvas => enemyCanvas;
@@ -53,15 +52,7 @@ namespace NueGames.NueDeck.Scripts.Characters
             NextAbility = EnemyCharacterData.GetAbility(_usedAbilityCount);
             EnemyCanvas.IntentImage.sprite = NextAbility.Intention.IntentionSprite;
             
-            if (NextAbility.HideActionValue)
-            {
-                EnemyCanvas.NextActionValueText.gameObject.SetActive(false);
-            }
-            else
-            {
-                EnemyCanvas.NextActionValueText.gameObject.SetActive(true);
-                EnemyCanvas.NextActionValueText.text = NextAbility.ActionList[0].ActionValue.ToString();
-            }
+            EnemyCanvas.NextActionValueText.gameObject.SetActive(true);
 
             _usedAbilityCount++;
             EnemyCanvas.IntentImage.gameObject.SetActive(true);
@@ -75,58 +66,58 @@ namespace NueGames.NueDeck.Scripts.Characters
                 yield break;
             
             EnemyCanvas.IntentImage.gameObject.SetActive(false);
-            if (NextAbility.Intention.EnemyIntentionType == EnemyIntentionType.Attack 
-                || NextAbility.Intention.EnemyIntentionType == EnemyIntentionType.Debuff)
-            {
-                yield return StartCoroutine(AttackRoutine(NextAbility));
-            }
-            else
-            {
-                yield return StartCoroutine(BuffRoutine(NextAbility));
-            }
+            
+            bool waiting = true;
+            AI_CardEffect.instance.EnemyTurn(this,
+                NextAbility.Name, NextAbility.Desc, ()=>{waiting = false; });
+            yield return StartCoroutine(GoCoroutine());
+            yield return new WaitWhile(() => waiting);
+            yield return StartCoroutine(BackCoroutine());
         }
-        
-        protected virtual IEnumerator AttackRoutine(EnemyAbilityData targetAbility)
-        {
-            var waitFrame = new WaitForEndOfFrame();
 
-            if (CombatManager == null) yield break;
-            
-            var target = CombatManager.CurrentAlliesList.RandomItem();
-            
-            var startPos = transform.position;
-            var endPos = target.transform.position;
-
-            var startRot = transform.localRotation;
-            var endRot = Quaternion.Euler(60, 0, 60);
-            
-            yield return StartCoroutine(MoveToTargetRoutine(waitFrame, startPos, endPos, startRot, endRot, 5));
-          
-            targetAbility.ActionList.ForEach(
-                x=>EnemyActionProcessor.GetAction(x.ActionType).
-                    DoAction(new EnemyActionParameters(x.ActionValue,target,this)));
-            
-            yield return StartCoroutine(MoveToTargetRoutine(waitFrame, endPos, startPos, endRot, startRot, 5));
-        }
-        
-        protected virtual IEnumerator BuffRoutine(EnemyAbilityData targetAbility)
+        private Vector3 startPos;
+        private Vector3 endPos;
+        private Quaternion startRot;
+        Quaternion endRot;
+        IEnumerator GoCoroutine()
         {
             var waitFrame = new WaitForEndOfFrame();
             
-            var target = CombatManager.CurrentEnemiesList.RandomItem();
+            startPos = transform.position;
+            endPos = startPos+new Vector3(-0.4f,0.2f,0);
             
-            var startPos = transform.position;
-            var endPos = startPos+new Vector3(0,0.2f,0);
+            startRot = transform.localRotation;
+            endRot = transform.localRotation;
             
-            var startRot = transform.localRotation;
-            var endRot = transform.localRotation;
+            return MoveToTargetRoutine(waitFrame, startPos, endPos, startRot, endRot, 5);
             
-            yield return StartCoroutine(MoveToTargetRoutine(waitFrame, startPos, endPos, startRot, endRot, 5));
-            
-            targetAbility.ActionList.ForEach(x=>EnemyActionProcessor.GetAction(x.ActionType).DoAction(new EnemyActionParameters(x.ActionValue,target,this)));
-            
-            yield return StartCoroutine(MoveToTargetRoutine(waitFrame, endPos, startPos, endRot, startRot, 5));
         }
+        
+        IEnumerator BackCoroutine()
+        {
+            var waitFrame = new WaitForEndOfFrame();
+            
+            return MoveToTargetRoutine(waitFrame, endPos, startPos, endRot, startRot, 5);
+
+        }
+        // protected virtual IEnumerator BuffRoutine(EnemyAbilityData targetAbility)
+        // {
+        //     var waitFrame = new WaitForEndOfFrame();
+        //     
+        //     var target = CombatManager.CurrentEnemiesList.RandomItem();
+        //     
+        //     var startPos = transform.position;
+        //     var endPos = startPos+new Vector3(0,0.2f,0);
+        //     
+        //     var startRot = transform.localRotation;
+        //     var endRot = transform.localRotation;
+        //     
+        //     yield return StartCoroutine(MoveToTargetRoutine(waitFrame, startPos, endPos, startRot, endRot, 5));
+        //     
+        //     targetAbility.ActionList.ForEach(x=>EnemyActionProcessor.GetAction(x.ActionType).DoAction(new EnemyActionParameters(x.ActionValue,target,this)));
+        //     
+        //     yield return StartCoroutine(MoveToTargetRoutine(waitFrame, endPos, startPos, endRot, startRot, 5));
+        // }
         #endregion
         
         #region Other Routines

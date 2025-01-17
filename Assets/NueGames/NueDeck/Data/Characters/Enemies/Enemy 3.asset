@@ -13,65 +13,15 @@ MonoBehaviour:
   m_Name: Enemy 3
   m_EditorClassIdentifier: 
   characterID: enemy_3
-  characterName: Enemy 3
-  characterDescription: Enemy Description
+  characterName: Cancan
+  characterDescription: a monster that once were a can of tuna fish meat
   maxHealth: 100
   enemyPrefab: {fileID: 243822687015991123, guid: 12422914cfeeb1349afec0d663b87504, type: 3}
   followAbilityPattern: 1
   enemyAbilityList:
-  - name: Attack Single
+  - name: Fish Attack
+    desc: deal 10 damage to player
     intention: {fileID: 11400000, guid: 2af475f5121b73d4c99b67551230aa48, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 0
-      minActionValue: 3
-      maxActionValue: 4
-  - name: Attack Single
-    intention: {fileID: 11400000, guid: 2af475f5121b73d4c99b67551230aa48, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 0
-      minActionValue: 4
-      maxActionValue: 5
   - name: Heal
+    desc: heal 5 for all its monster allies
     intention: {fileID: 11400000, guid: d8b91adf93b4e21419f64f9a68fc3c70, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 1
-      minActionValue: 5
-      maxActionValue: 5
-  - name: Attack Single
-    intention: {fileID: 11400000, guid: 2af475f5121b73d4c99b67551230aa48, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 0
-      minActionValue: 5
-      maxActionValue: 6
-  - name: Attack Single
-    intention: {fileID: 11400000, guid: 2af475f5121b73d4c99b67551230aa48, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 0
-      minActionValue: 6
-      maxActionValue: 7
-  - name: Heal
-    intention: {fileID: 11400000, guid: d8b91adf93b4e21419f64f9a68fc3c70, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 1
-      minActionValue: 7
-      maxActionValue: 7
-  - name: Attack Single
-    intention: {fileID: 11400000, guid: 2af475f5121b73d4c99b67551230aa48, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 0
-      minActionValue: 7
-      maxActionValue: 8
-  - name: Attack Single
-    intention: {fileID: 11400000, guid: 2af475f5121b73d4c99b67551230aa48, type: 2}
-    hideActionValue: 0
-    actionList:
-    - actionType: 0
-      minActionValue: 9
-      maxActionValue: 10

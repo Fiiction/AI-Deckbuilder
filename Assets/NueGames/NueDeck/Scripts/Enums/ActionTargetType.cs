@@ -3,11 +3,12 @@
     public enum ActionTargetType
     {
         Enemy,
-        Self,
+        Hero,
         Ally,
         AllEnemies,
         AllAllies,
         RandomEnemy,
-        RandomAlly
+        RandomAlly,
+        EnemySelf,
     }
 }

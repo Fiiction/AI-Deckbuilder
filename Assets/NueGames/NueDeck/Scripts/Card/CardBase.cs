@@ -120,24 +120,6 @@ namespace NueGames.NueDeck.Scripts.Card
             }
             CollectionManager.OnCardPlayed(this);
         }
-        private IEnumerator CardUseRoutine(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies)
-        {
-            SpendMana(CardData.ManaCost);
-            
-            // foreach (var playerAction in CardData.CardActionDataList)
-            // {
-            //     yield return new WaitForSeconds(playerAction.ActionDelay);
-            //     var targetList = DetermineTargets(self,targetCharacter, allEnemies, allAllies, playerAction);
-            //     Debug.Log("Action: " + playerAction.CardActionType);
-            //     foreach (var target in targetList)
-            //         CardActionProcessor.GetAction(playerAction.CardActionType)
-            //             .DoAction(new CardActionParameters(playerAction.ActionValue,
-            //                 target,self,CardData,this, playerAction.StrParameter));
-            // }
-            CollectionManager.OnCardPlayed(this);
-            yield break;
-        }
-
         public static List<CharacterBase> DetermineTargets(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies,
             CardActionData playerAction)
         {
@@ -147,8 +129,8 @@ namespace NueGames.NueDeck.Scripts.Card
                 case ActionTargetType.Enemy:
                     targetList.Add(targetCharacter);
                     break;
-                case ActionTargetType.Self:
-                    targetList.Add(self);
+                case ActionTargetType.Hero:
+                    targetList.Add(CombatManager.Instance.CurrentMainAlly);
                     break;
                     
                 case ActionTargetType.Ally:
@@ -170,6 +152,9 @@ namespace NueGames.NueDeck.Scripts.Card
                 case ActionTargetType.RandomAlly:
                     if (allAllies.Count>0)
                         targetList.Add(allAllies.RandomItem());
+                    break;
+                case ActionTargetType.EnemySelf:
+                    targetList.Add(self);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

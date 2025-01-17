@@ -2,7 +2,6 @@ using NueGames.NueDeck.Scripts.Card;
 using NueGames.NueDeck.Scripts.Data.Collection;
 using NueGames.NueDeck.Scripts.Data.Containers;
 using NueGames.NueDeck.Scripts.Data.Settings;
-using NueGames.NueDeck.Scripts.EnemyBehaviour;
 using NueGames.NueDeck.Scripts.NueExtentions;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -45,7 +44,6 @@ namespace NueGames.NueDeck.Scripts.Managers
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
                 CardActionProcessor.Initialize();
-                EnemyActionProcessor.Initialize();
                 InitGameplayData();
                 SetInitalHand();
             }
