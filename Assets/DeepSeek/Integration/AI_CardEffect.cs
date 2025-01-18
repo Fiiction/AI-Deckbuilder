@@ -15,11 +15,12 @@ public class AI_CardEffect : MonoBehaviour
 {
     
     public static AI_CardEffect instance;
-
+    
     
     [SerializeField, TextArea(12,20)] private string prompt1_withTarget;
     [SerializeField, TextArea(12,20)] private string prompt1_noTarget;
-    [SerializeField, TextArea(22,35)] private string prompt2;
+    [SerializeField, TextArea(12,35)] private string prompt2;
+    [SerializeField, TextArea(12,35)] private string prompt_specific;
     [SerializeField, TextArea(12,20)] private string prompt3_Normal;
     [SerializeField, TextArea(12,20)] private string prompt3_CustomEffect;
     [SerializeField, TextArea(12,20)] private string prompt_StartTurn1;
@@ -46,7 +47,7 @@ public class AI_CardEffect : MonoBehaviour
         "7th", "8th", "9th", "10th", "11th", "12th"};
     
     public List<CardActionData> actionDatas = new();
-    
+    public int cardsUsedInBattle = 0;
     
     
     
@@ -96,8 +97,9 @@ public class AI_CardEffect : MonoBehaviour
         AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;});
         
         yield return new WaitWhile( () => reply1 == "");
-        
-        AI_IntegrationManager.instance.Request(prompt2, str =>{reply2 = str;});
+        string prompt2Send = prompt2.Replace("##Specific##",
+            (cardsUsedInBattle % 10 == 0 ? prompt_specific : ""));
+        AI_IntegrationManager.instance.Request(prompt2Send, str =>{reply2 = str;});
         
         yield return new WaitWhile( () => reply2 == "");
         

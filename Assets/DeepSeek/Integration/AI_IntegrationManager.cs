@@ -71,6 +71,7 @@ public class AI_IntegrationManager : MonoBehaviour
     public void SendStartGamePrompt()
     {
         gameStartPending = true;
+        AI_CardEffect.instance.cardsUsedInBattle = 0;
         Request(startGamePrompt.Replace("##HeroName##", heroName)
             .Replace("##HeroDesc##", heroDesc),
             _ => { gameStartPending = false; });

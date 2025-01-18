@@ -56,6 +56,10 @@ MonoBehaviour:
   enemyCharacterData: {fileID: 11400000, guid: 2a3e3cac54ff7a84a81dc5f60d34fb2b, type: 2}
   enemyCanvas: {fileID: 3056641343864881899}
   deathSoundProfileData: {fileID: 11400000, guid: 7e15e2a10065ab54c8eaf26154af0156, type: 2}
+  NextAbility:
+    name: 
+    desc: 
+    intention: {fileID: 0}
 --- !u!54 &735061151
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,8 +134,8 @@ Transform:
   m_GameObject: {fileID: 243822687401075088}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.015, y: 0.312, z: 0}
+  m_LocalScale: {x: 0.53369975, y: 0.53369975, z: 0.53369975}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 491162778199269420}
@@ -180,9 +184,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: baef06f5c7871994aa60c5c644de6f98, type: 3}
+  m_Sprite: {fileID: 2859224192101260573, guid: a7d77ca6a7af29142a85abaa689bc882, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.32, y: 0.48}

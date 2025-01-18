@@ -54,7 +54,8 @@ namespace NueGames.NueDeck.Scripts.Managers
         }
         public void PlayFx(Transform targetTransform, FxType targetFx)
         {
-            Instantiate(FXDict[targetFx], targetTransform);
+            var obj = Instantiate(FXDict[targetFx], targetTransform);
+            Destroy(obj, 1.6f);
         }
         #endregion
         

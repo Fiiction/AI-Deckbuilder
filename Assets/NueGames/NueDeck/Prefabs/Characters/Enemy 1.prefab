@@ -56,6 +56,10 @@ MonoBehaviour:
   enemyCharacterData: {fileID: 11400000, guid: ab4b1aaf78f9c8747a5708430c68f051, type: 2}
   enemyCanvas: {fileID: 3056641343864881899}
   deathSoundProfileData: {fileID: 11400000, guid: 7e15e2a10065ab54c8eaf26154af0156, type: 2}
+  NextAbility:
+    name: 
+    desc: 
+    intention: {fileID: 0}
 --- !u!54 &735061151
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,8 +134,8 @@ Transform:
   m_GameObject: {fileID: 243822687401075088}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.007, y: 0.32, z: 0}
+  m_LocalScale: {x: 0.5111668, y: 0.5111668, z: 0.5111668}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 491162778199269420}
@@ -180,7 +184,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 02284fe64271ba949bf3ac093709ff33, type: 3}
+  m_Sprite: {fileID: -2983909943060152295, guid: a266d816426f7224eb1387156962b099, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -431,6 +435,14 @@ PrefabInstance:
     - target: {fileID: 4722401855628861027, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079194608285725401, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079194608285725401, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 8.8
       objectReference: {fileID: 0}
     - target: {fileID: 6193311657365782718, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
       propertyPath: m_Name

@@ -73,19 +73,20 @@ MonoBehaviour:
 
 '
   prompt2: "Now answer with following structure, what will be the effect(s) of this
-    card?\r\n\r\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
+    card?\r\n\r##Specific##\r\n\nPlease reply with one single json format:\r\n{\r\n\t\"effects\":
+    [\"Deal Damage\", \"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
+  prompt_specific: "\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
     Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
     stacks of block, blocking same amount of upcoming damage\r\r\n- Draw: draw cards\r\n-
     Gain Mana: gain mana to do more actions in this turn\r\n- Steal Life: steal life
     from the target like a vampire\r\n- Stun: stunning the object, prevent it to
     move in following rounds\r\n- Destroy the Card: destroying the card used permanently\r\n-
-    Add Custom Status: add custom buff or debuff to object. Please store any effects
-    that need to be checked out in the future as custom status\r\n\r\nThe object
+    Add Custom Status: add/remove custom buff or debuff to object. Please store any
+    effects that need to be checked out in the future as custom status\n\nThe object
     of each of these effects can be the user, the targeted enemy or all enemies,
     which will be chosen later.\nYou can choose one same effect 2 or more times,
     if it's dealt on different objects, or casting 2 different custom effect at the
-    same time.\r\n\r\nPlease reply with one single json format:\r\n{\r\n\t\"effects\":
-    [\"Deal Damage\", \"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
+    same time.\r\n\r"
   prompt3_Normal: "For the ##No## effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (content in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
@@ -95,7 +96,8 @@ MonoBehaviour:
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
     \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
     etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\")\r\n\t\"value\":
-    3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
+    3 (indicates how many stacks of this status are casted on target. Minus value
+    to clear) \r\n}\r\n"
   prompt_StartTurn1: "Now player, ##PlayerDesc## ##PlayerCustomStatus##, starts a
     new turn.\r\nAccording the custom status they have and cards they played, will
     there be effects at the start of the turn?\r\nPlease reply with one single json
@@ -120,7 +122,8 @@ MonoBehaviour:
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
     \"poison\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
     etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" or \"allEnemies\")\r\n\t\"value\":
-    3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
+    3 (indicates how many stacks of this status are casted on target. Minus value
+    to clear) \r\n}\r\n"
   processingCanvas: {fileID: 1978969409886390374}
   cardName: 
   cardDesc: 
@@ -132,6 +135,7 @@ MonoBehaviour:
   targetStatusStr: 
   prompt1Sent: 
   actionDatas: []
+  cardsUsedInBattle: 0
 --- !u!1 &1605598397388320318
 GameObject:
   m_ObjectHideFlags: 0

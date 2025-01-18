@@ -93,18 +93,14 @@ namespace NueGames.NueDeck.Scripts.Managers
         public int turnIndex = 0;
         public void AllyTurnStarted()
         {
-            OnAllyTurnStarted?.Invoke();
                     
+            CollectionManager.DrawCards(GameManager.PersistentGameplayData.DrawCount);
+
             if (CurrentMainAlly.characterStats.IsStunned)
             {
                 EndTurn();
                 return;
             }
-                    
-            GameManager.PersistentGameplayData.CurrentMana = GameManager.PersistentGameplayData.MaxMana;
-                   
-            CollectionManager.DrawCards(GameManager.PersistentGameplayData.DrawCount);
-                    
             GameManager.PersistentGameplayData.CanSelectCards = true;
         }
         
@@ -117,6 +113,11 @@ namespace NueGames.NueDeck.Scripts.Managers
                 case CombatStateType.AllyTurn:
                     
                     turnIndex++;
+                    
+                    GameManager.PersistentGameplayData.CurrentMana = GameManager.PersistentGameplayData.MaxMana;
+                   
+                    OnAllyTurnStarted?.Invoke();
+                    
                     if(turnIndex > 1)
                         AI_CardEffect.instance.AllyTurnStartEffects(CurrentMainAlly, AllyTurnStarted);
                     else
