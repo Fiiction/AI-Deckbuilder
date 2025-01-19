@@ -45,33 +45,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db81833cc9a238a4b93475a910009467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt1_withTarget: 'The player, as ##PlayerName## ##PlayerCustomStatus##, using
-    following card:
-
-
-    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana
-
-
-
-    targeting
-    following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##.
-
-
-
-    What
-    will happen? please describe with natural language within 20 words.'
-  prompt1_noTarget: 'The player, as ##PlayerName## ##PlayerCustomStatus##, using
-    following card:
-
-
-    ##CardName##: ##CardDesc##, spending ##ManaSpent## mana.
-
-
-    What
+  prompt1_withTarget: "The player, as ##PlayerName## ##PlayerCustomStatus##, using
+    following card:\r\n\r\n##CardName##: ##CardDesc##, spending ##ManaSpent## mana\r\n\rtargeting
+    following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##.\r\n\r\nWhat
     will happen? Please consider the card used in the past. Describe with natural
-    language within 20 words.
-
-'
+    language within 20 words.\r\n\r\nThen answer with following structure, what will
+    be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease reply with one
+    single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal Damage\",
+    \"Draw\", \"Steal Life\"]\r\n}"
+  prompt1_noTarget: "The player, as ##PlayerName## ##PlayerCustomStatus##, using
+    following card:\r\n\r\n##CardName##: ##CardDesc##, spending ##ManaSpent## mana\r\n\r\n\r\nWhat
+    will happen? Please consider the card used in the past. Describe with natural
+    language within 20 words.\r\n\r\nThen answer with following structure, what will
+    be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease reply with one
+    single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal Damage\",
+    \"Draw\", \"Steal Life\"]\r\n}\n"
   prompt2: "Now answer with following structure, what will be the effect(s) of this
     card?\r\n\r##Specific##\r\n\nPlease reply with one single json format:\r\n{\r\n\t\"effects\":
     [\"Deal Damage\", \"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
@@ -110,30 +98,19 @@ MonoBehaviour:
     or the enemy itself.\r\n- Heal: Heal someone.\r\n- Add Block: Add stacks of block,
     blocking same amount of upcoming damage.\r\n- Add Custom Status: add custom buff
     or debuff to object. Please store any effects that need to be checked out in
-    the future as custom status\r\n\r\nPlease reply with one single json format:\r\n{\r\n\t\"effects\":
-    [\"Deal Damage\",  \"Add Custom Status\"]\r\n}"
-  prompt3_Normal_Enemy: "For the ##No## effect \"##EffectName##\", what's the target
-    and the numeric value of this effect:\r\n\r\nPlease reply with following json
-    format: (content in parentheses are comments)\r\n{\r\n\t\"target\": \"hero\",
-    (or \"enemySelf\" or \"allEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##)
-    \r\n}"
-  prompt3_CustomEffect_Enemy: "For the ##No## effect \"Add Custom Status\", what's
-    the name of status, the target and the numeric value of this effect:\r\n\r\nPlease
+    the future as custom status\r\n\r\nPlease reply with following json format:\r\n{\r\n\t\"effects\":
+    [\"Deal Damage\",  \"Add Custom Status\"]\r\n}\r"
+  prompt3_Normal_Enemy: "For the effect \"##EffectName##\", what's the target and
+    the numeric value of this effect:\r\n\r\nPlease reply with following json format:
+    (content in parentheses are comments)\r\n{\r\n\t\"target\": \"hero\", (or \"enemySelf\"
+    or \"allEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##) \r\n}"
+  prompt3_CustomEffect_Enemy: "For the effect \"Add Custom Status\", what's the name
+    of status, the target and the numeric value of this effect:\r\n\r\n\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
     \"poison\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
     etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" or \"allEnemies\")\r\n\t\"value\":
-    3 (indicates how many stacks of this status are casted on target. Minus value
-    to clear) \r\n}\r\n"
+    3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
   processingCanvas: {fileID: 1978969409886390374}
-  cardName: 
-  cardDesc: 
-  userName: 
-  userDesc: 
-  targetName: 
-  targetDesc: 
-  userStatusStr: 
-  targetStatusStr: 
-  prompt1Sent: 
   actionDatas: []
   cardsUsedInBattle: 0
 --- !u!1 &1605598397388320318

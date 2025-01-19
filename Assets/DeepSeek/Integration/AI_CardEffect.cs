@@ -31,15 +31,15 @@ public class AI_CardEffect : MonoBehaviour
     public AI_ProcessingCanvas processingCanvas;
 
 
-    public string cardName;
-    public string cardDesc;
-    public string userName;
-    public string userDesc;
-    public string targetName;
-    public string targetDesc;
-    public string userStatusStr;
-    public string targetStatusStr;
-    public string prompt1Sent;
+    private string cardName;
+    private string cardDesc;
+    private string userName;
+    private string userDesc;
+    private string targetName;
+    private string targetDesc;
+    private string userStatusStr;
+    private string targetStatusStr;
+    private string prompt1Sent;
 
     private string reply1 = "";
     private string reply2 = "";
@@ -95,13 +95,16 @@ public class AI_CardEffect : MonoBehaviour
             prompt1Sent = prompt1Sent.Replace("##CardDesc##", cardDesc);
             prompt1Sent = prompt1Sent.Replace("##ManaSpent##", card.CardData.ManaCost.ToString());
         }
-        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;});
-        
-        yield return new WaitWhile( () => reply1 == "");
-        string prompt2Send = prompt2.Replace("##Specific##",
+        prompt1Sent = prompt1Sent.Replace("##Specific##",
             (cardsUsedInBattle % 10 == 0 ? prompt_specific : ""));
-        AI_IntegrationManager.instance.Request(prompt2Send, str =>{reply2 = str;});
         
+        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply2 = str;});
+        //
+        // yield return new WaitWhile( () => reply1 == "");
+        // string prompt2Send = prompt2.Replace("##Specific##",
+        //     (cardsUsedInBattle % 10 == 0 ? prompt_specific : ""));
+        // AI_IntegrationManager.instance.Request(prompt2Send, str =>{reply2 = str;});
+        //
         yield return new WaitWhile( () => reply2 == "");
         
         ActionArray actionArray = Decode<ActionArray>(reply2);
@@ -340,6 +343,18 @@ public class AI_CardEffect : MonoBehaviour
     }
     #region DataStructures
 
+    public struct SuperActionParams
+    {
+        public string effectType;
+        public string buffname;
+        public string target;
+        public int value;
+    }
+    public struct SuperActions
+    {
+        SuperActionParams[] effects;
+    }
+    
     public static T Decode<T>(string stringData)
     {
         int st = stringData.IndexOf("{");
