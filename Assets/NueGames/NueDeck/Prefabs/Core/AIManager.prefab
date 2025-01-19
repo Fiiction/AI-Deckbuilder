@@ -211,32 +211,53 @@ MonoBehaviour:
     Please tell me with natural language, what could be the name, narrative
     design, visual, and the effect in gameplay of those 4 unique cards.
 
+
+    Player
+    can spend 3 manas to use cards on each turn. Cards represent protagonist''s actions.
+
+    Most
+    cards cost 1 mana. Very powerful moves will cost 2 or 3 mana. 0-mana cards represent
+    swift but weaker moves.
+
+    The effects of a card include dealing damage to
+    target, healing the user, adding tacks of "block" (blocking same amount of upcoming
+    damage), applying buff to user or casting debuff to targets.
+
+    Typically,
+    one cost cards are worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff.
+    Cards with higher rarity can be stronger.
+
 '
   prompt_basicCard1: "Now please specify the design of the basic attack card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Punch\",\r\n\t\"description\": \"Punch the targeted enemy with mighty power.\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": true,\r\n\t\"prompt\": \"Punch, dynamic, sense of power,
-    big fist, single fist with sense of power,\" (prompt for card image generation)\r\n}"
+    big fist, single fist with sense of power,\" (prompt for card image generation.
+    Try not include character in card image and describe a dynamic action, emphasizing
+    the attacking intention) \r\n}"
   prompt_basicCard2: "Now please specify the design of the basic defence(blocking)
     card.\r\nPlease reply with following json format: (content in parentheses are
     comments)\r\n{\r\n\t\"cardName\": \"Arcane Barrier\",\r\n\t\"description\": \"Focus
     arcane energy to form a barrier, neutralizing upcoming damage.\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": false,(if this card need a single enemy as target)\r\n\t\"prompt\":
     \"Arcane Barrier, magical power, blue sphere, blue aura, magical,\" (prompt for
-    card image generation)\r\n}"
+    card image generation. Try not include character in card image and describe a
+    dynamic action) \n}"
   prompt_basicCard3: "Now please specify the design of the special supporting card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Energy Charge\",\r\n\t\"description\": \"Charge up electro energy, enpower
     future attacks in this game.\",\r\n\t\"manaCost\": 2,\r\n\t\"needTarget\": false,
     (if this card need a single enemy as target)\r\n\t\"prompt\": \"Charging Energy,
-    gathering energy, cybernetic,\" (prompt for card image generation)\r\n}"
+    gathering energy, cybernetic,\" (prompt for card image generation. Try not include
+    character in card image and describe a dynamic action) \r\n}"
   prompt_basicCard4: "Now please specify the design of the special offensive card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Arcane Cascade\",\r\n\t\"description\": \"Spend a huge amount of arcane energy,
     deal a lot of damage to all enemies.\",\r\n\t\"manaCost\": 3,\r\n\t\"needTarget\":
     false, (if this card need a single enemy as target)\r\n\t\"prompt\": \"Arcane
     Cascade, huge barrage with magical shoots, magical attack,\" (prompt for card
-    image generation)\r\n}"
+    image generation. Try not include character in card image and describe a dynamic
+    action) \r\n}"
   rareCardCnt: 6
   prompt_rareDescription: 'Now I need you to design the rare cards for the hero ##HeroName##,
     ##HeroDesc##.
@@ -259,7 +280,8 @@ MonoBehaviour:
     are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
     \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
-    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation)\r\n}\r\n"
+    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation.
+    Try not include character in card image and describe a dynamic action)  \r\n}\r\n"
   rareCards: []
   cardGenerated: 0
 --- !u!1 &1824853098471007931
@@ -308,7 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterConfig:
-    sampler_name: DPM++ 2M
+    sampler_name: DPM++ SDE
     scheduler: Karras
     prompt: ', solo, character art, character illustration, ((full-body portrait)),
       ((full body)), (full-length picture), (best quality), ((masterpiece)), (highres),
@@ -327,30 +349,27 @@ MonoBehaviour:
       legs))), (((extra arms))),(((extra legs))),pubic hair, plump,bad legs,error
       legs,username,blurry,bad feet, messy\r"
     seed: 0
-    steps: 28
-    cfg_scale: 6.5
+    steps: 6
+    cfg_scale: 2
     width: 720
     height: 1080
     restore_faces: 0
     batch_size: 1
   cardConfig:
-    sampler_name: DPM++ 2M
+    sampler_name: DPM++ SDE
     scheduler: Karras
-    prompt: ', white background, simple background, detailed anime style, flat colors,
-      game icon, <lora:anime_game_icon:0.9>'
-    negative_prompt: lowres, bad anatomy, bad hands, text, error, missing fingers,
-      extra digit, fewer digits, cropped, worst quality, low quality, normal quality,
-      jpeg artifacts, signature, watermark, username, blurry, lowres, bad anatomy,
-      bad hands, text, error, extra digit, fewer digits, cropped, worst quality,
-      low quality, normal quality, jpeg artifacts, signature, watermark, username,
-      blurry, ugly,pregnant,vore,duplicate,morbid,mut ilated,tran nsexual, hermaphrodite,long
-      neck,mutated hands,poorly drawn hands,poorly drawn face,mutation,deformed,blurry,bad
-      anatomy,bad proportions,malformed limbs,extra limbs,cloned face,disfigured,gross
-      proportions, (((missing arms))),(((missing legs))), (((extra arms))),(((extra
-      legs))),pubic hair, plump,bad legs,error legs,username,blurry,bad feet
+    prompt: ', detailed anime style, flat colors, game icon, dynamic, dynamic scene,
+      <lora:anime_game_icon:1>'
+    negative_prompt: portrait, character art, character illustration, lowres, bad
+      anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits,
+      cropped, worst quality, low quality, jpeg artifacts, signature, watermark,
+      username, blurry, ugly,pregnant,vore,duplicate,morbid,mut ilated,long neck,mutated
+      hands,poorly drawn hands,poorly drawn face,mutation,deformed,blurry, (((missing
+      arms))),(((missing legs))), (((extra arms))),(((extra legs))),pubic hair, plump,bad
+      legs,error legs,username,blurry,bad feet, cgi, 3d render,
     seed: 0
-    steps: 16
-    cfg_scale: 7
+    steps: 6
+    cfg_scale: 2
     width: 512
     height: 512
     restore_faces: 0
@@ -574,7 +593,7 @@ MonoBehaviour:
   initFinished: 0
   deepseekParams:
     apiKey: sk-7bf38df2ed1245ce9dfd5ab62346449c
-    temperature: 1
+    temperature: 2
     role: 
     timeout: 0
     throttle: 0
@@ -596,20 +615,12 @@ MonoBehaviour:
     Character from Overwatch, \"\r\n}"
   startGamePrompt: 'Now player as ##HeroName##, ##HeroDesc##, enters a fight.
 
-    Player
-    can spend 3 manas to use cards on each turn. Cards represent protagonist''s actions.
+    There
+    are ##EnemyCnt## enemy(s):
 
-    Most
-    cards cost 1 mana. Very powerful moves will cost 2 or 3 mana. 0-mana cards represent
-    swift but weaker moves.
 
-    The effects of a card include dealing damage to
-    target, healing the user, adding tacks of "block" (blocking same amount of upcoming
-    damage), applying buff to user or casting debuff to targets.
+    ##EnemyDescs##
 
-    Typically,
-    one cost cards are worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff.
-    Cards with higher rarity can be stronger.
 
     Please reply with "I understand."'
   _conversationSoFar: []

@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NueGames.NueDeck.Scripts.Managers;
 
 public class AI_IntegrationManager : MonoBehaviour
 {
@@ -72,9 +73,19 @@ public class AI_IntegrationManager : MonoBehaviour
     {
         gameStartPending = true;
         AI_CardEffect.instance.cardsUsedInBattle = 0;
-        Request(startGamePrompt.Replace("##HeroName##", heroName)
-            .Replace("##HeroDesc##", heroDesc),
-            _ => { gameStartPending = false; });
+        string promptToSend = startGamePrompt.Replace("##HeroName##", heroName)
+            .Replace("##HeroDesc##", heroDesc);
+        promptToSend = promptToSend.Replace("##EnemyCnt##", CombatManager.Instance.CurrentEnemiesList.Count.ToString());
+
+        string enemyDescs = "";
+        foreach (var i in CombatManager.Instance.CurrentEnemiesList)
+        {
+            enemyDescs += i.EnemyCharacterData.CharacterName + ", " + i.EnemyCharacterData.CharacterDescription + ".\n";
+        }
+
+        promptToSend = promptToSend.Replace("##EnemyDescs##", enemyDescs);
+        
+        Request(promptToSend, _ => { gameStartPending = false; });
     }
 
     public void InitialResponse(string s)

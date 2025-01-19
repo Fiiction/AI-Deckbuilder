@@ -89,6 +89,7 @@ public class AI_CardEffect : MonoBehaviour
         else
         {
             prompt1Sent = prompt1_noTarget.Replace("##PlayerDesc##", userDesc);
+            prompt1Sent = prompt1Sent.Replace("##PlayerName##", userName);
             prompt1Sent = prompt1Sent.Replace("##PlayerCustomStatus##", userStatusStr);
             prompt1Sent = prompt1Sent.Replace("##CardName##", cardName);
             prompt1Sent = prompt1Sent.Replace("##CardDesc##", cardDesc);
@@ -377,17 +378,21 @@ public class AI_CardEffect : MonoBehaviour
     public static string CharacterStatusString(CharacterBase cha)
     {
 
-        if (cha.characterStats.Effects.Count == 0)
-            return "";
         string s = ", with ";
-        foreach (var i in cha.characterStats.Effects)
-        {
-            if(i.Value.effectValue == 1)
-                s += "1 stack of " + i.Key + ", ";
-            else
-                s += i.Value.effectValue +" stacks of " + i.Key + ", ";
-        }
-        return s;
+        
+        if (cha.characterStats.Effects.Count == 0)
+            s = "";
+        else
+            foreach (var i in cha.characterStats.Effects)
+            {
+                if(i.Value.effectValue == 1)
+                    s += "1 stack of " + i.Key + ", ";
+                else
+                    s += i.Value.effectValue +" stacks of " + i.Key + ", ";
+            }
+        string t = ", health " +cha.characterStats.CurrentHealth
+                               + " / " + cha.characterStats.MaxHealth +", ";
+        return s + t;
     }
     
     public static CardActionType StringToActionType(string str)

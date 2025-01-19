@@ -78,8 +78,8 @@ namespace NueGames.NueDeck.Scripts.Managers
 
         public void StartCombat()
         {
-            AI_IntegrationManager.instance.SendStartGamePrompt();
             BuildEnemies();
+            AI_IntegrationManager.instance.SendStartGamePrompt();
             BuildAllies();
             backgroundContainer.OpenSelectedBackground();
           
