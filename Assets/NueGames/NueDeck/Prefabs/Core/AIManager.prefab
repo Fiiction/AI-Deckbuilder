@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 7330174554457206087}
   - component: {fileID: 2876732879309474101}
   - component: {fileID: 3314437959526451652}
+  - component: {fileID: 7560689155620662203}
   m_Layer: 0
   m_Name: ImageGeneration
   m_TagString: Untagged
@@ -435,6 +436,119 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rootEndpoint: http://127.0.0.1:7860
+--- !u!114 &7560689155620662203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824853098471007931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f79945781b6eb3b469512ff72c92081f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverAddress: http://127.0.0.1:8188
+  promptJson: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 428732650476192,\r\n     
+    \"steps\": 8,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
+    \"scheduler\": \"sgm_uniform\",\r\n      \"denoise\": 1,\r\n      \"model\":
+    [\r\n        \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n       
+    \"6\",\r\n        0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n       
+    0\r\n      ],\r\n      \"latent_image\": [\r\n        \"5\",\r\n        0\r\n     
+    ]\r\n    },\r\n    \"class_type\": \"KSampler\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"KSampler\"\r\n    }\r\n  },\r\n  \"4\": {\r\n    \"inputs\": {\r\n     
+    \"ckpt_name\": \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n    },\r\n   
+    \"class_type\": \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"Load Checkpoint\"\r\n    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\": {\r\n     
+    \"width\": 1024,\r\n      \"height\": 1024,\r\n      \"batch_size\": 1\r\n   
+    },\r\n    \"class_type\": \"EmptyLatentImage\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"Empty Latent Image\"\r\n    }\r\n  },\r\n  \"6\": {\r\n    \"inputs\":
+    {\r\n      \"text\": \"##Prompt##, solo, character art, character illustration,
+    ((full-body portrait)), ((full body)), (full-length picture), white background, 
+    simple background,  standing, no background, anime, standing from head to toe,
+    no cropping, head-to-toe, entire body visible, in full view\",\r\n      \"clip\":
+    [\r\n        \"13\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
+    \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n      \"title\": \"CLIP Text Encode
+    (Prompt)\"\r\n    }\r\n  },\r\n  \"7\": {\r\n    \"inputs\": {\r\n      \"text\":
+    \",NSFW, (closeup:2), (bust shot:2), (half shot:2), cropping, (((no feet))),
+    lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer
+    digits, cropped, worst quality, low quality, normal quality, jpeg artifacts,
+    signature, watermark, username, blurry, lowres, bad anatomy, bad hands, text,
+    error, extra digit, fewer digits, cropped, worst quality, low quality, normal
+    quality, jpeg artifacts, signature, watermark, username, blurry, ugly,pregnant,vore,duplicate,morbid,mut
+    ilated,tran nsexual, hermaphrodite,long neck,mutated hands,poorly drawn hands,poorly
+    drawn face,mutation,deformed,blurry,bad anatomy,bad proportions,malformed limbs,extra
+    limbs,cloned face,disfigured,gross proportions, (((missing arms))),(((missing
+    legs))), (((extra arms))),(((extra legs))),pubic hair, plump,bad legs,error legs,username,blurry,bad
+    feet, messy\\n\",\r\n      \"clip\": [\r\n        \"13\",\r\n        1\r\n     
+    ]\r\n    },\r\n    \"class_type\": \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"CLIP Text Encode (Prompt)\"\r\n    }\r\n  },\r\n  \"8\": {\r\n   
+    \"inputs\": {\r\n      \"samples\": [\r\n        \"3\",\r\n        0\r\n     
+    ],\r\n      \"vae\": [\r\n        \"11\",\r\n        0\r\n      ]\r\n    },\r\n   
+    \"class_type\": \"VAEDecode\",\r\n    \"_meta\": {\r\n      \"title\": \"VAE
+    Decode\"\r\n    }\r\n  },\r\n  \"9\": {\r\n    \"inputs\": {\r\n      \"filename_prefix\":
+    \"ComfyUI\",\r\n      \"images\": [\r\n        \"10\",\r\n        0\r\n     
+    ]\r\n    },\r\n    \"class_type\": \"SaveImage\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"Save Image\"\r\n    }\r\n  },\r\n  \"10\": {\r\n    \"inputs\":
+    {\r\n      \"image\": [\r\n        \"8\",\r\n        0\r\n      ]\r\n    },\r\n   
+    \"class_type\": \"Remove Image Background (abg)\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"Remove Image Background (abg)\"\r\n    }\r\n  },\r\n  \"11\": {\r\n   
+    \"inputs\": {\r\n      \"vae_name\": \"sdxl_vae.safetensors\"\r\n    },\r\n   
+    \"class_type\": \"VAELoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load
+    VAE\"\r\n    }\r\n  },\r\n  \"13\": {\r\n    \"inputs\": {\r\n      \"lora_name\":
+    \"fgo_sprites_xl_lora.safetensors\",\r\n      \"strength_model\": 0.2,\r\n     
+    \"strength_clip\": 0.2,\r\n      \"model\": [\r\n        \"4\",\r\n        0\r\n     
+    ],\r\n      \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n    },\r\n   
+    \"class_type\": \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load
+    LoRA\"\r\n    }\r\n  },\r\n  \"14\": {\r\n    \"inputs\": {\r\n      \"stop_at_clip_layer\":
+    -2,\r\n      \"clip\": [\r\n        \"4\",\r\n        1\r\n      ]\r\n    },\r\n   
+    \"class_type\": \"CLIPSetLastLayer\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"CLIP Set Last Layer\"\r\n    }\r\n  }\r\n}"
+  cardJson: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 428732650476192,\r\n     
+    \"steps\": 8,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
+    \"scheduler\": \"sgm_uniform\",\r\n      \"denoise\": 1,\r\n      \"model\":
+    [\r\n        \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n       
+    \"6\",\r\n        0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n       
+    0\r\n      ],\r\n      \"latent_image\": [\r\n        \"5\",\r\n        0\r\n     
+    ]\r\n    },\r\n    \"class_type\": \"KSampler\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"KSampler\"\r\n    }\r\n  },\r\n  \"4\": {\r\n    \"inputs\": {\r\n     
+    \"ckpt_name\": \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n    },\r\n   
+    \"class_type\": \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"Load Checkpoint\"\r\n    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\": {\r\n     
+    \"width\": 1024,\r\n      \"height\": 1024,\r\n      \"batch_size\": 1\r\n   
+    },\r\n    \"class_type\": \"EmptyLatentImage\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"Empty Latent Image\"\r\n    }\r\n  },\r\n  \"6\": {\r\n    \"inputs\":
+    {\r\n      \"text\": \"##Prompt##, detailed anime style, flat colors, game icon,
+    dynamic, dynamic scene,\",\r\n      \"clip\": [\r\n        \"13\",\r\n       
+    1\r\n      ]\r\n    },\r\n    \"class_type\": \"CLIPTextEncode\",\r\n    \"_meta\":
+    {\r\n      \"title\": \"CLIP Text Encode (Prompt)\"\r\n    }\r\n  },\r\n  \"7\":
+    {\r\n    \"inputs\": {\r\n      \"text\": \"symmetry, portrait, character art,
+    character illustration, lowres, bad anatomy, bad hands, text, error, missing
+    fingers, extra digit, fewer digits, cropped, worst quality, low quality, jpeg
+    artifacts, signature, watermark, username, blurry, ugly,pregnant,vore,duplicate,morbid,mut
+    ilated,long neck,mutated hands,poorly drawn hands,poorly drawn face,mutation,deformed,blurry,
+    (((missing arms))),(((missing legs))), (((extra arms))),(((extra legs))),pubic
+    hair, plump,bad legs,error legs,username,blurry,bad feet, cgi, 3d render,\",\r\n     
+    \"clip\": [\r\n        \"13\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
+    \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n      \"title\": \"CLIP Text Encode
+    (Prompt)\"\r\n    }\r\n  },\r\n  \"8\": {\r\n    \"inputs\": {\r\n      \"samples\":
+    [\r\n        \"3\",\r\n        0\r\n      ],\r\n      \"vae\": [\r\n        \"11\",\r\n       
+    0\r\n      ]\r\n    },\r\n    \"class_type\": \"VAEDecode\",\r\n    \"_meta\":
+    {\r\n      \"title\": \"VAE Decode\"\r\n    }\r\n  },\r\n  \"9\": {\r\n    \"inputs\":
+    {\r\n      \"filename_prefix\": \"ComfyUI\",\r\n      \"images\": [\r\n       
+    \"8\",\r\n        0\r\n      ]\r\n    },\r\n    \"class_type\": \"SaveImage\",\r\n   
+    \"_meta\": {\r\n      \"title\": \"Save Image\"\r\n    }\r\n  },\r\n  \"11\":
+    {\r\n    \"inputs\": {\r\n      \"vae_name\": \"sdxl_vae.safetensors\"\r\n   
+    },\r\n    \"class_type\": \"VAELoader\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"Load VAE\"\r\n    }\r\n  },\r\n  \"13\": {\r\n    \"inputs\": {\r\n      \"lora_name\":
+    \"anime_game_icon.safetensors\",\r\n      \"strength_model\": 0.6,\r\n      \"strength_clip\":
+    0.6,\r\n      \"model\": [\r\n        \"4\",\r\n        0\r\n      ],\r\n     
+    \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n    },\r\n    \"class_type\":
+    \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load LoRA\"\r\n   
+    }\r\n  },\r\n  \"14\": {\r\n    \"inputs\": {\r\n      \"stop_at_clip_layer\":
+    -2,\r\n      \"clip\": [\r\n        \"4\",\r\n        1\r\n      ]\r\n    },\r\n   
+    \"class_type\": \"CLIPSetLastLayer\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"CLIP Set Last Layer\"\r\n    }\r\n  }\r\n}"
 --- !u!1 &4943198285802908904
 GameObject:
   m_ObjectHideFlags: 0
