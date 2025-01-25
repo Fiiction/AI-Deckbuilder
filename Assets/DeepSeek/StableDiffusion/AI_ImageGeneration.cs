@@ -6,7 +6,7 @@ public class AI_ImageGeneration : MonoBehaviour
 {
     public static AI_ImageGeneration instance;
     SDProcessor sdProcessor;
-
+    
     [SerializeField] private SDConfig characterConfig;
     [SerializeField] private SDConfig cardConfig;
     [SerializeField] private RembgConfig rembgConfig;
@@ -25,7 +25,11 @@ public class AI_ImageGeneration : MonoBehaviour
         }
         instance = this;
     }
-    
+
+    public void SetServerAddress(string serverAddress)
+    {
+        sdProcessor._rootEndpoint = serverAddress;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 public class SDProcessor : MonoBehaviour
 {
-    [SerializeField] private string _rootEndpoint = "http://localhost:7860";
+    [SerializeField] public string _rootEndpoint = "http://localhost:7860";
     //[TextArea(2, 20)] [SerializeField] public string p;
     // public IEnumerator ImageToImageAsync(ImgToImgConfig config, Action<Texture2D[]> OnSuccess)
     // {

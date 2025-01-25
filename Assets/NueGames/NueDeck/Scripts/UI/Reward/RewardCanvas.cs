@@ -39,17 +39,20 @@ namespace NueGames.NueDeck.Scripts.UI.Reward
         {
             int level = GameManager.PersistentGameplayData.CurrentLevel;
             Debug.Log("Build Rewards: Level " + level);
-            if (level <= 1)
+            if (level == 1)
             {
-                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[0]);
-                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[1]);
-                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[2]);
+                for(int i =0;i<AI_DeckGenerator.instance.rareCards.Count;i++)
+                    BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[i]);
             }
             else if (level == 2)
             {
-                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[3]);
-                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[4]);
-                BuildSingleCardReward(AI_DeckGenerator.instance.rareCards[5]);
+                for(int i =0;i<AI_DeckGenerator.instance.epicCards.Count;i++)
+                    BuildSingleCardReward(AI_DeckGenerator.instance.epicCards[i]);
+            }
+            else if (level == 3)
+            {
+                for(int i =0;i<AI_DeckGenerator.instance.legendCards.Count;i++)
+                    BuildSingleCardReward(AI_DeckGenerator.instance.legendCards[i]);
             }
         }
 

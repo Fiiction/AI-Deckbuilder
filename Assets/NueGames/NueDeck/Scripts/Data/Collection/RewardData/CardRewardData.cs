@@ -20,6 +20,12 @@ namespace NueGames.NueDeck.Scripts.Data.Collection.RewardData
                 case RarityType.Rare:
                     rewardCardList.Add(AI_DeckGenerator.instance.rareCards[cnt]);
                     return;
+                case RarityType.Epic:
+                    rewardCardList.Add(AI_DeckGenerator.instance.epicCards[cnt]);
+                    return;
+                case RarityType.Legendary:
+                    rewardCardList.Add(AI_DeckGenerator.instance.legendCards[cnt]);
+                    return;
                 default:
                     return;
             }

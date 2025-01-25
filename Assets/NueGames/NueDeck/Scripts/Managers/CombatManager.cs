@@ -234,7 +234,8 @@ namespace NueGames.NueDeck.Scripts.Managers
         private void WinCombat()
         {
             if (CurrentCombatStateType == CombatStateType.EndCombat) return;
-          
+            
+            AI_IntegrationManager.instance.OnEndGame();
             CurrentCombatStateType = CombatStateType.EndCombat;
            
             foreach (var allyBase in CurrentAlliesList)

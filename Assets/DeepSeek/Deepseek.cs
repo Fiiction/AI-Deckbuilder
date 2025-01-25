@@ -21,7 +21,9 @@ public struct Message {
     }
 }
 
-public static class Deepseek {
+public static class Deepseek
+{
+    public static string modelType = "deepseek-chat";
     private static readonly List<RequestRecord> _requestRecords = new List<RequestRecord>();
 
     /// <summary>
@@ -152,7 +154,7 @@ public static class Deepseek {
 
         var requestObject = new RequestMessage
         {
-            model = "deepseek-chat",
+            model = modelType,
             temperature = parameters.temperature,
             messages = ConvertMessages(messages, parameters.role),
         };
@@ -215,7 +217,7 @@ public static class Deepseek {
         var requestObject = new RequestMessage
         {
             
-            model = "deepseek-chat",
+            model = modelType,
             temperature = parameters.temperature,
             messages = ConvertMessages(messages, parameters.role),
         };

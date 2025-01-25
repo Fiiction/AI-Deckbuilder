@@ -4,6 +4,7 @@
     {
         Common,
         Rare,
-        Epic
+        Epic,
+        Legendary
     }
 }

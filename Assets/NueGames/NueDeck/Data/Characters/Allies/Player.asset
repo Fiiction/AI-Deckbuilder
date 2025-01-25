@@ -15,4 +15,4 @@ MonoBehaviour:
   characterID: player_example
   characterName: Player
   characterDescription: a mighty human fighter equiped with cybernetic boxing gloves
-  maxHealth: 150
+  maxHealth: 100

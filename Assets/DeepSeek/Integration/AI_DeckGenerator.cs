@@ -27,6 +27,19 @@ public class AI_DeckGenerator : MonoBehaviour
     [SerializeField, TextArea(8,12)] private string prompt_rareDescription;
     [SerializeField, TextArea(8,12)] private string prompt_rareCard;
     public List<CardData> rareCards = new List<CardData>();
+    
+    [Header("----- <color=#BB77FF>Epic Cards</color> -----")] 
+    [SerializeField] private int epicCardCnt = 3;
+    [SerializeField, TextArea(8,12)] private string prompt_epicDescription;
+    [SerializeField, TextArea(8,12)] private string prompt_epicCard;
+    public List<CardData> epicCards = new List<CardData>();
+    
+    [Header("----- <color=#FFAA55>Legend Cards</color> -----")] 
+    [SerializeField] private int legendCardCnt = 3;
+    [SerializeField, TextArea(8,12)] private string prompt_legendDescription;
+    [SerializeField, TextArea(8,12)] private string prompt_legendCard;
+    public List<CardData> legendCards = new List<CardData>();
+    
     public int cardGenerated = 0;
     string[] numbers = new []{"1st", "2nd", "3rd", "4th", "5th", "6th",
         "7th", "8th", "9th", "10th", "11th", "12th"};
@@ -141,8 +154,90 @@ public class AI_DeckGenerator : MonoBehaviour
     
     public void GenerateRareCards()
     {
+        //Debug.Break();
         StartCoroutine(GenerateRareCardsCoroutine());
     }
+    
+    IEnumerator GenerateEpicCardsCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        string prompt1Send = prompt_epicDescription;
+        prompt1Send = prompt1Send.Replace("##HeroName##", AI_IntegrationManager.instance.heroName);
+        prompt1Send = prompt1Send.Replace("##HeroDesc##", AI_IntegrationManager.instance.heroDesc);
+        prompt1Send = prompt1Send.Replace("##Total##", epicCardCnt.ToString());
+        
+        reply1 = "";
+        AI_IntegrationManager.instance.CardQueueRequest(prompt1Send, str =>{reply1 = str;});
+        
+        yield return new WaitWhile( () => reply1 == "");
+        
+        for (int i = 0; i < epicCardCnt; i++)
+        {
+            reply2 = "";
+            string prompt2Send = prompt_epicCard;
+            prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
+            prompt2Send = prompt2Send.Replace("##Total##", epicCardCnt.ToString());
+            
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;});
+            
+            yield return new WaitWhile( () => reply2 == "");
+            
+            CardDataReply cdr = AI_CardEffect.Decode<CardDataReply>(reply2);
+            CardData cd = ConvertCardData(cdr, RarityType.Epic);
+            epicCards.Add(cd);
+            
+        }
+        
+        //Debug.Log("Initial Deck Generation Complete!");
+    }
+    
+    public void GenerateEpicCards()
+    {
+        //Debug.Break();
+        StartCoroutine(GenerateEpicCardsCoroutine());
+    }
+
+    IEnumerator GenerateLegendCardsCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        string prompt1Send = prompt_legendDescription;
+        prompt1Send = prompt1Send.Replace("##HeroName##", AI_IntegrationManager.instance.heroName);
+        prompt1Send = prompt1Send.Replace("##HeroDesc##", AI_IntegrationManager.instance.heroDesc);
+        prompt1Send = prompt1Send.Replace("##Total##", legendCardCnt.ToString());
+        
+        reply1 = "";
+        AI_IntegrationManager.instance.CardQueueRequest(prompt1Send, str =>{reply1 = str;});
+        
+        yield return new WaitWhile( () => reply1 == "");
+        
+        for (int i = 0; i < legendCardCnt; i++)
+        {
+            reply2 = "";
+            string prompt2Send = prompt_legendCard;
+            prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
+            prompt2Send = prompt2Send.Replace("##Total##", legendCardCnt.ToString());
+            
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;});
+            
+            yield return new WaitWhile( () => reply2 == "");
+            
+            CardDataReply cdr = AI_CardEffect.Decode<CardDataReply>(reply2);
+            CardData cd = ConvertCardData(cdr, RarityType.Legendary);
+            legendCards.Add(cd);
+            
+        }
+        
+        //Debug.Log("Initial Deck Generation Complete!");
+    }
+    
+    public void GenerateLegendCards()
+    {
+        //Debug.Break();
+        StartCoroutine(GenerateLegendCardsCoroutine());
+    }
+    
     
     // Update is called once per frame
     void Update()

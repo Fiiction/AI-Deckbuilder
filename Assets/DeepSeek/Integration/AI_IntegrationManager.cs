@@ -26,9 +26,33 @@ public class AI_IntegrationManager : MonoBehaviour
 
     [SerializeField]
     private List<Message> _conversationSoFar = new();
+
+    public bool gameStartPending = false;
+    public int levelCnt = 0;
+    public int startGameMsgCnt = -1;
+    public int startTurnMsgCnt = -1;
+    private List<Message> _cardGenConversationSoFar = new();
+    public int cardGenMessageMerged = -1;
+    void CutConversation(int c)
+    {
+        _conversationSoFar = _conversationSoFar.Take(c).ToList();
+    }
+
+    void MergeCardGenMessages()
+    {
+        for(int i = cardGenMessageMerged; i < _cardGenConversationSoFar.Count; i++)
+            _conversationSoFar.Add(_cardGenConversationSoFar[i]);
+        cardGenMessageMerged = _cardGenConversationSoFar.Count;
+    }
+    public void StartTurnCutConversation()
+    {
+        if(startTurnMsgCnt > 0)
+            CutConversation(startTurnMsgCnt);
+        else
+            startGameMsgCnt = _conversationSoFar.Count;
+    }
     
     [SerializeField]
-    private List<Message> _cardGenConversationSoFar = new();
     void Awake()
     {
         if (instance != null && instance != this)
@@ -43,6 +67,8 @@ public class AI_IntegrationManager : MonoBehaviour
 
     public void Request(string str, Action<string> callback)
     {
+        if(str.Contains("##"))
+            Debug.LogError("Unfilled key found:\n" + str);
         _conversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("Request:\n" + str);
         Deepseek.Request(_conversationSoFar, deepseekParams,
@@ -57,6 +83,8 @@ public class AI_IntegrationManager : MonoBehaviour
 
     public void CardQueueRequest(string str, Action<string> callback)
     {
+        if(str.Contains("##"))
+            Debug.LogError("Unfilled key found:\n" + str);
         _cardGenConversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("Card Req:\n" + str);
         Deepseek.Request(_cardGenConversationSoFar, deepseekParams,
@@ -68,9 +96,16 @@ public class AI_IntegrationManager : MonoBehaviour
             }, null, null);
         
     }
-    public bool gameStartPending = false;
+
     public void SendStartGamePrompt()
     {
+        startGameMsgCnt = _conversationSoFar.Count;
+        startTurnMsgCnt = -1;
+        
+        Debug.Log("<b>Game Start</b>");
+        levelCnt++;
+        AI_CardEffect.instance.cardInTurnCnt = 0;
+        AI_CardEffect.instance.turnCnt = 0;
         gameStartPending = true;
         AI_CardEffect.instance.cardsUsedInBattle = 0;
         string promptToSend = startGamePrompt.Replace("##HeroName##", heroName)
@@ -85,9 +120,19 @@ public class AI_IntegrationManager : MonoBehaviour
 
         promptToSend = promptToSend.Replace("##EnemyDescs##", enemyDescs);
         
-        Request(promptToSend, _ => { gameStartPending = false; });
+        Request(promptToSend, _ => { gameStartPending = false; 
+            startTurnMsgCnt = _conversationSoFar.Count;});
     }
 
+    public void OnEndGame()
+    {
+        CutConversation(startGameMsgCnt);
+        if (levelCnt == 1)
+            AI_DeckGenerator.instance.GenerateEpicCards();
+        if (levelCnt == 2)
+            AI_DeckGenerator.instance.GenerateLegendCards();
+        MergeCardGenMessages();
+    }
     public void InitialResponse(string s)
     {
         baseInitPercentage += 20;
@@ -115,6 +160,7 @@ public class AI_IntegrationManager : MonoBehaviour
     {
         // Copy Contexts
         _cardGenConversationSoFar = new List<Message>(_conversationSoFar);
+        cardGenMessageMerged = _conversationSoFar.Count;
         Debug.Log("<color=#779fff><b> Init Generation Complete!</b></color> ");
         AI_DeckGenerator.instance.GenerateRareCards();
     }

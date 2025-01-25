@@ -43,11 +43,14 @@ public class AI_CardEffect : MonoBehaviour
 
     private string reply1 = "";
     private string reply2 = "";
-    string[] numbers = new []{"1st", "2nd", "3rd", "4th", "5th", "6th",
-        "7th", "8th", "9th", "10th", "11th", "12th"};
+    string[] numbers = {"1st", "2nd", "3rd", "4th", "5th", "6th",
+        "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th",
+        "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31th", "32th", "33th", "34th", "35th", "36th", "37th", "38th", "39th"};
     
     public List<CardActionData> actionDatas = new();
     public int cardsUsedInBattle = 0;
+    public int turnCnt = 0;
+    public int cardInTurnCnt = 0;
     
     
     
@@ -67,6 +70,7 @@ public class AI_CardEffect : MonoBehaviour
         userStatusStr = CharacterStatusString(self);
         
         processingCanvas.StartProcessing("Card Processing:");
+        cardInTurnCnt++;
         
         if(targetCharacter != null)
         {
@@ -96,7 +100,7 @@ public class AI_CardEffect : MonoBehaviour
             prompt1Sent = prompt1Sent.Replace("##ManaSpent##", card.CardData.ManaCost.ToString());
         }
         prompt1Sent = prompt1Sent.Replace("##Specific##",
-            (cardsUsedInBattle % 10 == 0 ? prompt_specific : ""));
+            (cardInTurnCnt <= 1 ? prompt_specific : ""));
         
         AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply2 = str;});
         //
@@ -123,7 +127,7 @@ public class AI_CardEffect : MonoBehaviour
                 yield return new WaitWhile( () => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
-                    p.value, p.buffname);
+                    p.value, p.buffname.ToLower());
                 actionDatas.Add(ad);
             }
             else
@@ -155,22 +159,35 @@ public class AI_CardEffect : MonoBehaviour
 
     IEnumerator AllyTurnStartEffectsCoroutine(CharacterBase self, Action callback)
     {
-        
+        yield return new WaitUntil(() => AI_IntegrationManager.instance.gameStartPending == false);
+        Debug.Log("<b>Turn Start</b>");
+        cardInTurnCnt = 0;
         processingCanvas.StartProcessing("Turn Start Processing:");
         float tick = Time.time;
         //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
         reply1 = "";
         reply2 = "";
         actionDatas = new();
-        
+        AI_IntegrationManager.instance.StartTurnCutConversation();
         var userData = (self as AllyBase).AllyCharacterData;
 
         userName = userData.CharacterName;
         userDesc = userData.CharacterDescription;
         userStatusStr = CharacterStatusString(self);
+
+        string enemiesDesc = "";
+        foreach (var e in CombatManager.Instance.CurrentEnemiesList)
+        {
+            enemiesDesc += " - " + e.EnemyCharacterData.CharacterName
+                                 + ", " + CharacterStatusString(e) + "\n";
+        }
         
         prompt1Sent = prompt_StartTurn1.Replace("##PlayerDesc##", userDesc)
-            .Replace("##PlayerCustomStatus##", userStatusStr);
+            .Replace("##PlayerCustomStatus##", userStatusStr)
+            .Replace("##No##", numbers[turnCnt])
+            .Replace("##EnemiesDesc##", enemiesDesc);
+        
+        turnCnt++;
         
         AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;});
         
@@ -191,7 +208,7 @@ public class AI_CardEffect : MonoBehaviour
                 yield return new WaitWhile( () => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
-                    p.value, p.buffname);
+                    p.value, p.buffname.ToLower());
                 actionDatas.Add(ad);
             }
             else
@@ -275,7 +292,7 @@ public class AI_CardEffect : MonoBehaviour
                 yield return new WaitWhile(() => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
-                    p.value, p.buffname);
+                    p.value, p.buffname.ToLower());
                 actionDatas.Add(ad);
             }
             else
@@ -412,7 +429,9 @@ public class AI_CardEffect : MonoBehaviour
     
     public static CardActionType StringToActionType(string str)
     {
-        switch (str.ToLower())
+        string s = str.ToLower();
+        s = s.Split(':')[0].Trim();
+        switch (s)
         {
            case "deal damage": return CardActionType.Attack;
            case "heal": return CardActionType.Heal;
@@ -471,7 +490,9 @@ public class AI_CardEffect : MonoBehaviour
     }
     public static ActionTargetType StringToActionTarget(string str)
     {
-        switch (str.ToLower())
+        string s = str.ToLower();
+        s = s.Split(':')[0].Trim();
+        switch (s)
         {
             case "self": return ActionTargetType.Hero;
             case "targetenemy": return ActionTargetType.Enemy;

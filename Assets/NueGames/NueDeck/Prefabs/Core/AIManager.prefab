@@ -45,16 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db81833cc9a238a4b93475a910009467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt1_withTarget: "The player, as ##PlayerName## ##PlayerCustomStatus##, using
-    following card:\r\n\r\n##CardName##: ##CardDesc##, spending ##ManaSpent## mana\r\n\rtargeting
+  prompt1_withTarget: "The player, as ##PlayerName## ##PlayerCustomStatus##, spends
+    ##ManaSpent## mana to use following card:\r\n\r\n##CardName##: ##CardDesc##\n\r\n\rtargeting
     following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##.\r\n\r\nWhat
     will happen? Please consider the card used in the past. Describe with natural
     language within 20 words.\r\n\r\nThen answer with following structure, what will
     be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease reply with one
     single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal Damage\",
     \"Draw\", \"Steal Life\"]\r\n}"
-  prompt1_noTarget: "The player, as ##PlayerName## ##PlayerCustomStatus##, using
-    following card:\r\n\r\n##CardName##: ##CardDesc##, spending ##ManaSpent## mana\r\n\r\n\r\nWhat
+  prompt1_noTarget: "The player, as ##PlayerName## ##PlayerCustomStatus##, spends
+    ##ManaSpent## mana to use following card:\r\n\r\n##CardName##: ##CardDesc##\n\r\nWhat
     will happen? Please consider the card used in the past. Describe with natural
     language within 20 words.\r\n\r\nThen answer with following structure, what will
     be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease reply with one
@@ -66,31 +66,34 @@ MonoBehaviour:
   prompt_specific: "\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
     Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
     stacks of block, blocking same amount of upcoming damage\r\r\n- Draw: draw cards\r\n-
-    Gain Mana: gain mana to do more actions in this turn\r\n- Steal Life: steal life
-    from the target like a vampire\r\n- Stun: stunning the object, prevent it to
-    move in following rounds\r\n- Destroy the Card: destroying the card used permanently\r\n-
-    Add Custom Status: add/remove custom buff or debuff to object. Please store any
-    effects that need to be checked out in the future as custom status\n\nThe object
-    of each of these effects can be the user, the targeted enemy or all enemies,
-    which will be chosen later.\nYou can choose one same effect 2 or more times,
-    if it's dealt on different objects, or casting 2 different custom effect at the
-    same time.\r\n\r"
+    Gain Mana: gain mana to do more actions in this turn\r\n- Stun: stunning the
+    object, prevent it to move in following rounds\r\n- Destroy the Card: destroying
+    the card used permanently\r\n- Add Custom Status: add/remove custom buff or debuff
+    to object. Please store any effects that need to be checked out in the future
+    as custom status\n\nThe object of each of these effects can be the user, the
+    targeted enemy or all enemies, which will be chosen later.\nYou can choose one
+    same effect 2 or more times, if it's dealt on different objects, or casting 2
+    different custom effect at the same time.\r\n\r"
   prompt3_Normal: "For the ##No## effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (content in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
-    or \"AllEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##) \r\n}"
+    or \"AllEnemies\". Do NOT use enemy's name.)\r\n\t\"value\": 3 (indicates ##ValueMeaning##)
+    \r\n}"
   prompt3_CustomEffect: "For the ##No## effect \"Add Custom Status\", what's the
     name of status, the target and the numeric value of this effect:\r\n\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
     \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
-    etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\")\r\n\t\"value\":
-    3 (indicates how many stacks of this status are casted on target. Minus value
-    to clear) \r\n}\r\n"
+    etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\".  Do NOT
+    use enemy's name.)\r\n\t\"value\": 3 (indicates how many stacks of this status
+    are casted on target. Minus value to clear) \r\n}\r\n"
   prompt_StartTurn1: "Now player, ##PlayerDesc## ##PlayerCustomStatus##, starts a
-    new turn.\r\nAccording the custom status they have and cards they played, will
-    there be effects at the start of the turn?\r\nPlease reply with one single json
-    format:\r\n{\r\n\t\"effects\": [\"Deal Damage\",  \"Draw\", \"Gain Mana\"]\r\n}\r\nif
-    there won't be turn-start effects, reply with:\r\n{\r\n\t\"effects\": []\r\n}"
+    new turn. This is the ##No## turn in this fight. There are following enemy(s)
+    in the scene:\n\n##EnemiesDesc##\n\r\nAccording the custom status the hero has
+    and cards they played, will there be effects at the start of the turn? You don't
+    need to mention the cards naturally drawn and mana natrually gain.\r\nPlease
+    reply with one single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", 
+    \"Draw\", \"Gain Mana\"]\r\n}\r\nif there won't be turn-start effects, reply
+    with:\r\n{\r\n\t\"effects\": []\r\n}"
   prompt_EnemyTurn1: "Now an enemy, ##EnemyName##, ##EnemyDesc## ##EnemyCustomStatus##
     takes its turn.\r\nIt want to perform an action, ##EnemyActionName##, ##EnemyActionDesc##.\r\nWhat
     will be the effects of their status and actions?\r\n\r\nThe effect(s) can be
@@ -103,16 +106,22 @@ MonoBehaviour:
   prompt3_Normal_Enemy: "For the effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (content in parentheses are comments)\r\n{\r\n\t\"target\": \"hero\", (or \"enemySelf\"
-    or \"allEnemies\")\r\n\t\"value\": 3 (indicates ##ValueMeaning##) \r\n}"
+    standing for the acting enemy itself, or \"allEnemies\" standing for all enemy
+    units. Do NOT use character's name.)\r\n\t\"value\": 3 (indicates ##ValueMeaning##)
+    \r\n}"
   prompt3_CustomEffect_Enemy: "For the effect \"Add Custom Status\", what's the name
     of status, the target and the numeric value of this effect:\r\n\r\n\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
     \"poison\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
-    etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" or \"allEnemies\")\r\n\t\"value\":
-    3 (indicates how many stacks of this status are casted on target) \r\n}\r\n"
+    etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" standing for the acting enemy
+    itself, or \"allEnemies\" standing for all enemy units. Do NOT use character's
+    name.)\r\n\t\"value\": 3 (indicates how many stacks of this status are casted
+    on target) \r\n}\r\n"
   processingCanvas: {fileID: 1978969409886390374}
   actionDatas: []
   cardsUsedInBattle: 0
+  turnCnt: 0
+  cardInTurnCnt: 0
 --- !u!1 &1605598397388320318
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,16 +219,14 @@ MonoBehaviour:
     \"Punch\",\r\n\t\"description\": \"Punch the targeted enemy with mighty power.\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": true,\r\n\t\"prompt\": \"Punch, dynamic, sense of power,
     big fist, single fist with sense of power,\" (prompt for card image generation.
-    Try not include character in card image and describe a dynamic action, emphasizing
-    the attacking intention) \r\n}"
+    Try describe a dynamic action, emphasizing the attacking intention) \r\n}"
   prompt_basicCard2: "Now please specify the design of the basic defence(blocking)
     card.\r\nPlease reply with following json format: (content in parentheses are
     comments)\r\n{\r\n\t\"cardName\": \"Arcane Barrier\",\r\n\t\"description\": \"Focus
     arcane energy to form a barrier, neutralizing upcoming damage.\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": false,(if this card need a single enemy as target)\r\n\t\"prompt\":
     \"Arcane Barrier, magical power, blue sphere, blue aura, magical,\" (prompt for
-    card image generation. Try not include character in card image and describe a
-    dynamic action) \n}"
+    card image generation. Try describe a dynamic action) \n}"
   prompt_basicCard3: "Now please specify the design of the special supporting card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Energy Charge\",\r\n\t\"description\": \"Charge up electro energy, enpower
@@ -235,11 +242,11 @@ MonoBehaviour:
     Cascade, huge barrage with magical shoots, magical attack,\" (prompt for card
     image generation. Try not include character in card image and describe a dynamic
     action) \r\n}"
-  rareCardCnt: 6
+  rareCardCnt: 4
   prompt_rareDescription: 'Now I need you to design the rare cards for the hero ##HeroName##,
     ##HeroDesc##.
 
-    You need to design ##RareCnt## rare cards. They should cover
+    You need to design ##Total## rare cards. They should cover
     different intents (attack, defense, strengthening, resources, support, etc.),
     and different costs.
 
@@ -258,8 +265,60 @@ MonoBehaviour:
     \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
     \"magical power, magic chanting, huge energy flow\" (prompt for card image generation.
-    Try not include character in card image and describe a dynamic action)  \r\n}\r\n"
+    Try describe a dynamic action)  \r\n}\r\n"
   rareCards: []
+  epicCardCnt: 3
+  prompt_epicDescription: 'Now I need you to design the epic cards for the hero ##HeroName##,
+    ##HeroDesc##.
+
+    You need to design ##Total## epic cards. They should cover
+    different intents (attack, defense, strengthening, resources, support, etc.),
+    and different costs.
+
+    Epic cards can be more powerful, with wilder designs,
+    and emphasize the playstyle of the hero.
+
+
+    Please think about the hero''s
+    narrative and play style in this game before designing.
+
+    Describe your process
+    of synthesizing and designing these rare cards, and then describe the design
+    of ##Total## cards in natural language. Don''t reply with json.'
+  prompt_epicCard: "Now I need you to specify the design of ##Number## out of ##Total##
+    epic cards.\r\n\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
+    \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
+    0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
+    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation.
+    Try describe a dynamic action)  \r\n}\r\n"
+  epicCards: []
+  legendCardCnt: 3
+  prompt_legendDescription: 'Now I need you to design the legendary cards for the
+    hero ##HeroName##, ##HeroDesc##.
+
+    You need to design ##Total## legendary
+    cards. They should cover different intents (attack, defense, strengthening, resources,
+    support, etc.), and different costs.
+
+    Legendary cards should be most powerful
+    (this does not mean they have higher costs), and most tasteful in term of playstyles.
+
+
+    Please
+    think about the hero''s narrative and play style in this game before designing.
+
+    Describe
+    your process of synthesizing and designing these rare cards, and then describe
+    the design of ##Total## cards in natural language. Don''t reply with json.'
+  prompt_legendCard: "Now I need you to specify the design of ##Number## out of ##Total##
+    legendary cards.\r\n\r\nPlease reply with following json format: (content in
+    parentheses are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
+    \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
+    0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
+    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation.
+    Try describe a dynamic action)  \r\n}\r\n"
+  legendCards: []
   cardGenerated: 0
 --- !u!1 &1824853098471007931
 GameObject:
@@ -328,8 +387,8 @@ MonoBehaviour:
     seed: 0
     steps: 6
     cfg_scale: 2
-    width: 720
-    height: 1080
+    width: 768
+    height: 1152
     restore_faces: 0
     batch_size: 1
   cardConfig:
@@ -337,18 +396,18 @@ MonoBehaviour:
     scheduler: Karras
     prompt: ', detailed anime style, flat colors, game icon, dynamic, dynamic scene,
       <lora:anime_game_icon:1>'
-    negative_prompt: portrait, character art, character illustration, lowres, bad
-      anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits,
+    negative_prompt: symmetry, portrait, character art, character illustration, lowres,
+      bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits,
       cropped, worst quality, low quality, jpeg artifacts, signature, watermark,
       username, blurry, ugly,pregnant,vore,duplicate,morbid,mut ilated,long neck,mutated
       hands,poorly drawn hands,poorly drawn face,mutation,deformed,blurry, (((missing
       arms))),(((missing legs))), (((extra arms))),(((extra legs))),pubic hair, plump,bad
       legs,error legs,username,blurry,bad feet, cgi, 3d render,
     seed: 0
-    steps: 6
+    steps: 4
     cfg_scale: 2
-    width: 512
-    height: 512
+    width: 640
+    height: 640
     restore_faces: 0
     batch_size: 1
   rembgConfig:
@@ -570,7 +629,7 @@ MonoBehaviour:
   initFinished: 0
   deepseekParams:
     apiKey: sk-7bf38df2ed1245ce9dfd5ab62346449c
-    temperature: 2
+    temperature: 0.4
     role: 
     timeout: 0
     throttle: 0
@@ -601,8 +660,11 @@ MonoBehaviour:
 
     Please reply with "I understand."'
   _conversationSoFar: []
-  _cardGenConversationSoFar: []
   gameStartPending: 0
+  levelCnt: 0
+  startGameMsgCnt: -1
+  startTurnMsgCnt: -1
+  cardGenMessageMerged: -1
 --- !u!1 &6531438614489677539
 GameObject:
   m_ObjectHideFlags: 0
