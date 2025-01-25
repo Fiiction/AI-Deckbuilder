@@ -450,7 +450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serverAddress: http://127.0.0.1:8188
   promptJson: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 428732650476192,\r\n     
-    \"steps\": 8,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
+    \"steps\": 6,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
     \"scheduler\": \"sgm_uniform\",\r\n      \"denoise\": 1,\r\n      \"model\":
     [\r\n        \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n       
     \"6\",\r\n        0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n       
@@ -460,7 +460,7 @@ MonoBehaviour:
     \"ckpt_name\": \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n    },\r\n   
     \"class_type\": \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n      \"title\":
     \"Load Checkpoint\"\r\n    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\": {\r\n     
-    \"width\": 1024,\r\n      \"height\": 1024,\r\n      \"batch_size\": 1\r\n   
+    \"width\": 1024,\r\n      \"height\": 1152,\r\n      \"batch_size\": 1\r\n   
     },\r\n    \"class_type\": \"EmptyLatentImage\",\r\n    \"_meta\": {\r\n     
     \"title\": \"Empty Latent Image\"\r\n    }\r\n  },\r\n  \"6\": {\r\n    \"inputs\":
     {\r\n      \"text\": \"##Prompt##, solo, character art, character illustration,
@@ -505,7 +505,7 @@ MonoBehaviour:
     \"class_type\": \"CLIPSetLastLayer\",\r\n    \"_meta\": {\r\n      \"title\":
     \"CLIP Set Last Layer\"\r\n    }\r\n  }\r\n}"
   cardJson: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 428732650476192,\r\n     
-    \"steps\": 8,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
+    \"steps\": 4,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
     \"scheduler\": \"sgm_uniform\",\r\n      \"denoise\": 1,\r\n      \"model\":
     [\r\n        \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n       
     \"6\",\r\n        0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n       
@@ -515,7 +515,7 @@ MonoBehaviour:
     \"ckpt_name\": \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n    },\r\n   
     \"class_type\": \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n      \"title\":
     \"Load Checkpoint\"\r\n    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\": {\r\n     
-    \"width\": 1024,\r\n      \"height\": 1024,\r\n      \"batch_size\": 1\r\n   
+    \"width\": 640,\r\n      \"height\":  640,\r\n      \"batch_size\": 1\r\n   
     },\r\n    \"class_type\": \"EmptyLatentImage\",\r\n    \"_meta\": {\r\n     
     \"title\": \"Empty Latent Image\"\r\n    }\r\n  },\r\n  \"6\": {\r\n    \"inputs\":
     {\r\n      \"text\": \"##Prompt##, detailed anime style, flat colors, game icon,
@@ -541,8 +541,8 @@ MonoBehaviour:
     {\r\n    \"inputs\": {\r\n      \"vae_name\": \"sdxl_vae.safetensors\"\r\n   
     },\r\n    \"class_type\": \"VAELoader\",\r\n    \"_meta\": {\r\n      \"title\":
     \"Load VAE\"\r\n    }\r\n  },\r\n  \"13\": {\r\n    \"inputs\": {\r\n      \"lora_name\":
-    \"anime_game_icon.safetensors\",\r\n      \"strength_model\": 0.6,\r\n      \"strength_clip\":
-    0.6,\r\n      \"model\": [\r\n        \"4\",\r\n        0\r\n      ],\r\n     
+    \"anime_game_icon.safetensors\",\r\n      \"strength_model\": 1,\r\n      \"strength_clip\":
+    1,\r\n      \"model\": [\r\n        \"4\",\r\n        0\r\n      ],\r\n     
     \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n    },\r\n    \"class_type\":
     \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load LoRA\"\r\n   
     }\r\n  },\r\n  \"14\": {\r\n    \"inputs\": {\r\n      \"stop_at_clip_layer\":
