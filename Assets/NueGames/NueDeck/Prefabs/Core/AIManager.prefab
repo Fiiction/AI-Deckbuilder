@@ -194,54 +194,46 @@ MonoBehaviour:
     Please consider what''s the hero''s play style in a turn-based card
     game.
 
-    Please tell me with natural language, what could be the name, narrative
-    design, visual, and the effect in gameplay of those 4 unique cards.
+    Please also design the illustration of these cards. They should look
+    unique and distinctive in colors and other visual elements.
 
-
-    Player
-    can spend 3 manas to use cards on each turn. Cards represent protagonist''s actions.
-
-    Most
-    cards cost 1 mana. Very powerful moves will cost 2 or 3 mana. 0-mana cards represent
-    swift but weaker moves.
-
-    The effects of a card include dealing damage to
-    target, healing the user, adding tacks of "block" (blocking same amount of upcoming
-    damage), applying buff to user or casting debuff to targets.
-
-    Typically,
-    one cost cards are worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff.
-    Cards with higher rarity can be stronger.
-
-'
+    Please tell
+    me with natural language, what could be the name, narrative design, visual, and
+    the effect in gameplay of those 4 unique cards.'
   prompt_basicCard1: "Now please specify the design of the basic attack card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Punch\",\r\n\t\"description\": \"Punch the targeted enemy with mighty power.\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": true,\r\n\t\"prompt\": \"Punch, dynamic, sense of power,
-    big fist, single fist with sense of power,\" (prompt for card image generation.
-    Try describe a dynamic action, emphasizing the attacking intention) \r\n}"
+    big fist, single fist with sense of power,\" (prompt for Stable Diffusion card
+    image generation. Try describe a dynamic action, emphasizing the attacking intention)
+    \r\n}"
   prompt_basicCard2: "Now please specify the design of the basic defence(blocking)
     card.\r\nPlease reply with following json format: (content in parentheses are
     comments)\r\n{\r\n\t\"cardName\": \"Arcane Barrier\",\r\n\t\"description\": \"Focus
     arcane energy to form a barrier, neutralizing upcoming damage.\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": false,(if this card need a single enemy as target)\r\n\t\"prompt\":
     \"Arcane Barrier, magical power, blue sphere, blue aura, magical,\" (prompt for
-    card image generation. Try describe a dynamic action) \n}"
+    Stable Diffusion card image generation. Try describe a dynamic action. Images
+    of different cards should look unique and distinctive, in colors and other visual
+    elements.) \n}"
   prompt_basicCard3: "Now please specify the design of the special supporting card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Energy Charge\",\r\n\t\"description\": \"Charge up electro energy, enpower
     future attacks in this game.\",\r\n\t\"manaCost\": 2,\r\n\t\"needTarget\": false,
     (if this card need a single enemy as target)\r\n\t\"prompt\": \"Charging Energy,
-    gathering energy, cybernetic,\" (prompt for card image generation. Try not include
-    character in card image and describe a dynamic action) \r\n}"
+    gathering energy, cybernetic,\" (prompt for Stable Diffusion card image generation.
+    Try not include character in card image and describe a dynamic action.  Images
+    of different cards should look unique and distinctive, in colors and other visual
+    elements.) \r\n}"
   prompt_basicCard4: "Now please specify the design of the special offensive card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Arcane Cascade\",\r\n\t\"description\": \"Spend a huge amount of arcane energy,
     deal a lot of damage to all enemies.\",\r\n\t\"manaCost\": 3,\r\n\t\"needTarget\":
     false, (if this card need a single enemy as target)\r\n\t\"prompt\": \"Arcane
-    Cascade, huge barrage with magical shoots, magical attack,\" (prompt for card
-    image generation. Try not include character in card image and describe a dynamic
-    action) \r\n}"
+    Cascade, huge barrage with magical shoots, magical attack,\" (prompt for Stable
+    Diffusion card image generation. Try describe a dynamic action. Images of different
+    cards should look unique and distinctive, in colors and other visual elements)
+    \r\n}"
   rareCardCnt: 4
   prompt_rareDescription: 'Now I need you to design the rare cards for the hero ##HeroName##,
     ##HeroDesc##.
@@ -256,16 +248,21 @@ MonoBehaviour:
     Please
     think about the hero''s narrative and play style in this game before designing.
 
-    Describe
-    your process of synthesizing and designing these rare cards, and then describe
-    the design of ##Total## cards in natural language. Don''t reply with json.'
+    Please
+    also design the illustration of these cards. They should look unique and distinctive
+    in colors and other visual elements.
+
+    Describe your process of synthesizing
+    and designing these rare cards, and then describe the design of ##Total## cards
+    in natural language. Don''t reply with json.'
   prompt_rareCard: "Now I need you to specify the design of ##Number## out of ##Total##
     rare cards.\r\n\r\nPlease reply with following json format: (content in parentheses
     are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
     \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
-    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation.
-    Try describe a dynamic action)  \r\n}\r\n"
+    \"magical power, magic chanting, huge energy flow\" (prompt for Stable Diffusion
+    card image generation. Images of different cards should look unique and distinctive,
+    in colors and other visual elements.) \r\n}\r\n"
   rareCards: []
   epicCardCnt: 3
   prompt_epicDescription: 'Now I need you to design the epic cards for the hero ##HeroName##,
@@ -282,16 +279,21 @@ MonoBehaviour:
     Please think about the hero''s
     narrative and play style in this game before designing.
 
-    Describe your process
-    of synthesizing and designing these rare cards, and then describe the design
-    of ##Total## cards in natural language. Don''t reply with json.'
+    Please also design
+    the illustration of these cards. They should look unique and distinctive in colors
+    and other visual elements.
+
+    Describe your process of synthesizing and designing
+    these rare cards, and then describe the design of ##Total## cards in natural
+    language. Don''t reply with json.'
   prompt_epicCard: "Now I need you to specify the design of ##Number## out of ##Total##
     epic cards.\r\n\r\nPlease reply with following json format: (content in parentheses
     are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
     \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
-    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation.
-    Try describe a dynamic action)  \r\n}\r\n"
+    \"magical power, magic chanting, huge energy flow\" (prompt for Stable Diffusion
+    card image generation. Images of different cards should look unique and distinctive,
+    in colors and other visual elements.) \r\n}\r\n"
   epicCards: []
   legendCardCnt: 3
   prompt_legendDescription: 'Now I need you to design the legendary cards for the
@@ -308,16 +310,21 @@ MonoBehaviour:
     Please
     think about the hero''s narrative and play style in this game before designing.
 
-    Describe
-    your process of synthesizing and designing these rare cards, and then describe
-    the design of ##Total## cards in natural language. Don''t reply with json.'
+    Please
+    also design the illustration of these cards. They should look unique and distinctive
+    in colors and other visual elements.
+
+    Describe your process of synthesizing
+    and designing these rare cards, and then describe the design of ##Total## cards
+    in natural language. Don''t reply with json.'
   prompt_legendCard: "Now I need you to specify the design of ##Number## out of ##Total##
     legendary cards.\r\n\r\nPlease reply with following json format: (content in
     parentheses are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
     \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
-    \"magical power, magic chanting, huge energy flow\" (prompt for card image generation.
-    Try describe a dynamic action)  \r\n}\r\n"
+    \"magical power, magic chanting, huge energy flow\" (prompt for Stable Diffusion
+    card image generation. Images of different cards should look unique and distinctive,
+    in colors and other visual elements.) \r\n}\r\n"
   legendCards: []
   cardGenerated: 0
 --- !u!1 &1824853098471007931
@@ -448,26 +455,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f79945781b6eb3b469512ff72c92081f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverAddress: http://127.0.0.1:8188
-  promptJson: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 428732650476192,\r\n     
-    \"steps\": 6,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
-    \"scheduler\": \"sgm_uniform\",\r\n      \"denoise\": 1,\r\n      \"model\":
-    [\r\n        \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n       
-    \"6\",\r\n        0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n       
-    0\r\n      ],\r\n      \"latent_image\": [\r\n        \"5\",\r\n        0\r\n     
-    ]\r\n    },\r\n    \"class_type\": \"KSampler\",\r\n    \"_meta\": {\r\n     
-    \"title\": \"KSampler\"\r\n    }\r\n  },\r\n  \"4\": {\r\n    \"inputs\": {\r\n     
-    \"ckpt_name\": \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n    },\r\n   
-    \"class_type\": \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n      \"title\":
-    \"Load Checkpoint\"\r\n    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\": {\r\n     
-    \"width\": 1024,\r\n      \"height\": 1152,\r\n      \"batch_size\": 1\r\n   
-    },\r\n    \"class_type\": \"EmptyLatentImage\",\r\n    \"_meta\": {\r\n     
-    \"title\": \"Empty Latent Image\"\r\n    }\r\n  },\r\n  \"6\": {\r\n    \"inputs\":
-    {\r\n      \"text\": \"##Prompt##, solo, character art, character illustration,
-    ((full-body portrait)), ((full body)), (full-length picture), white background, 
-    simple background,  standing, no background, anime, standing from head to toe,
-    no cropping, head-to-toe, entire body visible, in full view\",\r\n      \"clip\":
-    [\r\n        \"13\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
+  serverAddress: http://183.221.20.189:60032
+  promptJson: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 391040902686028,\r\n     
+    \"steps\": 8,\r\n      \"cfg\": 2,\r\n      \"sampler_name\": \"dpmpp_sde\",\r\n     
+    \"scheduler\": \"karras\",\r\n      \"denoise\": 1,\r\n      \"model\": [\r\n       
+    \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n        \"6\",\r\n       
+    0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n        0\r\n     
+    ],\r\n      \"latent_image\": [\r\n        \"5\",\r\n        0\r\n      ]\r\n   
+    },\r\n    \"class_type\": \"KSampler\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"KSampler\"\r\n    }\r\n  },\r\n  \"4\": {\r\n    \"inputs\": {\r\n      \"ckpt_name\":
+    \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n    },\r\n    \"class_type\":
+    \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n      \"title\": \"Load Checkpoint\"\r\n   
+    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\": {\r\n      \"width\": 1024,\r\n     
+    \"height\": 1280,\r\n      \"batch_size\": 1\r\n    },\r\n    \"class_type\":
+    \"EmptyLatentImage\",\r\n    \"_meta\": {\r\n      \"title\": \"Empty Latent
+    Image\"\r\n    }\r\n  },\r\n  \"6\": {\r\n    \"inputs\": {\r\n      \"text\":
+    \"##Prompt##, solo, character art, character illustration, ((full-body portrait)),
+    ((full body)), (full-length picture), white background,  simple background, 
+    standing, no background, anime, standing from head to toe, no cropping, head-to-toe,
+    entire body visible, centered in the frame, in full view, sketch\",\r\n     
+    \"clip\": [\r\n        \"13\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
     \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n      \"title\": \"CLIP Text Encode
     (Prompt)\"\r\n    }\r\n  },\r\n  \"7\": {\r\n    \"inputs\": {\r\n      \"text\":
     \",NSFW, (closeup:2), (bust shot:2), (half shot:2), cropping, (((no feet))),
@@ -480,32 +487,41 @@ MonoBehaviour:
     drawn face,mutation,deformed,blurry,bad anatomy,bad proportions,malformed limbs,extra
     limbs,cloned face,disfigured,gross proportions, (((missing arms))),(((missing
     legs))), (((extra arms))),(((extra legs))),pubic hair, plump,bad legs,error legs,username,blurry,bad
-    feet, messy\\n\",\r\n      \"clip\": [\r\n        \"13\",\r\n        1\r\n     
+    feet, messy\",\r\n      \"clip\": [\r\n        \"13\",\r\n        1\r\n     
     ]\r\n    },\r\n    \"class_type\": \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n     
     \"title\": \"CLIP Text Encode (Prompt)\"\r\n    }\r\n  },\r\n  \"8\": {\r\n   
     \"inputs\": {\r\n      \"samples\": [\r\n        \"3\",\r\n        0\r\n     
     ],\r\n      \"vae\": [\r\n        \"11\",\r\n        0\r\n      ]\r\n    },\r\n   
     \"class_type\": \"VAEDecode\",\r\n    \"_meta\": {\r\n      \"title\": \"VAE
     Decode\"\r\n    }\r\n  },\r\n  \"9\": {\r\n    \"inputs\": {\r\n      \"filename_prefix\":
-    \"ComfyUI\",\r\n      \"images\": [\r\n        \"10\",\r\n        0\r\n     
+    \"ComfyUI\",\r\n      \"images\": [\r\n        \"15\",\r\n        0\r\n     
     ]\r\n    },\r\n    \"class_type\": \"SaveImage\",\r\n    \"_meta\": {\r\n     
-    \"title\": \"Save Image\"\r\n    }\r\n  },\r\n  \"10\": {\r\n    \"inputs\":
-    {\r\n      \"image\": [\r\n        \"8\",\r\n        0\r\n      ]\r\n    },\r\n   
-    \"class_type\": \"Remove Image Background (abg)\",\r\n    \"_meta\": {\r\n     
-    \"title\": \"Remove Image Background (abg)\"\r\n    }\r\n  },\r\n  \"11\": {\r\n   
-    \"inputs\": {\r\n      \"vae_name\": \"sdxl_vae.safetensors\"\r\n    },\r\n   
-    \"class_type\": \"VAELoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load
-    VAE\"\r\n    }\r\n  },\r\n  \"13\": {\r\n    \"inputs\": {\r\n      \"lora_name\":
-    \"fgo_sprites_xl_lora.safetensors\",\r\n      \"strength_model\": 0.2,\r\n     
-    \"strength_clip\": 0.2,\r\n      \"model\": [\r\n        \"4\",\r\n        0\r\n     
-    ],\r\n      \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n    },\r\n   
-    \"class_type\": \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load
-    LoRA\"\r\n    }\r\n  },\r\n  \"14\": {\r\n    \"inputs\": {\r\n      \"stop_at_clip_layer\":
-    -2,\r\n      \"clip\": [\r\n        \"4\",\r\n        1\r\n      ]\r\n    },\r\n   
-    \"class_type\": \"CLIPSetLastLayer\",\r\n    \"_meta\": {\r\n      \"title\":
-    \"CLIP Set Last Layer\"\r\n    }\r\n  }\r\n}"
+    \"title\": \"Save Image\"\r\n    }\r\n  },\r\n  \"11\": {\r\n    \"inputs\":
+    {\r\n      \"vae_name\": \"sdxl_vae.safetensors\"\r\n    },\r\n    \"class_type\":
+    \"VAELoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load VAE\"\r\n    }\r\n 
+    },\r\n  \"13\": {\r\n    \"inputs\": {\r\n      \"lora_name\": \"fgo_sprites_xl_lora.safetensors\",\r\n     
+    \"strength_model\": 0.3,\r\n      \"strength_clip\": 0.3,\r\n      \"model\":
+    [\r\n        \"16\",\r\n        0\r\n      ],\r\n      \"clip\": [\r\n       
+    \"16\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\": \"LoraLoader\",\r\n   
+    \"_meta\": {\r\n      \"title\": \"Load LoRA\"\r\n    }\r\n  },\r\n  \"14\":
+    {\r\n    \"inputs\": {\r\n      \"stop_at_clip_layer\": -2,\r\n      \"clip\":
+    [\r\n        \"4\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
+    \"CLIPSetLastLayer\",\r\n    \"_meta\": {\r\n      \"title\": \"CLIP Set Last
+    Layer\"\r\n    }\r\n  },\r\n  \"15\": {\r\n    \"inputs\": {\r\n      \"transparency\":
+    true,\r\n      \"model\": \"isnet-anime\",\r\n      \"post_processing\": false,\r\n     
+    \"only_mask\": false,\r\n      \"alpha_matting\": false,\r\n      \"alpha_matting_foreground_threshold\":
+    240,\r\n      \"alpha_matting_background_threshold\": 10,\r\n      \"alpha_matting_erode_size\":
+    10,\r\n      \"background_color\": \"none\",\r\n      \"images\": [\r\n       
+    \"8\",\r\n        0\r\n      ]\r\n    },\r\n    \"class_type\": \"Image Rembg
+    (Remove Background)\",\r\n    \"_meta\": {\r\n      \"title\": \"Image Rembg
+    (Remove Background)\"\r\n    }\r\n  },\r\n  \"16\": {\r\n    \"inputs\": {\r\n     
+    \"lora_name\": \"Sketched_Out_Manga-000007.safetensors\",\r\n      \"strength_model\":
+    0.6,\r\n      \"strength_clip\": 0.6,\r\n      \"model\": [\r\n        \"4\",\r\n       
+    0\r\n      ],\r\n      \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n   
+    },\r\n    \"class_type\": \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"Load LoRA\"\r\n    }\r\n  }\r\n}"
   cardJson: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 428732650476192,\r\n     
-    \"steps\": 4,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
+    \"steps\": 8,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
     \"scheduler\": \"sgm_uniform\",\r\n      \"denoise\": 1,\r\n      \"model\":
     [\r\n        \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n       
     \"6\",\r\n        0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n       
@@ -515,20 +531,18 @@ MonoBehaviour:
     \"ckpt_name\": \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n    },\r\n   
     \"class_type\": \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n      \"title\":
     \"Load Checkpoint\"\r\n    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\": {\r\n     
-    \"width\": 640,\r\n      \"height\":  640,\r\n      \"batch_size\": 1\r\n   
+    \"width\": 1024,\r\n      \"height\": 1024,\r\n      \"batch_size\": 1\r\n   
     },\r\n    \"class_type\": \"EmptyLatentImage\",\r\n    \"_meta\": {\r\n     
     \"title\": \"Empty Latent Image\"\r\n    }\r\n  },\r\n  \"6\": {\r\n    \"inputs\":
-    {\r\n      \"text\": \"##Prompt##, detailed anime style, flat colors, game icon,
-    dynamic, dynamic scene,\",\r\n      \"clip\": [\r\n        \"13\",\r\n       
-    1\r\n      ]\r\n    },\r\n    \"class_type\": \"CLIPTextEncode\",\r\n    \"_meta\":
-    {\r\n      \"title\": \"CLIP Text Encode (Prompt)\"\r\n    }\r\n  },\r\n  \"7\":
-    {\r\n    \"inputs\": {\r\n      \"text\": \"symmetry, portrait, character art,
-    character illustration, lowres, bad anatomy, bad hands, text, error, missing
-    fingers, extra digit, fewer digits, cropped, worst quality, low quality, jpeg
-    artifacts, signature, watermark, username, blurry, ugly,pregnant,vore,duplicate,morbid,mut
-    ilated,long neck,mutated hands,poorly drawn hands,poorly drawn face,mutation,deformed,blurry,
-    (((missing arms))),(((missing legs))), (((extra arms))),(((extra legs))),pubic
-    hair, plump,bad legs,error legs,username,blurry,bad feet, cgi, 3d render,\",\r\n     
+    {\r\n      \"text\": \"##Prompt##, anime style, flat colors, game icon, dynamic,
+    dynamic scene, sketch\",\r\n      \"clip\": [\r\n        \"13\",\r\n        1\r\n     
+    ]\r\n    },\r\n    \"class_type\": \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n     
+    \"title\": \"CLIP Text Encode (Prompt)\"\r\n    }\r\n  },\r\n  \"7\": {\r\n   
+    \"inputs\": {\r\n      \"text\": \"symmetry, frame, pen, crayon, notebook, table
+    surface, portrait, character art, character illustration, lowres, bad anatomy,
+    bad hands, text, error, missing fingers, extra digit, fewer digits, cropped,
+    worst quality, low quality, jpeg artifacts, signature, watermark, username, ,blurry,
+    (((missing arms))),(((missing legs))), (((extra arms))),(((extra legs))), plump,,username,blurry,,\",\r\n     
     \"clip\": [\r\n        \"13\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
     \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n      \"title\": \"CLIP Text Encode
     (Prompt)\"\r\n    }\r\n  },\r\n  \"8\": {\r\n    \"inputs\": {\r\n      \"samples\":
@@ -541,14 +555,19 @@ MonoBehaviour:
     {\r\n    \"inputs\": {\r\n      \"vae_name\": \"sdxl_vae.safetensors\"\r\n   
     },\r\n    \"class_type\": \"VAELoader\",\r\n    \"_meta\": {\r\n      \"title\":
     \"Load VAE\"\r\n    }\r\n  },\r\n  \"13\": {\r\n    \"inputs\": {\r\n      \"lora_name\":
-    \"anime_game_icon.safetensors\",\r\n      \"strength_model\": 1,\r\n      \"strength_clip\":
-    1,\r\n      \"model\": [\r\n        \"4\",\r\n        0\r\n      ],\r\n     
-    \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n    },\r\n    \"class_type\":
+    \"anime_game_icon.safetensors\",\r\n      \"strength_model\": 0.4,\r\n      \"strength_clip\":
+    0.4,\r\n      \"model\": [\r\n        \"15\",\r\n        0\r\n      ],\r\n     
+    \"clip\": [\r\n        \"15\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
     \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\": \"Load LoRA\"\r\n   
     }\r\n  },\r\n  \"14\": {\r\n    \"inputs\": {\r\n      \"stop_at_clip_layer\":
     -2,\r\n      \"clip\": [\r\n        \"4\",\r\n        1\r\n      ]\r\n    },\r\n   
     \"class_type\": \"CLIPSetLastLayer\",\r\n    \"_meta\": {\r\n      \"title\":
-    \"CLIP Set Last Layer\"\r\n    }\r\n  }\r\n}"
+    \"CLIP Set Last Layer\"\r\n    }\r\n  },\r\n  \"15\": {\r\n    \"inputs\": {\r\n     
+    \"lora_name\": \"Sketched_Out_Manga-000007.safetensors\",\r\n      \"strength_model\":
+    0.6,\r\n      \"strength_clip\": 0.6,\r\n      \"model\": [\r\n        \"4\",\r\n       
+    0\r\n      ],\r\n      \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n   
+    },\r\n    \"class_type\": \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\":
+    \"Load LoRA\"\r\n    }\r\n  }\r\n}"
 --- !u!1 &4943198285802908904
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,7 +761,7 @@ MonoBehaviour:
   initPercentage: 0
   initFinished: 0
   deepseekParams:
-    apiKey: sk-7bf38df2ed1245ce9dfd5ab62346449c
+    apiKey: sk-08ce9c15e93a4c539a2a40d21191c737
     temperature: 0.4
     role: 
     timeout: 0

@@ -30,6 +30,7 @@ public class AI_ImageGeneration : MonoBehaviour
     public void SetServerAddress(string serverAddress)
     {
         sdProcessor._rootEndpoint = serverAddress;
+        comfyProcessor.serverAddress = serverAddress;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -33,7 +33,7 @@ public class ComfyProcessor : MonoBehaviour
     async void Start()
     {
         //QueuePrompt();
-        await ws.ConnectAsync(new Uri($"ws://127.0.0.1:8188/ws?clientId={clientId}"), CancellationToken.None);
+        //await ws.ConnectAsync(new Uri($"ws://127.0.0.1:8188/ws?clientId={clientId}"), CancellationToken.None);
         StartListening();
     }
 
@@ -116,9 +116,9 @@ public class ComfyProcessor : MonoBehaviour
                     Debug.LogError(": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    //Debug.Log(":\nReceived: " + webRequest.downloadHandler.text);
                     if(webRequest.downloadHandler.text.Length <= 10)
                         break;
+                    Debug.Log("File To Find: " + webRequest.downloadHandler.text);
                     string imageURL = $"{serverAddress}/view?filename=" +ExtractFilename(webRequest.downloadHandler.text);
                     StartCoroutine(DownloadImage(imageURL, promptID));
                     break;
@@ -129,11 +129,14 @@ public class ComfyProcessor : MonoBehaviour
     string ExtractFilename(string jsonString)
     {
         // Step 1: Identify the part of the string that contains the "filename" key
+        // Debug.Log("FileName: " + jsonString.Substring(2, 35));
+        // return jsonString.Substring(2, 36);
         string keyToLookFor = "\"filename\":";
         int startIndex = jsonString.IndexOf(keyToLookFor);
 
         if (startIndex == -1)
         {
+            Debug.Log("filename key not found!!");
             return "filename key not found";
         }
 
@@ -151,7 +154,7 @@ public class ComfyProcessor : MonoBehaviour
 
         // Removing leading and trailing quotes from the extracted value
         string filename = filenameWithQuotes.Trim('"');
-        Debug.Log(filename);
+        Debug.Log("FileName: " + filename);
         return filename;
     }
 
@@ -187,42 +190,51 @@ public class ComfyProcessor : MonoBehaviour
     // ---------- WebSocket ---------- 
     // ---------- WebSocket ---------- 
     // ---------- WebSocket ---------- 
-    
-    private async void StartListening()
+    IEnumerator ListenImageCoroutine()
     {
-        var buffer = new byte[1024 * 4];
-        WebSocketReceiveResult result = null;
-
-        while (ws.State == WebSocketState.Open)
+        while (true)
         {
-            var stringBuilder = new StringBuilder();
-            do
-            {
-                result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                if (result.MessageType == WebSocketMessageType.Close)
-                {
-                    await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-                }
-                else
-                {
-                    var str = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    stringBuilder.Append(str);
-                }
-            }
-            while (!result.EndOfMessage);
-
-            string response = stringBuilder.ToString();
-            Debug.Log("Received: " + response);
-        
-            if (response.Contains("\"queue_remaining\":") && promptIDs.Count > 0)
-            {
+            yield return new WaitForSeconds(1f);
+            if(promptIDs.Count > 0)
                 RequestFileName(promptIDs.Peek());
-            }
-        
-
         }
     }
-
+    private async void StartListening()
+    {
+        StartCoroutine(ListenImageCoroutine());
+        // var buffer = new byte[1024 * 4];
+        // WebSocketReceiveResult result = null;
+        //
+        // while (ws.State == WebSocketState.Open)
+        // {
+        //     var stringBuilder = new StringBuilder();
+        //     do
+        //     {
+        //         result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        //         if (result.MessageType == WebSocketMessageType.Close)
+        //         {
+        //             await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+        //         }
+        //         else
+        //         {
+        //             var str = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        //             Debug.Log("Substring: " + str);
+        //             stringBuilder.Append(str);
+        //         }
+        //     }
+        //     while (!result.EndOfMessage);
+        //
+        //     string response = stringBuilder.ToString();
+        //     Debug.Log("Received: " + response);
+        //
+        //     if (response.Contains("\"queue_remaining\":") && promptIDs.Count > 0)
+        //     {
+        //         RequestFileName(promptIDs.Peek());
+        //     }
+        // }
+    }
+    
+    
    
 
     void OnDestroy()
