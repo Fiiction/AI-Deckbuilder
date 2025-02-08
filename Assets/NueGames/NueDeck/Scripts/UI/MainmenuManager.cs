@@ -71,8 +71,11 @@ public class MainmenuManager : MonoBehaviour
             initInfoText.text = AI_IntegrationManager.instance.initInformation;
             percentageText.text = initTime.ToString("0.#") + 
                                   "s ... " + AI_IntegrationManager.instance.initPercentage + "%";
-            if(AI_IntegrationManager.instance.initFinished)
+            if (AI_IntegrationManager.instance.initFinished)
+            {
+                Debug.Log($"<color=#44FF44><b>Init Time = {initTime}</b></color>");
                 SceneManager.LoadScene(1);
+            }
                 
         }
     }

@@ -753,16 +753,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acec668d880580a45872d7300b77d6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paramType: 8
+  alternativeParamType: 8
   heroName: Hanzo
   heroDesc: the skillful Japanese archer from Overwatch, Hanzo Shimada
   heroStory: 
   heroPrompts: 
+  pendingPrompts: 
   initInformation: 
   initPercentage: 0
   initFinished: 0
+  _conversationSoFar: []
+  _cardGenConversationSoFar: []
   deepseekParams:
-    apiKey: sk-08ce9c15e93a4c539a2a40d21191c737
+    apiKey: sk-7bf38df2ed1245ce9dfd5ab62346449c
+    url: https://api.deepseek.com/chat/completions
+    modelName: deepseek-chat
     temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  sf_deepseekParams:
+    apiKey: sk-iotkkjeryhfbfyoctydxzygaqjgtgjqwzhmutfrbwnkcudrk
+    url: https://api.siliconflow.cn/v1/chat/completions
+    modelName: Pro/deepseek-ai/DeepSeek-V3
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  tencent_deepseekParams:
+    apiKey: sk-PqGOsK42YtyZENUcN9fOuoKRxVRuU1T4dg1CqXlISMKxnFHK
+    url: https://api.lkeap.cloud.tencent.com/v1/chat/completions
+    modelName: deepseek-v3
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  baidu_deepseekParams:
+    apiKey: bce-v3/ALTAK-QLWiriaDz6mDukauRJVl2/f97a115f5582fe07b2ed00ad580a705fe80d4d36
+    url: https://qianfan.baidubce.com/v2/chat/completions
+    modelName: deepseek-v3
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  novita_deepseekParams:
+    apiKey: sk_4rBuU757Uc3mxubJf_OSN0Iz5Sl2V1DsDxxkT0Jvdco
+    url: https://api.novita.ai/v3/openai/chat/completions
+    modelName: deepseek/deepseek_v3
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  ali_deepseekParams:
+    apiKey: sk-cf84ec7d9b824a17aa179b7654e5bc8e
+    url: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+    modelName: deepseek-v3
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  backup1_deepseekParams:
+    apiKey: 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
+    url: https://api.openai.com/v1/chat/completions
+    modelName: gpt-4o
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  backup2_deepseekParams:
+    apiKey: AIzaSyC1H5ROCPmAClj2aExPONEkIKFKEQA-kRU
+    url: https://generativelanguage.googleapis.com/v1beta:chatCompletions
+    modelName: gemini-2.0-flash
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
+  backup3_deepseekParams:
+    apiKey: sk-cf84ec7d9b824a17aa179b7654e5bc8e
+    url: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+    modelName: qwen-max-latest
+    temperature: 1
     role: 
     timeout: 0
     throttle: 0
@@ -776,23 +855,20 @@ MonoBehaviour:
     from an existing fictional work (game, comic, etc.), refer to the original work's
     setting.\nThe prompt for image generation should include the characters' appearance,
     outfit, and the art style of original work, etc..\r\r\nPlease reply with following
-    json structure: (example is a reply for the character Hanzo from Overwatch)\r\n{\r\n\t\"backgroundStory\":
-    \"Mastering his skills as a bowman and an assassin, Hanzo Shimada strives to
-    prove himself as a warrior without peer. He has a cynical view on the nature
-    of the world, and believes that compassion has no place in battle\",\r\n\t\"prompt\":
-    \"Hanzo, 1 man, archer, Japanese, Traditional Japanese Outfit, holding a bow,
-    Character from Overwatch, \"\r\n}"
+    json structure: (example is a reply for the character Hanzo from Overwatch) Please
+    DO NOT repeat any json structure I provided.\r\n{\r\n\t\"backgroundStory\": \"Mastering
+    his skills as a bowman and an assassin, Hanzo Shimada strives to prove himself
+    as a warrior without peer. He has a cynical view on the nature of the world,
+    and believes that compassion has no place in battle\",\r\n\t\"prompt\": \"Hanzo,
+    1 man, archer, Japanese, Traditional Japanese Outfit, holding a bow, Character
+    from Overwatch, \"\r\n}"
   startGamePrompt: 'Now player as ##HeroName##, ##HeroDesc##, enters a fight.
 
     There
     are ##EnemyCnt## enemy(s):
 
 
-    ##EnemyDescs##
-
-
-    Please reply with "I understand."'
-  _conversationSoFar: []
+    ##EnemyDescs##'
   gameStartPending: 0
   levelCnt: 0
   startGameMsgCnt: -1

@@ -3,35 +3,89 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NueGames.NueDeck.Scripts.Managers;
+using UnityEngine.Serialization;
+
 
 public class AI_IntegrationManager : MonoBehaviour
 {
+    public enum ParamType
+    {
+        Official,
+        SiliconFlow,
+        Tencent,
+        Baidu,
+        Novita,
+        Ali,
+        Gpt,
+        Gemini,
+        Qwen,
+    };
+    
+    public ParamType paramType = ParamType.Official;
+    public ParamType alternativeParamType = ParamType.Official;
+    DeepseekParams GetParams(ParamType p)
+    {
+        switch (p)
+        {
+            case ParamType.Official:
+                return deepseekParams;
+            case ParamType.SiliconFlow:
+                return sf_deepseekParams;
+            case ParamType.Tencent:
+                return tencent_deepseekParams;
+            case ParamType.Baidu:
+                return baidu_deepseekParams;
+            case ParamType.Novita:
+                return novita_deepseekParams;
+            case ParamType.Ali:
+                return ali_deepseekParams;
+            case ParamType.Gpt:
+                return gptParams;
+            case ParamType.Gemini:
+                return geminiParams;
+            case ParamType.Qwen:
+                return qWenParams;
+        }
+        return deepseekParams;
+    }
+    
+    
     public static AI_IntegrationManager instance;
-
+    public static DeepseekParams activeParams;
     public string heroName = "Hanzo";
     public string heroDesc = "skillful Japanese archer with the power of dragon, Hanzo Shimada";
     public string heroStory = "";
     public string heroPrompts = "";
-
+    public string pendingPrompts = "";
     public string initInformation = "";
     private int baseInitPercentage = 0;
     public int initPercentage = 0;
     public bool initFinished = false;
     
-    
-    public DeepseekParams deepseekParams;
-    [SerializeField, TextArea(8, 12)] private string initialPrompt;
-    [SerializeField, TextArea(8, 12)] private string startGamePrompt;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     [SerializeField]
     private List<Message> _conversationSoFar = new();
+    [SerializeField]
+    private List<Message> _cardGenConversationSoFar = new();
+    
+    public DeepseekParams deepseekParams;
+    public DeepseekParams sf_deepseekParams;
+    public DeepseekParams tencent_deepseekParams;
+    public DeepseekParams baidu_deepseekParams;
+    public DeepseekParams novita_deepseekParams;
+    public DeepseekParams ali_deepseekParams;
+    [FormerlySerializedAs("backup1_deepseekParams")] public DeepseekParams gptParams;
+    [FormerlySerializedAs("backup2_deepseekParams")] public DeepseekParams geminiParams;
+    [FormerlySerializedAs("backup3_deepseekParams")] public DeepseekParams qWenParams;
+    
+    [SerializeField, TextArea(8, 12)] private string initialPrompt;
+    [SerializeField, TextArea(4, 12)] private string startGamePrompt;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    
     public bool gameStartPending = false;
     public int levelCnt = 0;
     public int startGameMsgCnt = -1;
     public int startTurnMsgCnt = -1;
-    private List<Message> _cardGenConversationSoFar = new();
     public int cardGenMessageMerged = -1;
     void CutConversation(int c)
     {
@@ -61,17 +115,21 @@ public class AI_IntegrationManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        //activeParams = GetParams();
         DontDestroyOnLoad(gameObject);
         instance = this;
     }
 
     public void Request(string str, Action<string> callback)
     {
+        str = pendingPrompts +"\n" + str;
+        pendingPrompts = "";
         if(str.Contains("##"))
             Debug.LogError("Unfilled key found:\n" + str);
         _conversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("Request:\n" + str);
-        Deepseek.Request(_conversationSoFar, deepseekParams,
+        Deepseek.Request(_conversationSoFar, GetParams(paramType),
             reply =>
             {
                 Debug.Log("Deepseek Reply:\n" + reply);
@@ -86,11 +144,11 @@ public class AI_IntegrationManager : MonoBehaviour
         if(str.Contains("##"))
             Debug.LogError("Unfilled key found:\n" + str);
         _cardGenConversationSoFar.Add(new Message(str, Role.User));
-        Debug.Log("Card Req:\n" + str);
-        Deepseek.Request(_cardGenConversationSoFar, deepseekParams,
+        Debug.Log("<color=#FFAA66>Card Req</color>:\n" + str);
+        Deepseek.Request(_cardGenConversationSoFar, GetParams(alternativeParamType),
             reply =>
             {
-                Debug.Log("Card Reply:\n" + reply);
+                Debug.Log("<color=#FFAA66>Card Reply</color>:\n" + reply);
                 _cardGenConversationSoFar.Add(new Message(reply, Role.AI));
                 callback.Invoke(reply);
             }, null, null);
@@ -106,7 +164,7 @@ public class AI_IntegrationManager : MonoBehaviour
         levelCnt++;
         AI_CardEffect.instance.cardInTurnCnt = 0;
         AI_CardEffect.instance.turnCnt = 0;
-        gameStartPending = true;
+        //gameStartPending = true;
         AI_CardEffect.instance.cardsUsedInBattle = 0;
         string promptToSend = startGamePrompt.Replace("##HeroName##", heroName)
             .Replace("##HeroDesc##", heroDesc);
@@ -119,9 +177,11 @@ public class AI_IntegrationManager : MonoBehaviour
         }
 
         promptToSend = promptToSend.Replace("##EnemyDescs##", enemyDescs);
-        
-        Request(promptToSend, _ => { gameStartPending = false; 
-            startTurnMsgCnt = _conversationSoFar.Count;});
+
+        pendingPrompts += promptToSend;
+
+        // Request(promptToSend, _ => { gameStartPending = false; 
+        //     startTurnMsgCnt = _conversationSoFar.Count;});
     }
 
     public void OnEndGame()
@@ -164,6 +224,16 @@ public class AI_IntegrationManager : MonoBehaviour
         Debug.Log("<color=#779fff><b> Init Generation Complete!</b></color> ");
         AI_DeckGenerator.instance.GenerateRareCards();
     }
+
+    void LogConversation()
+    {
+        string s = "Conv: " + _conversationSoFar.Count;
+        for (int i = 0; i < _conversationSoFar.Count; i++)
+        {
+            s += "\n#" +i + ":\nRole: " +_conversationSoFar[i].role +"\nText: " +  _conversationSoFar[i].text;
+        }
+        Debug.Log(s);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -178,7 +248,9 @@ public class AI_IntegrationManager : MonoBehaviour
                 OnInitFinished();
                 initFinished = true;
             }
+            
         }
+        //LogConversation();
     }
 
     #region DataStructures

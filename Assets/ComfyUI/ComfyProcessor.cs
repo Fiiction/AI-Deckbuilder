@@ -47,7 +47,7 @@ public class ComfyProcessor : MonoBehaviour
         string url = $"{serverAddress}/prompt";
         string promptText = GeneratePromptJson(isCard);
         promptText = promptText.Replace("##Prompt##", customPrompt);
-        Debug.Log("<b><color=#FF2222>Prompt Request Send!</b></color>");
+        Debug.Log("<b><color=#77FF22>Prompt Request Send!</b></color>");
         Debug.Log(promptText);
         UnityWebRequest request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(promptText);
@@ -63,7 +63,7 @@ public class ComfyProcessor : MonoBehaviour
         }
         else
         {
-            Debug.Log("Prompt queued successfully." + request.downloadHandler.text);
+            //Debug.Log("Prompt queued successfully." + request.downloadHandler.text);
 
             ResponseData data = JsonUtility.FromJson<ResponseData>(request.downloadHandler.text);
             Debug.Log("Prompt ID: " + data.prompt_id);
@@ -118,7 +118,7 @@ public class ComfyProcessor : MonoBehaviour
                 case UnityWebRequest.Result.Success:
                     if(webRequest.downloadHandler.text.Length <= 10)
                         break;
-                    Debug.Log("File To Find: " + webRequest.downloadHandler.text);
+                    //Debug.Log("File To Find: " + webRequest.downloadHandler.text);
                     string imageURL = $"{serverAddress}/view?filename=" +ExtractFilename(webRequest.downloadHandler.text);
                     StartCoroutine(DownloadImage(imageURL, promptID));
                     break;
@@ -154,7 +154,7 @@ public class ComfyProcessor : MonoBehaviour
 
         // Removing leading and trailing quotes from the extracted value
         string filename = filenameWithQuotes.Trim('"');
-        Debug.Log("FileName: " + filename);
+        //Debug.Log("FileName: " + filename);
         return filename;
     }
 

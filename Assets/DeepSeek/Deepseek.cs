@@ -12,8 +12,8 @@ public enum Role {
 
 [Serializable]
 public struct Message {
-    public string text;
     public Role role;
+    public string text;
 
     public Message(string text, Role role) {
         this.text = text;
@@ -23,7 +23,10 @@ public struct Message {
 
 public static class Deepseek
 {
-    public static string modelType = "deepseek-chat";
+    // public static string modelType = "deepseek-chat"; //deepseek-ai/DeepSeek-V3
+    // public static string URL = "https://api.deepseek.com/chat/completions"; //https://api.siliconflow.cn/v1/chat/completions
+    // public static string modelType = "deepseek-ai/DeepSeek-V3";
+    // public static string URL = "https://api.siliconflow.cn/v1/chat/completions";
     private static readonly List<RequestRecord> _requestRecords = new List<RequestRecord>();
 
     /// <summary>
@@ -154,14 +157,16 @@ public static class Deepseek
 
         var requestObject = new RequestMessage
         {
-            model = modelType,
+            model = parameters.modelName,
             temperature = parameters.temperature,
             messages = ConvertMessages(messages, parameters.role),
         };
+        //Debug.Log("ModelName: " + requestObject.model);
 
         var requestRecord = new RequestRecord();
         var requestJson = JsonUtility.ToJson(requestObject);
         var request = GetWebRequest(requestJson, parameters, failureCallback, requestRecord);
+        // Debug.Log("Request Sent");
         var cancelCallback = new Action(() => {
             try {
                 request?.Abort();
@@ -191,6 +196,7 @@ public static class Deepseek
             if (isErrorResponse) {
                 failureCallback?.Invoke(request.responseCode, request.error);
                 Debug.Log($"<color=red>Request error:</color> <b>{request.error}</b>\n" +
+                          $"<b>URL: {parameters.url}</b>\n" +
                           $"<b>Response text:</b> {request.downloadHandler.text}");
                 return;
             }
@@ -216,8 +222,7 @@ public static class Deepseek
                                       Action<long, string> failureCallback, RequestRecord requestRecord) {
         var requestObject = new RequestMessage
         {
-            
-            model = modelType,
+            model = parameters.modelName,
             temperature = parameters.temperature,
             messages = ConvertMessages(messages, parameters.role),
         };
@@ -235,6 +240,7 @@ public static class Deepseek
                 if (!string.IsNullOrEmpty(request.error)) {
                     failureCallback(request.responseCode, request.error);
                     Debug.Log($"<color=red>Request error:</color> <b>{request.error}</b>\n" +
+                              $"<b>URL: {parameters.url}</b>\n" +
                               $"<b>Response text:</b> {request.downloadHandler.text}");
                     _requestRecords.Remove(requestRecord);
                     yield break;
@@ -277,7 +283,8 @@ public static class Deepseek
                     }
                     catch (Exception e)
                     {
-                        Debug.LogWarning($"<color=red>Request error:</color> <b>{request.error}</b>\n" +
+                        Debug.Log($"<color=red>Request error:</color> <b>{request.error}</b>\n" +
+                                         $"<b>URL: {parameters.url}</b>\n" +
                                   $"<b>Response text:</b> {request.downloadHandler.text}");
                         _requestRecords.Remove(requestRecord);
                         yield break;
@@ -305,7 +312,9 @@ public static class Deepseek
     private static UnityWebRequest GetWebRequest(string requestJson, DeepseekParams parameters,
                                                  Action<long, string> failureCallback, RequestRecord requestRecord)
     {
-        var baseUrl = "https://api.deepseek.com/chat/completions";
+        var baseUrl = parameters.url;
+        Debug.Log("URL: " + baseUrl
+        +"\nModel: " + parameters.modelName);
         var request = UnityWebRequest.Post(baseUrl, requestJson, "application/json");
         
         request.timeout = parameters.timeout;

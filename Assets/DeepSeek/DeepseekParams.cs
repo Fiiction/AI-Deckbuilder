@@ -6,7 +6,8 @@ using UnityEngine.Serialization;
 [Serializable]
 public class DeepseekParams : ISerializationCallbackReceiver {
     public string apiKey;
-
+    public string url;
+    public string modelName;
     public float temperature;
     [CanBeNull]
     public string role;
