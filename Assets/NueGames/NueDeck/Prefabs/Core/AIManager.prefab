@@ -77,15 +77,15 @@ MonoBehaviour:
   prompt3_Normal: "For the ##No## effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (content in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
-    or \"AllEnemies\". Do NOT use enemy's name.)\r\n\t\"value\": 3 (indicates ##ValueMeaning##)
-    \r\n}"
+    or \"AllEnemies\". Do NOT use enemy's name.)\r\n\t\"value\": 3 (interger, indicates
+    ##ValueMeaning##) \r\n}"
   prompt3_CustomEffect: "For the ##No## effect \"Add Custom Status\", what's the
     name of status, the target and the numeric value of this effect:\r\n\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
     \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
     etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\".  Do NOT
-    use enemy's name.)\r\n\t\"value\": 3 (indicates how many stacks of this status
-    are casted on target. Minus value to clear) \r\n}\r\n"
+    use enemy's name.)\r\n\t\"value\": 3 (interger, indicates how many stacks of
+    this status are casted on target. Minus value to clear) \r\n}\r\n"
   prompt_StartTurn1: "Now player, ##PlayerDesc## ##PlayerCustomStatus##, starts a
     new turn. This is the ##No## turn in this fight. There are following enemy(s)
     in the scene:\n\n##EnemiesDesc##\n\r\nAccording the custom status the hero has
@@ -107,7 +107,7 @@ MonoBehaviour:
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (content in parentheses are comments)\r\n{\r\n\t\"target\": \"hero\", (or \"enemySelf\"
     standing for the acting enemy itself, or \"allEnemies\" standing for all enemy
-    units. Do NOT use character's name.)\r\n\t\"value\": 3 (indicates ##ValueMeaning##)
+    units. Do NOT use character's name.)\r\n\t\"value\": 3 (interger, indicates ##ValueMeaning##)
     \r\n}"
   prompt3_CustomEffect_Enemy: "For the effect \"Add Custom Status\", what's the name
     of status, the target and the numeric value of this effect:\r\n\r\n\r\nPlease
@@ -115,8 +115,8 @@ MonoBehaviour:
     \"poison\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"charge\",
     etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" standing for the acting enemy
     itself, or \"allEnemies\" standing for all enemy units. Do NOT use character's
-    name.)\r\n\t\"value\": 3 (indicates how many stacks of this status are casted
-    on target) \r\n}\r\n"
+    name.)\r\n\t\"value\": 3 (interger, indicates how many stacks of this status
+    are casted on target) \r\n}\r\n"
   processingCanvas: {fileID: 1978969409886390374}
   actionDatas: []
   cardsUsedInBattle: 0
@@ -819,7 +819,7 @@ MonoBehaviour:
     timeout: 0
     throttle: 0
     _serialized: 1
-  backup1_deepseekParams:
+  gptParams:
     apiKey: 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
     url: https://api.openai.com/v1/chat/completions
     modelName: gpt-4o
@@ -828,7 +828,7 @@ MonoBehaviour:
     timeout: 0
     throttle: 0
     _serialized: 1
-  backup2_deepseekParams:
+  geminiParams:
     apiKey: AIzaSyC1H5ROCPmAClj2aExPONEkIKFKEQA-kRU
     url: https://generativelanguage.googleapis.com/v1beta:chatCompletions
     modelName: gemini-2.0-flash
@@ -837,7 +837,7 @@ MonoBehaviour:
     timeout: 0
     throttle: 0
     _serialized: 1
-  backup3_deepseekParams:
+  qWenParams:
     apiKey: sk-cf84ec7d9b824a17aa179b7654e5bc8e
     url: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
     modelName: qwen-max-latest
