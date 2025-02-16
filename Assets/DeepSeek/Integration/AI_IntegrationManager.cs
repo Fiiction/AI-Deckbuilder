@@ -8,46 +8,6 @@ using UnityEngine.Serialization;
 
 public class AI_IntegrationManager : MonoBehaviour
 {
-    public enum ParamType
-    {
-        Official,
-        SiliconFlow,
-        Tencent,
-        Baidu,
-        Novita,
-        Ali,
-        Gpt,
-        Gemini,
-        Qwen,
-    };
-    
-    public ParamType paramType = ParamType.Official;
-    public ParamType alternativeParamType = ParamType.Official;
-    DeepseekParams GetParams(ParamType p)
-    {
-        switch (p)
-        {
-            case ParamType.Official:
-                return deepseekParams;
-            case ParamType.SiliconFlow:
-                return sf_deepseekParams;
-            case ParamType.Tencent:
-                return tencent_deepseekParams;
-            case ParamType.Baidu:
-                return baidu_deepseekParams;
-            case ParamType.Novita:
-                return novita_deepseekParams;
-            case ParamType.Ali:
-                return ali_deepseekParams;
-            case ParamType.Gpt:
-                return gptParams;
-            case ParamType.Gemini:
-                return geminiParams;
-            case ParamType.Qwen:
-                return qWenParams;
-        }
-        return deepseekParams;
-    }
     
     
     public static AI_IntegrationManager instance;
@@ -63,24 +23,21 @@ public class AI_IntegrationManager : MonoBehaviour
     public bool initFinished = false;
     
     [SerializeField]
-    private List<Message> _conversationSoFar = new();
+    public List<Message> _conversationSoFar = new();
     [SerializeField]
-    private List<Message> _cardGenConversationSoFar = new();
+    public List<Message> _cardGenConversationSoFar = new();
     
-    public DeepseekParams deepseekParams;
-    public DeepseekParams sf_deepseekParams;
-    public DeepseekParams tencent_deepseekParams;
-    public DeepseekParams baidu_deepseekParams;
-    public DeepseekParams novita_deepseekParams;
-    public DeepseekParams ali_deepseekParams;
-    [FormerlySerializedAs("backup1_deepseekParams")] public DeepseekParams gptParams;
-    [FormerlySerializedAs("backup2_deepseekParams")] public DeepseekParams geminiParams;
-    [FormerlySerializedAs("backup3_deepseekParams")] public DeepseekParams qWenParams;
-    
+
+    [SerializeField]public List<DeepseekParams> LLMParams = new();
     [SerializeField, TextArea(8, 12)] private string initialPrompt;
     [SerializeField, TextArea(4, 12)] private string startGamePrompt;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    public void SetActiveParams(string paramName)
+    {
+        activeParams = LLMParams.Find(p => p.name == paramName);
+        Debug.Log("Set Params: " + paramName + " " + activeParams.url);
+    }
     
     public bool gameStartPending = false;
     public int levelCnt = 0;
@@ -100,10 +57,11 @@ public class AI_IntegrationManager : MonoBehaviour
     }
     public void StartTurnCutConversation()
     {
+        Debug.Log("<b>StartTurnCutConversation</b>: " + startTurnMsgCnt);
         if(startTurnMsgCnt > 0)
             CutConversation(startTurnMsgCnt);
         else
-            startGameMsgCnt = _conversationSoFar.Count;
+            startTurnMsgCnt = _conversationSoFar.Count;
     }
     
     [SerializeField]
@@ -129,7 +87,7 @@ public class AI_IntegrationManager : MonoBehaviour
             Debug.LogError("Unfilled key found:\n" + str);
         _conversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("Request:\n" + str);
-        Deepseek.Request(_conversationSoFar, GetParams(paramType),
+        Deepseek.Request(_conversationSoFar, activeParams,
             reply =>
             {
                 Debug.Log("Deepseek Reply:\n" + reply);
@@ -145,7 +103,7 @@ public class AI_IntegrationManager : MonoBehaviour
             Debug.LogError("Unfilled key found:\n" + str);
         _cardGenConversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("<color=#FFAA66>Card Req</color>:\n" + str);
-        Deepseek.Request(_cardGenConversationSoFar, GetParams(alternativeParamType),
+        Deepseek.Request(_cardGenConversationSoFar, activeParams,
             reply =>
             {
                 Debug.Log("<color=#FFAA66>Card Reply</color>:\n" + reply);
@@ -207,6 +165,15 @@ public class AI_IntegrationManager : MonoBehaviour
 
     public void Init()
     {
+        initInformation = "";
+        initPercentage = 0;
+        _conversationSoFar.Clear();
+        _cardGenConversationSoFar.Clear();
+        
+        int levelCnt = 0;
+        int startGameMsgCnt = -1;
+        int startTurnMsgCnt = -1;
+        int cardGenMessageMerged = -1;
         string initialPromptToSend = initialPrompt.Replace("##HeroName##", heroName);
         initialPromptToSend = initialPromptToSend.Replace("##HeroDesc##", heroDesc);
         Request(initialPromptToSend, InitialResponse);

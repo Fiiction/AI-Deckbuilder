@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class DeepseekParams : ISerializationCallbackReceiver {
+public class DeepseekParams : ISerializationCallbackReceiver
+{
+    public string name;
     public string apiKey;
     public string url;
     public string modelName;

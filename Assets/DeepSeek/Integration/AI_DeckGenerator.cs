@@ -71,6 +71,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         yield return new WaitWhile( () => reply1 == "");
         
+        int n = AI_IntegrationManager.instance._conversationSoFar.Count;
         //Basic Card 1
         reply2 = "";
         AI_IntegrationManager.instance.Request(prompt_basicCard1, str =>{reply2 = str;});
@@ -108,6 +109,8 @@ public class AI_DeckGenerator : MonoBehaviour
         for(int i = 0;i<2;i++)
             GameManager.Instance.AddCardToDeck(cd4);
         
+        AI_IntegrationManager.instance._conversationSoFar =
+            AI_IntegrationManager.instance._conversationSoFar.Take(n).ToList();
         //Debug.Log("Initial Deck Generation Complete!");
     }
     
@@ -132,6 +135,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         yield return new WaitWhile( () => reply1 == "");
         
+        int n = AI_IntegrationManager.instance._cardGenConversationSoFar.Count;
         for (int i = 0; i < rareCardCnt; i++)
         {
             reply2 = "";
@@ -149,6 +153,8 @@ public class AI_DeckGenerator : MonoBehaviour
             
         }
         
+        AI_IntegrationManager.instance._cardGenConversationSoFar =
+            AI_IntegrationManager.instance._cardGenConversationSoFar.Take(n).ToList();
         //Debug.Log("Initial Deck Generation Complete!");
     }
     
@@ -172,6 +178,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         yield return new WaitWhile( () => reply1 == "");
         
+        int n = AI_IntegrationManager.instance._cardGenConversationSoFar.Count;
         for (int i = 0; i < epicCardCnt; i++)
         {
             reply2 = "";
@@ -189,6 +196,8 @@ public class AI_DeckGenerator : MonoBehaviour
             
         }
         
+        AI_IntegrationManager.instance._cardGenConversationSoFar =
+            AI_IntegrationManager.instance._cardGenConversationSoFar.Take(n).ToList();
         //Debug.Log("Initial Deck Generation Complete!");
     }
     
@@ -212,6 +221,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         yield return new WaitWhile( () => reply1 == "");
         
+        int n = AI_IntegrationManager.instance._cardGenConversationSoFar.Count;
         for (int i = 0; i < legendCardCnt; i++)
         {
             reply2 = "";
@@ -228,7 +238,8 @@ public class AI_DeckGenerator : MonoBehaviour
             legendCards.Add(cd);
             
         }
-        
+        AI_IntegrationManager.instance._cardGenConversationSoFar =
+            AI_IntegrationManager.instance._cardGenConversationSoFar.Take(n).ToList();
         //Debug.Log("Initial Deck Generation Complete!");
     }
     

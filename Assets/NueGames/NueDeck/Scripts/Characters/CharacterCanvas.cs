@@ -90,6 +90,8 @@ namespace NueGames.NueDeck.Scripts.Characters
             string s = "";
             foreach (var i in effects)
             {
+                if(i.Value.effectValue == 0)
+                    continue;
                 s+= i.Key + ": " + i.Value.effectValue + "\n";
             }
             if(customEffectsText != null)

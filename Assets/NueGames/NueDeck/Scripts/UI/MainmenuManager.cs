@@ -38,6 +38,7 @@ public class MainmenuManager : MonoBehaviour
         AI_IntegrationManager.instance.heroName = _name;
         AI_IntegrationManager.instance.heroDesc = _desc;
         AI_IntegrationManager.instance.Init();
+        
         AI_ImageGeneration.instance.SetServerAddress(serverAddressInputField.text);
         netSettingPanel.GetComponentInChildren<TMP_Dropdown>().interactable = false;
         netSettingPanel.GetComponentInChildren<TMP_InputField>().interactable = false;

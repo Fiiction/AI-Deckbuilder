@@ -52,7 +52,7 @@ public class AI_CardEffect : MonoBehaviour
     public int turnCnt = 0;
     public int cardInTurnCnt = 0;
     
-    
+    public Dictionary<string, string> effectDict = new();
     
     IEnumerator CardUseCoroutine(CardBase card, CharacterBase self, CharacterBase targetCharacter,
         Action<List<CardActionData>> callback)
@@ -103,12 +103,7 @@ public class AI_CardEffect : MonoBehaviour
             (cardInTurnCnt <= 1 ? prompt_specific : ""));
         
         AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply2 = str;});
-        //
-        // yield return new WaitWhile( () => reply1 == "");
-        // string prompt2Send = prompt2.Replace("##Specific##",
-        //     (cardsUsedInBattle % 10 == 0 ? prompt_specific : ""));
-        // AI_IntegrationManager.instance.Request(prompt2Send, str =>{reply2 = str;});
-        //
+ 
         yield return new WaitWhile( () => reply2 == "");
         
         ActionArray actionArray = Decode<ActionArray>(reply2);
@@ -168,7 +163,6 @@ public class AI_CardEffect : MonoBehaviour
         reply1 = "";
         reply2 = "";
         actionDatas = new();
-        AI_IntegrationManager.instance.StartTurnCutConversation();
         var userData = (self as AllyBase).AllyCharacterData;
 
         userName = userData.CharacterName;

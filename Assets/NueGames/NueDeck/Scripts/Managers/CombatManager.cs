@@ -118,6 +118,7 @@ namespace NueGames.NueDeck.Scripts.Managers
                    
                     OnAllyTurnStarted?.Invoke();
                     
+                    AI_IntegrationManager.instance.StartTurnCutConversation();
                     if(turnIndex > 1)
                         AI_CardEffect.instance.AllyTurnStartEffects(CurrentMainAlly, AllyTurnStarted);
                     else

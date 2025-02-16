@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Text;
 
 public enum Role {
     User,
@@ -138,7 +139,20 @@ public static class Deepseek
         QuickRequestBlocking(messages, parameters, completeCallback, failureCallback);
         yield break;
     }
-
+    private static void LogRequest(UnityWebRequest request)
+    {
+        StringBuilder log = new StringBuilder();
+        log.AppendLine("=== Request Details ===");
+        log.AppendLine($"URL: {request.url}");
+        log.AppendLine($"Method: {request.method}");
+        log.AppendLine("Headers:");
+        // foreach (var header in request.SetRequestHeader())
+        // {
+        //     log.AppendLine($"  {header.Key}: {header.Value}");
+        // }
+        log.AppendLine($"Body: {Encoding.UTF8.GetString(request.uploadHandler.data)}");
+        Debug.Log(log.ToString());
+    }
     private static Action QuickRequestBlocking(IEnumerable<Message> messages, DeepseekParams parameters,
                                                Action<string> completeCallback, Action<long, string> failureCallback)
     {
@@ -166,6 +180,7 @@ public static class Deepseek
         var requestRecord = new RequestRecord();
         var requestJson = JsonUtility.ToJson(requestObject);
         var request = GetWebRequest(requestJson, parameters, failureCallback, requestRecord);
+        //LogRequest(request);
         // Debug.Log("Request Sent");
         var cancelCallback = new Action(() => {
             try {
@@ -179,7 +194,7 @@ public static class Deepseek
         });
         requestRecord.SetCancelCallback(cancelCallback);
         _requestRecords.Add(requestRecord);
-
+        //Debug.Log();
         request.SendWebRequest().completed += _ => {
             _requestRecords.Remove(requestRecord);
             Application.quitting -= cancelCallback;
@@ -323,7 +338,7 @@ public static class Deepseek
             var apiKey = parameters.apiKey;
 
             request.SetRequestHeader("Authorization", "Bearer " + apiKey);
-            //request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Content-Type", "application/json");
         }
         catch (Exception e) {
             //failureCallback?.Invoke((long)ErrorCodes.Unknown, e.Message);
