@@ -46,7 +46,7 @@ public class ComfyProcessor : MonoBehaviour
     {
         string url = $"{serverAddress}/prompt";
         string promptText = GeneratePromptJson(isCard);
-        //promptText = promptText.Replace("##Prompt##", customPrompt);
+        promptText = promptText.Replace("##Prompt##", customPrompt);
         Debug.Log("<b><color=#77FF22>Prompt Request Send!</b></color>");
         Debug.Log(promptText);
         UnityWebRequest request = new UnityWebRequest(url, "POST");
@@ -66,7 +66,7 @@ public class ComfyProcessor : MonoBehaviour
             //Debug.Log("Prompt queued successfully." + request.downloadHandler.text);
 
             ResponseData data = JsonUtility.FromJson<ResponseData>(request.downloadHandler.text);
-            //Debug.Log("Prompt ID: " + data.prompt_id);
+            Debug.Log("Prompt ID: " + data.prompt_id);
             promptIDs.Enqueue(data.prompt_id);
             tasks.Add(data.prompt_id, callback);
             // GetComponent<ComfyImageCtr>().RequestFileName(data.prompt_id);
@@ -172,7 +172,7 @@ public class ComfyProcessor : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 // Get the downloaded texture
-                //Debug.Log("<b><color=#5555FF>Image Downloaded!</b></color>\n" + promptID);
+                Debug.Log("<b><color=#5555FF>Image Downloaded!</b></color>\n" + promptID);
                 Texture2D texture = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
                 tasks[promptID].Invoke(texture);
                 if(promptIDs.Peek() == promptID)

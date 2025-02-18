@@ -16,6 +16,7 @@ public class AI_DeckGenerator : MonoBehaviour
     public static AI_DeckGenerator instance;
     [SerializeField, TextArea(15,20)] private string prompt_description;
     //[SerializeField, TextArea(15,20)] private string prompt_jsonFormat;
+    [SerializeField, TextArea(8,12)] private string prompt_effects;
     [Header("----- Basic Cards -----")]
     [SerializeField, TextArea(8,12)] private string prompt_basicCard1;
     [SerializeField, TextArea(8,12)] private string prompt_basicCard2;
@@ -74,7 +75,7 @@ public class AI_DeckGenerator : MonoBehaviour
         int n = AI_IntegrationManager.instance._conversationSoFar.Count;
         //Basic Card 1
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard1, str =>{reply2 = str;});
+        AI_IntegrationManager.instance.Request(prompt_basicCard1, str =>{reply2 = str;}, true);
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr1 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd1 = ConvertCardData(cdr1);
@@ -83,7 +84,7 @@ public class AI_DeckGenerator : MonoBehaviour
 
         //Basic Card 2
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard2, str =>{reply2 = str;});
+        AI_IntegrationManager.instance.Request(prompt_basicCard2, str =>{reply2 = str;}, true);
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr2 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd2 = ConvertCardData(cdr2);
@@ -92,7 +93,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         //Basic Card 3
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard3, str =>{reply2 = str;});
+        AI_IntegrationManager.instance.Request(prompt_basicCard3, str =>{reply2 = str;}, true);
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr3 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd3 = ConvertCardData(cdr3);
@@ -102,7 +103,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         //Basic Card 4
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard4, str =>{reply2 = str;});
+        AI_IntegrationManager.instance.Request(prompt_basicCard4, str =>{reply2 = str;}, true);
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr4 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd4 = ConvertCardData(cdr4);
@@ -111,6 +112,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         AI_IntegrationManager.instance._conversationSoFar =
             AI_IntegrationManager.instance._conversationSoFar.Take(n).ToList();
+        AI_IntegrationManager.instance.Request(prompt_effects.Replace("##Rarity##", "basic"), str => { });
         //Debug.Log("Initial Deck Generation Complete!");
     }
     
@@ -143,7 +145,7 @@ public class AI_DeckGenerator : MonoBehaviour
             prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
             prompt2Send = prompt2Send.Replace("##Total##", rareCardCnt.ToString());
             
-            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;});
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true);
             
             yield return new WaitWhile( () => reply2 == "");
             
@@ -155,6 +157,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         AI_IntegrationManager.instance._cardGenConversationSoFar =
             AI_IntegrationManager.instance._cardGenConversationSoFar.Take(n).ToList();
+        AI_IntegrationManager.instance.CardQueueRequest(prompt_effects.Replace("##Rarity##", "rare"), str => { });
         //Debug.Log("Initial Deck Generation Complete!");
     }
     
@@ -166,7 +169,7 @@ public class AI_DeckGenerator : MonoBehaviour
     
     IEnumerator GenerateEpicCardsCoroutine()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(6f);
         
         string prompt1Send = prompt_epicDescription;
         prompt1Send = prompt1Send.Replace("##HeroName##", AI_IntegrationManager.instance.heroName);
@@ -186,7 +189,7 @@ public class AI_DeckGenerator : MonoBehaviour
             prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
             prompt2Send = prompt2Send.Replace("##Total##", epicCardCnt.ToString());
             
-            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;});
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true);
             
             yield return new WaitWhile( () => reply2 == "");
             
@@ -198,6 +201,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         AI_IntegrationManager.instance._cardGenConversationSoFar =
             AI_IntegrationManager.instance._cardGenConversationSoFar.Take(n).ToList();
+        AI_IntegrationManager.instance.CardQueueRequest(prompt_effects.Replace("##Rarity##", "epic"), str => { });
         //Debug.Log("Initial Deck Generation Complete!");
     }
     
@@ -229,7 +233,7 @@ public class AI_DeckGenerator : MonoBehaviour
             prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
             prompt2Send = prompt2Send.Replace("##Total##", legendCardCnt.ToString());
             
-            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;});
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true);
             
             yield return new WaitWhile( () => reply2 == "");
             
@@ -240,6 +244,7 @@ public class AI_DeckGenerator : MonoBehaviour
         }
         AI_IntegrationManager.instance._cardGenConversationSoFar =
             AI_IntegrationManager.instance._cardGenConversationSoFar.Take(n).ToList();
+        AI_IntegrationManager.instance.CardQueueRequest(prompt_effects.Replace("##Rarity##", "legendary"), str => { });
         //Debug.Log("Initial Deck Generation Complete!");
     }
     

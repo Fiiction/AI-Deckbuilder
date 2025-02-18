@@ -8,8 +8,6 @@ using UnityEngine.Serialization;
 
 public class AI_IntegrationManager : MonoBehaviour
 {
-    
-    
     public static AI_IntegrationManager instance;
     public static DeepseekParams activeParams;
     public string heroName = "Hanzo";
@@ -21,12 +19,12 @@ public class AI_IntegrationManager : MonoBehaviour
     private int baseInitPercentage = 0;
     public int initPercentage = 0;
     public bool initFinished = false;
-    
     [SerializeField]
     public List<Message> _conversationSoFar = new();
     [SerializeField]
     public List<Message> _cardGenConversationSoFar = new();
-    
+
+    public string debugStr = "";
 
     [SerializeField]public List<DeepseekParams> LLMParams = new();
     [SerializeField, TextArea(8, 12)] private string initialPrompt;
@@ -64,7 +62,6 @@ public class AI_IntegrationManager : MonoBehaviour
             startTurnMsgCnt = _conversationSoFar.Count;
     }
     
-    [SerializeField]
     void Awake()
     {
         if (instance != null && instance != this)
@@ -79,8 +76,9 @@ public class AI_IntegrationManager : MonoBehaviour
         instance = this;
     }
 
-    public void Request(string str, Action<string> callback)
+    public void Request(string str, Action<string> callback, bool replyWithJson = false)
     {
+        debugStr += "\n<b>Request</b>: \n" + str;
         str = pendingPrompts +"\n" + str;
         pendingPrompts = "";
         if(str.Contains("##"))
@@ -90,26 +88,30 @@ public class AI_IntegrationManager : MonoBehaviour
         Deepseek.Request(_conversationSoFar, activeParams,
             reply =>
             {
+                debugStr += "\n<b>Reply</b>: \n" + reply;
                 Debug.Log("Deepseek Reply:\n" + reply);
                 _conversationSoFar.Add(new Message(reply, Role.AI));
                 callback.Invoke(reply);
-            }, null, null);
+            }, null, null, replyWithJson);
         
     }
 
-    public void CardQueueRequest(string str, Action<string> callback)
+    public void CardQueueRequest(string str, Action<string> callback, bool replyWithJson = false)
     {
         if(str.Contains("##"))
             Debug.LogError("Unfilled key found:\n" + str);
+        
+        debugStr += "\n<b><color=#AAAAFF>Card Req</b></color>: \n" + str;
         _cardGenConversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("<color=#FFAA66>Card Req</color>:\n" + str);
         Deepseek.Request(_cardGenConversationSoFar, activeParams,
             reply =>
             {
-                Debug.Log("<color=#FFAA66>Card Reply</color>:\n" + reply);
+                debugStr += "\n<b><color=#AAAAFF>Card Reply</b></color>: \n" + reply;
+                Debug.Log("Card Reply:\n" + reply);
                 _cardGenConversationSoFar.Add(new Message(reply, Role.AI));
                 callback.Invoke(reply);
-            }, null, null);
+            }, null, null, replyWithJson);
         
     }
 

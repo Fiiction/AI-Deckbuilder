@@ -29,7 +29,7 @@ public static class Deepseek
     // public static string modelType = "deepseek-ai/DeepSeek-V3";
     // public static string URL = "https://api.siliconflow.cn/v1/chat/completions";
     private static readonly List<RequestRecord> _requestRecords = new List<RequestRecord>();
-
+    private static string jsonFormat = "json_object";
     /// <summary>
     /// Send a request to ChatGPT.
     /// </summary>
@@ -68,14 +68,14 @@ public static class Deepseek
     // ReSharper disable once MemberCanBePrivate.Global
     public static Action Request(IEnumerable<Message> messages, DeepseekParams parameters,
                                  Action<string> completeCallback, Action<long, string> failureCallback,
-                                 Action<string> updateCallback = null)
+                                 Action<string> updateCallback = null, bool replyWithJson = false)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
         Debug.Assert(messages != null, "Messages cannot be null.");
 
         if (updateCallback == null) {
-            return QuickRequest(messages, parameters, completeCallback, failureCallback);
+            return QuickRequest(messages, parameters, completeCallback, failureCallback, replyWithJson);
         }
 
         // Throttle.
@@ -119,10 +119,10 @@ public static class Deepseek
     }
 
     private static Action QuickRequest(IEnumerable<Message> messages, DeepseekParams parameters,
-                                       Action<string> completeCallback, Action<long, string> failureCallback)
+                                       Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false)
     {
         
-        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback);
+        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback, replyWithJson);
         ChatGptContainer.Instance.StartCoroutine(enumerator);
 
         void CancelCallback() {
@@ -134,9 +134,9 @@ public static class Deepseek
 
     private static IEnumerator QuickRequestCoroutine(IEnumerable<Message> messages, DeepseekParams parameters,
                                                      Action<string> completeCallback,
-                                                     Action<long, string> failureCallback)
+                                                     Action<long, string> failureCallback, bool replyWithJson = false)
     {
-        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback);
+        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback, replyWithJson);
         yield break;
     }
     private static void LogRequest(UnityWebRequest request)
@@ -154,7 +154,7 @@ public static class Deepseek
         Debug.Log(log.ToString());
     }
     private static Action QuickRequestBlocking(IEnumerable<Message> messages, DeepseekParams parameters,
-                                               Action<string> completeCallback, Action<long, string> failureCallback)
+                                               Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
@@ -169,18 +169,34 @@ public static class Deepseek
             }
         }
 
-        var requestObject = new RequestMessage
+        string requestJson = "";
+        if (replyWithJson)
         {
-            model = parameters.modelName,
-            temperature = parameters.temperature,
-            messages = ConvertMessages(messages, parameters.role),
-        };
-        //Debug.Log("ModelName: " + requestObject.model);
+            var requestObject = new JsonRequestMessage
+            {
+                model = parameters.modelName,
+                temperature = parameters.temperature,
+                messages = ConvertMessages(messages, parameters.role),
+                response_format = new JsonFormat{type = jsonFormat} 
+            };
+            //Debug.Log("ModelName: " + requestObject.model);
+            requestJson = JsonUtility.ToJson(requestObject);
+        }
+        else
+        {
+            var requestObject = new RequestMessage
+            {
+                model = parameters.modelName,
+                temperature = parameters.temperature,
+                messages = ConvertMessages(messages, parameters.role)
+            };
+            //Debug.Log("ModelName: " + requestObject.model);
+            requestJson = JsonUtility.ToJson(requestObject);
+        }
 
         var requestRecord = new RequestRecord();
-        var requestJson = JsonUtility.ToJson(requestObject);
         var request = GetWebRequest(requestJson, parameters, failureCallback, requestRecord);
-        //LogRequest(request);
+        LogRequest(request);
         // Debug.Log("Request Sent");
         var cancelCallback = new Action(() => {
             try {
@@ -396,10 +412,26 @@ public static class Deepseek
         public string model;
         public RoleContentMessage[] messages;
         public float temperature;
+
         // Omitted fields: int n, string stop, int max_tokens,
         // float presence_penalty, float frequency_penalty;
     }
+    [Serializable]
+    private struct JsonRequestMessage
+    {
+        public string model;
+        public RoleContentMessage[] messages;
+        public float temperature;
 
+        public JsonFormat response_format;
+        // Omitted fields: int n, string stop, int max_tokens,
+        // float presence_penalty, float frequency_penalty;
+    }
+    [Serializable]
+    private struct JsonFormat
+    {
+        public string type;
+    }
     [Serializable]
     private struct RoleContentMessage {
         public string role;

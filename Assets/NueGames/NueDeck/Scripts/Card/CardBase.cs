@@ -116,7 +116,7 @@ namespace NueGames.NueDeck.Scripts.Card
                     CardActionProcessor.GetAction(playerAction.CardActionType)
                         .DoAction(new CardActionParameters(playerAction.ActionValue,
                             target,self,CardData,this, playerAction.StrParameter));
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(1f);
             }
             CollectionManager.OnCardPlayed(this);
         }

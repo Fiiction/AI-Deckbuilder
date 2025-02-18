@@ -10,5 +10,6 @@
         RandomEnemy,
         RandomAlly,
         EnemySelf,
+        Unknown
     }
 }

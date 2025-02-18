@@ -76,16 +76,18 @@ MonoBehaviour:
     or casting 2 different custom effect at the same time.\r\n\r"
   prompt3_Normal: "For the ##No## effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
-    (content in parentheses are comments)\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
+    (Content in parentheses are comments. Target can only be chosen from \"self\",
+    \"targetEnemy\" or \"allEnemies\". )\r\n{\r\n\t\"target\": \"self\", (or \"targetEnemy\"
     or \"AllEnemies\". Do NOT use enemy's name.)\r\n\t\"value\": 3 (interger, indicates
     ##ValueMeaning##) \r\n}"
   prompt3_CustomEffect: "For the ##No## effect \"Add Custom Status\", what's the
     name of status, the target and the numeric value of this effect:\r\n\r\nPlease
-    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
+    reply with following json format: (Content in parentheses are comments. Target
+    can only be chosen from \"self\", \"targetEnemy\" or \"allEnemies\". )\r\n{\r\n\t\"buffname\":
     \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"magic
-    focus\", etc.)\r\n\t\"target\": \"self\", (or \"targetEnemy\" or \"allEnemies\". 
-    Do NOT use enemy's name.)\r\n\t\"value\": 3 (interger, indicates how many stacks
-    of this status are casted on target. Minus value to clear) \r\n}\r\n"
+    focus\", etc. it should be very brief.)\r\n\t\"target\": \"self\", (or \"targetEnemy\"
+    or \"allEnemies\".  Do NOT use enemy's name.)\r\n\t\"value\": 3 (interger, indicates
+    how many stacks of this status are casted on target. Minus value to clear) \r\n}\r\n"
   prompt_StartTurn1: "Now player, ##PlayerDesc## ##PlayerCustomStatus##, starts a
     new turn. This is the ##No## turn in this fight. There are following enemy(s)
     in the scene:\n\n##EnemiesDesc##\n\r\nAccording the custom status the hero has
@@ -105,13 +107,15 @@ MonoBehaviour:
     [\"Deal Damage\",  \"Add Custom Status\"]\r\n}\r"
   prompt3_Normal_Enemy: "For the effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
-    (content in parentheses are comments)\r\n{\r\n\t\"target\": \"hero\", (or \"enemySelf\"
+    (Content in parentheses are comments. Target can only be chosen from \"hero\",
+    \"enemySelf\" or \"allEnemies\". )\r\n{\r\n\t\"target\": \"hero\", (or \"enemySelf\"
     standing for the acting enemy itself, or \"allEnemies\" standing for all enemy
     units. Do NOT use character's name.)\r\n\t\"value\": 3 (interger, indicates ##ValueMeaning##)
     \r\n}"
   prompt3_CustomEffect_Enemy: "For the effect \"Add Custom Status\", what's the name
-    of status, the target and the numeric value of this effect:\r\n\r\n\r\nPlease
-    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"buffname\":
+    of status, the target and the numeric value of this effect:\r\n\r\nPlease reply
+    with following json format: (Content in parentheses are comments. Target can
+    only be chosen from \"hero\", \"enemySelf\" or \"allEnemies\". )\r\n{\r\n\t\"buffname\":
     \"poison\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"magic
     focus\", etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" standing for the
     acting enemy itself, or \"allEnemies\" standing for all enemy units. Do NOT use
@@ -122,6 +126,127 @@ MonoBehaviour:
   cardsUsedInBattle: 0
   turnCnt: 0
   cardInTurnCnt: 0
+--- !u!1 &1213679363332913899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1481638053727293341}
+  - component: {fileID: 1779937729411384176}
+  - component: {fileID: 6425467356986901787}
+  - component: {fileID: 430685530280158201}
+  - component: {fileID: 7616921295634829408}
+  m_Layer: 0
+  m_Name: DebugCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1481638053727293341
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213679363332913899}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4470467693306624534}
+  m_Father: {fileID: 1346780695339633065}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!223 &1779937729411384176
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213679363332913899}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 999
+  m_TargetDisplay: 0
+--- !u!114 &6425467356986901787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213679363332913899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!114 &430685530280158201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213679363332913899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &7616921295634829408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213679363332913899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8b3f40e7273ab6499f68843f0c14318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 4147372819266324151}
+  text: {fileID: 2715350056567581742}
+  active: 0
+  moveDist: -360
+  basePosition: {x: 0, y: 0, z: 0}
+  curPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1605598397388320318
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +325,11 @@ MonoBehaviour:
     Please tell
     me with natural language, what could be the name, narrative design, visual, and
     the effect in gameplay of those 4 unique cards.'
+  prompt_effects: "Please briefly introduce custom effects (buffs/debuffs) that could
+    be brought by these ##Rarity## cards. \nFor example: \nStrength: increase the
+    amount of damage directly dealt by the character one per stack; \nBurn: deal
+    damage to the owner one per stack at the start of each turn, and lower the damage
+    dealt by the owner one per stack."
   prompt_basicCard1: "Now please specify the design of the basic attack card.\r\nPlease
     reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
     \"Punch\",\r\n\t\"description\": \"Punch the targeted enemy with mighty power.\",\r\n\t\"manaCost\":
@@ -234,7 +364,7 @@ MonoBehaviour:
     Diffusion card image generation. Try describe a dynamic action. Images of different
     cards should look unique and distinctive, in colors and other visual elements)
     \r\n}"
-  rareCardCnt: 4
+  rareCardCnt: 3
   prompt_rareDescription: 'Now I need you to design the rare cards for the hero ##HeroName##,
     ##HeroDesc##.
 
@@ -568,6 +698,82 @@ MonoBehaviour:
     0\r\n      ],\r\n      \"clip\": [\r\n        \"14\",\r\n        0\r\n      ]\r\n   
     },\r\n    \"class_type\": \"LoraLoader\",\r\n    \"_meta\": {\r\n      \"title\":
     \"Load LoRA\"\r\n    }\r\n  }\r\n}"
+--- !u!1 &2698976235278987766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4470467693306624534}
+  - component: {fileID: 8581121374234153657}
+  - component: {fileID: 4147372819266324151}
+  m_Layer: 0
+  m_Name: DebugPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4470467693306624534
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2698976235278987766}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4427037148912447983}
+  m_Father: {fileID: 1481638053727293341}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 960, y: 0}
+  m_SizeDelta: {x: 586.4125, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!222 &8581121374234153657
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2698976235278987766}
+  m_CullTransparentMesh: 1
+--- !u!114 &4147372819266324151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2698976235278987766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5686275}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &4943198285802908904
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,6 +945,7 @@ Transform:
   - {fileID: 719324921148517846}
   - {fileID: 3172584515651884973}
   - {fileID: 7330174554457206087}
+  - {fileID: 1481638053727293341}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4603018598675367754
@@ -753,8 +960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acec668d880580a45872d7300b77d6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paramType: 8
-  alternativeParamType: 8
   heroName: Hanzo
   heroDesc: the skillful Japanese archer from Overwatch, Hanzo Shimada
   heroStory: 
@@ -765,96 +970,7 @@ MonoBehaviour:
   initFinished: 0
   _conversationSoFar: []
   _cardGenConversationSoFar: []
-  deepseekParams:
-    name: 
-    apiKey: sk-7bf38df2ed1245ce9dfd5ab62346449c
-    url: https://api.deepseek.com/chat/completions
-    modelName: deepseek-chat
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  sf_deepseekParams:
-    name: 
-    apiKey: sk-iotkkjeryhfbfyoctydxzygaqjgtgjqwzhmutfrbwnkcudrk
-    url: https://api.siliconflow.cn/v1/chat/completions
-    modelName: Pro/deepseek-ai/DeepSeek-V3
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  tencent_deepseekParams:
-    name: 
-    apiKey: sk-PqGOsK42YtyZENUcN9fOuoKRxVRuU1T4dg1CqXlISMKxnFHK
-    url: https://api.lkeap.cloud.tencent.com/v1/chat/completions
-    modelName: deepseek-v3
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  baidu_deepseekParams:
-    name: 
-    apiKey: bce-v3/ALTAK-QLWiriaDz6mDukauRJVl2/f97a115f5582fe07b2ed00ad580a705fe80d4d36
-    url: https://qianfan.baidubce.com/v2/chat/completions
-    modelName: deepseek-v3
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  novita_deepseekParams:
-    name: 
-    apiKey: d424cd8f-1b39-497c-9e23-c874de6618ed
-    url: https://ark.cn-beijing.volces.com/api/v3/
-    modelName: ep-20250215083908-8lbtg
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  ali_deepseekParams:
-    name: 
-    apiKey: d424cd8f-1b39-497c-9e23-c874de6618ed
-    url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
-    modelName: ep-20250215084449-rs74j
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  gptParams:
-    name: 
-    apiKey: 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
-    url: https://api.openai.com/v1/chat/completions
-    modelName: gpt-4o
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  geminiParams:
-    name: 
-    apiKey: AIzaSyC1H5ROCPmAClj2aExPONEkIKFKEQA-kRU
-    url: https://generativelanguage.googleapis.com/v1beta:chatCompletions
-    modelName: gemini-2.0-flash
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  qWenParams:
-    name: 
-    apiKey: sk-cf84ec7d9b824a17aa179b7654e5bc8e
-    url: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
-    modelName: qwen-max-latest
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
+  debugStr: 
   LLMParams:
   - name: DeepseekV3_Official
     apiKey: sk-7bf38df2ed1245ce9dfd5ab62346449c
@@ -940,6 +1056,142 @@ MonoBehaviour:
   startGameMsgCnt: -1
   startTurnMsgCnt: -1
   cardGenMessageMerged: -1
+--- !u!1 &6294775706877010665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4427037148912447983}
+  - component: {fileID: 6339882956302391049}
+  - component: {fileID: 2715350056567581742}
+  m_Layer: 0
+  m_Name: DebugText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4427037148912447983
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294775706877010665}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4470467693306624534}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0.0009765625}
+  m_SizeDelta: {x: -10, y: -10.001953}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6339882956302391049
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294775706877010665}
+  m_CullTransparentMesh: 1
+--- !u!114 &2715350056567581742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294775706877010665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 1024
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &6531438614489677539
 GameObject:
   m_ObjectHideFlags: 0

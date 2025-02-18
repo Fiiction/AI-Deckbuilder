@@ -53,7 +53,6 @@ public class AI_CardEffect : MonoBehaviour
     public int cardInTurnCnt = 0;
     
     public Dictionary<string, string> effectDict = new();
-    
     IEnumerator CardUseCoroutine(CardBase card, CharacterBase self, CharacterBase targetCharacter,
         Action<List<CardActionData>> callback)
     {
@@ -102,7 +101,7 @@ public class AI_CardEffect : MonoBehaviour
         prompt1Sent = prompt1Sent.Replace("##Specific##",
             (cardInTurnCnt <= 1 ? prompt_specific : ""));
         
-        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply2 = str;});
+        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply2 = str;}, true);
  
         yield return new WaitWhile( () => reply2 == "");
         
@@ -118,7 +117,7 @@ public class AI_CardEffect : MonoBehaviour
                 prompt3Sent = prompt3_CustomEffect.Replace("##No##",numbers[idx]);
                 if (targetCharacter == null)
                     prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
+                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
@@ -133,7 +132,7 @@ public class AI_CardEffect : MonoBehaviour
                 if (targetCharacter == null)
                     prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
                 prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
+                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 ActionParams p = Decode<ActionParams>(reply3);
                 var ad = new CardActionData(actionType, StringToActionTarget(p.target),
@@ -183,7 +182,7 @@ public class AI_CardEffect : MonoBehaviour
         
         turnCnt++;
         
-        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;});
+        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;}, true);
         
         yield return new WaitWhile( () => reply1 == "");
         
@@ -198,7 +197,7 @@ public class AI_CardEffect : MonoBehaviour
             {
                 prompt3Sent = prompt3_CustomEffect.Replace("##No##",numbers[idx]);
                 prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
+                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
@@ -212,7 +211,7 @@ public class AI_CardEffect : MonoBehaviour
                     .Replace("##No##",numbers[idx]);
                 prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
                 prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;});
+                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 ActionParams p = Decode<ActionParams>(reply3);
                 var ad = new CardActionData(actionType, StringToActionTarget(p.target),
@@ -235,7 +234,7 @@ public class AI_CardEffect : MonoBehaviour
                 CardActionProcessor.GetAction(i.CardActionType)
                     .DoAction(new CardActionParameters(i.ActionValue,
                         target,self,null, null, i.StrParameter));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
         }
         
         
@@ -268,7 +267,7 @@ public class AI_CardEffect : MonoBehaviour
             .Replace("##EnemyActionName##", (enemySelf as EnemyBase).NextAbility.Name)
             .Replace("##EnemyActionDesc##", (enemySelf as EnemyBase).NextAbility.Desc);
         
-        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;});
+        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;}, true);
         
         yield return new WaitWhile( () => reply1 == "");
         
@@ -282,7 +281,7 @@ public class AI_CardEffect : MonoBehaviour
             if (i == "Add Custom Status")
             {
                 prompt3Sent = prompt3_CustomEffect_Enemy.Replace("##No##",numbers[idx]);
-                AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; });
+                AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; }, true);
                 yield return new WaitWhile(() => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
@@ -295,7 +294,7 @@ public class AI_CardEffect : MonoBehaviour
                 prompt3Sent = prompt3_Normal_Enemy.Replace("##EffectName##", i)
                     .Replace("##No##",numbers[idx]);
                 prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
-                AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; });
+                AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; }, true);
                 yield return new WaitWhile(() => reply3 == "");
                 ActionParams p = Decode<ActionParams>(reply3);
                 var ad = new CardActionData(actionType, StringToActionTarget(p.target),
@@ -320,7 +319,7 @@ public class AI_CardEffect : MonoBehaviour
                 CardActionProcessor.GetAction(i.CardActionType)
                     .DoAction(new CardActionParameters(i.ActionValue,
                         target,enemySelf,null, null, i.StrParameter));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
         }
         callback?.Invoke();
     }
@@ -439,7 +438,7 @@ public class AI_CardEffect : MonoBehaviour
            case "add custom status": return CardActionType.CustomEffect;
            default: 
                Debug.LogWarning("Unknown card action type: " + str);
-               return CardActionType.Attack;
+               return CardActionType.Unknown;
         }
     }
 
