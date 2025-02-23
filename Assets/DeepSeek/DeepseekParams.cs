@@ -24,6 +24,17 @@ public class DeepseekParams : ISerializationCallbackReceiver
         this.apiKey = apiKey;
     }
 
+    public DeepseekParams(string _url, string _modelName, string _apiKey, float _temperature = 0.4f)
+    {
+        url = _url;
+        modelName = _modelName;
+        apiKey = _apiKey;
+        temperature = _temperature;
+        role = "";
+        _serialized = false;
+        throttle = -1;
+        timeout = -1;
+    }
     public DeepseekParams(DeepseekParams parameters) {
         apiKey = parameters.apiKey;
         temperature = parameters.temperature;

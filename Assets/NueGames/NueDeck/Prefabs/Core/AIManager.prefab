@@ -48,18 +48,16 @@ MonoBehaviour:
   prompt1_withTarget: "The battle continues and the player, as ##PlayerName## ##PlayerCustomStatus##,
     spends ##ManaSpent## mana to use following card:\r\n\r\n##CardName##: ##CardDesc##\n\r\n\rtargeting
     following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##.\r\n\r\nWhat
-    will happen? Please consider the card used in the past. Describe with natural
-    language within 20 words.\r\n\r\nThen answer with following structure, what will
-    be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease reply with one
-    single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal Damage\",
-    \"Draw\", \"Steal Life\"]\r\n}"
+    will happen? Please consider the card used in the past. \r\n\r\nAnswer with following
+    structure, what will be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease
+    reply with one single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal
+    Damage\", \"Draw\", \"Steal Life\"]\r\n}"
   prompt1_noTarget: "The battle continues and the player, as ##PlayerName## ##PlayerCustomStatus##,
     spends ##ManaSpent## mana to use following card:\r\n\r\n##CardName##: ##CardDesc##\n\r\nWhat
-    will happen? Please consider the card used in the past. Describe with natural
-    language within 20 words.\r\n\r\nThen answer with following structure, what will
-    be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease reply with one
-    single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal Damage\",
-    \"Draw\", \"Steal Life\"]\r\n}\n"
+    will happen? Please consider the card used in the past. \r\n\r\nAnswer with following
+    structure, what will be the effect(s) of this card?\n\r\n##Specific##\r\n\r\r\nPlease
+    reply with one single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal
+    Damage\", \"Draw\", \"Steal Life\"]\r\n}\n"
   prompt2: "Now answer with following structure, what will be the effect(s) of this
     card?\r\n\r##Specific##\r\n\nPlease reply with one single json format:\r\n{\r\n\t\"effects\":
     [\"Deal Damage\", \"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
@@ -92,7 +90,7 @@ MonoBehaviour:
     new turn. This is the ##No## turn in this fight. There are following enemy(s)
     in the scene:\n\n##EnemiesDesc##\n\r\nAccording the custom status the hero has
     and cards they played, will there be effects at the start of the turn? You don't
-    need to mention the cards naturally drawn and mana natrually gain.\r\nPlease
+    need to mention the cards naturally drawn and mana natrually gain.\n\n##Specific##\n\r\nPlease
     reply with one single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", 
     \"Draw\", \"Gain Mana\"]\r\n}\r\nif there won't be turn-start effects, reply
     with:\r\n{\r\n\t\"effects\": []\r\n}"
@@ -115,13 +113,36 @@ MonoBehaviour:
   prompt3_CustomEffect_Enemy: "For the effect \"Add Custom Status\", what's the name
     of status, the target and the numeric value of this effect:\r\n\r\nPlease reply
     with following json format: (Content in parentheses are comments. Target can
-    only be chosen from \"hero\", \"enemySelf\" or \"allEnemies\". )\r\n{\r\n\t\"buffname\":
+    only be chosen from \"hero\", \"enemySelf\" and \"allEnemies\". )\r\n{\r\n\t\"buffname\":
     \"poison\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"magic
     focus\", etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" standing for the
     acting enemy itself, or \"allEnemies\" standing for all enemy units. Do NOT use
     character's name.)\r\n\t\"value\": 3 (interger, indicates how many stacks of
     this status are casted on target) \r\n}\r\n"
   processingCanvas: {fileID: 1978969409886390374}
+  correctionPrompt_withTarget: 'Please notice that the target of the action can only
+    be chosen from from "self", "targetEnemy" and "allEnemies". We need to reprocess
+    the card.
+
+'
+  correctionPrompt_noTarget: 'Please notice that the target of the action can only
+    be chosen from from "self"  and "allEnemies". We need to reprocess the card.
+
+'
+  correctionPrompt_startTurn: 'Please notice that the target of the action can only
+    be chosen from from "self"  and "allEnemies". We need to reprocess the effect.
+
+'
+  correctionPrompt_enemy: 'Please notice that the target of the enemy''s action can
+    only be chosen from from "hero", "enemySelf" and "allEnemies". We need to reprocess
+    the enemy action.
+
+'
+  correctionPrompt_effectType: 'Please the effect can only be chosen from "Deal Damage",
+    "Heal", "Add Block", "Draw", "Gain Mana", "Stun", "Destroy the Card", and "Add
+    Custom Status". We need to reprocess the action.
+
+'
   actionDatas: []
   cardsUsedInBattle: 0
   turnCnt: 0
@@ -372,19 +393,20 @@ MonoBehaviour:
     different intents (attack, defense, strengthening, resources, support, etc.),
     and different costs.
 
-    These rare cards can be relatively stronger and more
-    creatively designed than the basic cards, and their effects can be compounded.
+    These rare cards can be slightly stronger and more
+    creatively designed than the basic cards, and their effects can be compounded,
+    while not overpowered.
 
-    Please
-    think about the hero''s narrative and play style in this game before designing.
+    Please think about the hero''s narrative and play
+    style in this game before designing.
 
-    Please
-    also design the illustration of these cards. They should look unique and distinctive
-    in colors and other visual elements.
+    Please also design the illustration
+    of these cards. They should look unique and distinctive in colors and other visual
+    elements.
 
-    Describe your process of synthesizing
-    and designing these rare cards, and then describe the design of ##Total## cards
-    in natural language. Don''t reply with json.'
+    Describe your process of synthesizing and designing these rare
+    cards, and then describe the design of ##Total## cards in natural language. Don''t
+    reply with json.'
   prompt_rareCard: "Now I need you to specify the design of ##Number## out of ##Total##
     rare cards.\r\n\r\nPlease reply with following json format: (content in parentheses
     are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
@@ -402,20 +424,20 @@ MonoBehaviour:
     different intents (attack, defense, strengthening, resources, support, etc.),
     and different costs.
 
-    Epic cards can be more powerful, with wilder designs,
-    and emphasize the playstyle of the hero.
+    Epic cards can be slightly stronger, with wilder designs,
+    and emphasize the playstyle of the hero, while not overpowered.
 
 
-    Please think about the hero''s
-    narrative and play style in this game before designing.
+    Please
+    think about the hero''s narrative and play style in this game before designing.
 
-    Please also design
-    the illustration of these cards. They should look unique and distinctive in colors
-    and other visual elements.
+    Please
+    also design the illustration of these cards. They should look unique and distinctive
+    in colors and other visual elements.
 
-    Describe your process of synthesizing and designing
-    these rare cards, and then describe the design of ##Total## cards in natural
-    language. Don''t reply with json.'
+    Describe your process of synthesizing
+    and designing these rare cards, and then describe the design of ##Total## cards
+    in natural language. Don''t reply with json.'
   prompt_epicCard: "Now I need you to specify the design of ##Number## out of ##Total##
     epic cards.\r\n\r\nPlease reply with following json format: (content in parentheses
     are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
@@ -434,19 +456,20 @@ MonoBehaviour:
     support, etc.), and different costs.
 
     Legendary cards should be most powerful
-    (this does not mean they have higher costs), and most tasteful in term of playstyles.
+    (this does not mean they have higher costs), and most tasteful in term of playstyles,
+    while not breaking the balance of the game.
 
 
-    Please
-    think about the hero''s narrative and play style in this game before designing.
+    Please think about the hero''s
+    narrative and play style in this game before designing.
 
-    Please
-    also design the illustration of these cards. They should look unique and distinctive
-    in colors and other visual elements.
+    Please also design
+    the illustration of these cards. They should look unique and distinctive in colors
+    and other visual elements.
 
-    Describe your process of synthesizing
-    and designing these rare cards, and then describe the design of ##Total## cards
-    in natural language. Don''t reply with json.'
+    Describe your process of synthesizing and designing
+    these rare cards, and then describe the design of ##Total## cards in natural
+    language. Don''t reply with json.'
   prompt_legendCard: "Now I need you to specify the design of ##Number## out of ##Total##
     legendary cards.\r\n\r\nPlease reply with following json format: (content in
     parentheses are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":

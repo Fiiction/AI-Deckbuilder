@@ -29,7 +29,12 @@ public class AI_CardEffect : MonoBehaviour
     [SerializeField, TextArea(12,20)] private string prompt3_CustomEffect_Enemy;
     
     public AI_ProcessingCanvas processingCanvas;
-
+    [Header("Correction Prompts")]
+    [SerializeField, TextArea(4, 6)] private string correctionPrompt_withTarget;
+    [SerializeField, TextArea(4, 6)] private string correctionPrompt_noTarget;
+    [SerializeField, TextArea(4, 6)] private string correctionPrompt_startTurn;
+    [SerializeField, TextArea(4, 6)] private string correctionPrompt_enemy;
+    [SerializeField, TextArea(4, 6)] private string correctionPrompt_effectType;
 
     private string cardName;
     private string cardDesc;
@@ -56,6 +61,7 @@ public class AI_CardEffect : MonoBehaviour
     IEnumerator CardUseCoroutine(CardBase card, CharacterBase self, CharacterBase targetCharacter,
         Action<List<CardActionData>> callback)
     {
+        ActionArray actionArray;
         reply1 = "";
         reply2 = "";
         actionDatas = new();
@@ -104,8 +110,21 @@ public class AI_CardEffect : MonoBehaviour
         AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply2 = str;}, true);
  
         yield return new WaitWhile( () => reply2 == "");
-        
-        ActionArray actionArray = Decode<ActionArray>(reply2);
+        actionArray = Decode<ActionArray>(reply2);
+
+        for(int idx = 0; idx < actionArray.effects.Length;idx++)
+        {
+            var i = actionArray.effects[idx];
+            if (StringToActionType(i) == CardActionType.Unknown)
+            {
+                Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
+                StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
+                yield break;
+            }
+        }
 
         for(int idx = 0; idx < actionArray.effects.Length;idx++)
         {
@@ -120,6 +139,17 @@ public class AI_CardEffect : MonoBehaviour
                 AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
+                
+                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
+                {
+                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_IntegrationManager.instance.pendingPrompts += targetCharacter != null?
+                        correctionPrompt_withTarget: correctionPrompt_noTarget;
+                    StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
+                    yield break;
+                }
+                
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
                     p.value, p.buffname.ToLower());
                 actionDatas.Add(ad);
@@ -135,6 +165,16 @@ public class AI_CardEffect : MonoBehaviour
                 AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 ActionParams p = Decode<ActionParams>(reply3);
+                
+                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
+                {
+                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_IntegrationManager.instance.pendingPrompts += targetCharacter != null?
+                        correctionPrompt_withTarget: correctionPrompt_noTarget;
+                    StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
+                    yield break;
+                }
                 var ad = new CardActionData(actionType, StringToActionTarget(p.target),
                     p.value, "");
                 actionDatas.Add(ad);
@@ -178,8 +218,9 @@ public class AI_CardEffect : MonoBehaviour
         prompt1Sent = prompt_StartTurn1.Replace("##PlayerDesc##", userDesc)
             .Replace("##PlayerCustomStatus##", userStatusStr)
             .Replace("##No##", numbers[turnCnt])
-            .Replace("##EnemiesDesc##", enemiesDesc);
-        
+            .Replace("##EnemiesDesc##", enemiesDesc)
+            .Replace("##Specific##", prompt_specific);
+         
         turnCnt++;
         
         AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;}, true);
@@ -187,6 +228,19 @@ public class AI_CardEffect : MonoBehaviour
         yield return new WaitWhile( () => reply1 == "");
         
         ActionArray actionArray = Decode<ActionArray>(reply1);
+        
+        for(int idx = 0; idx < actionArray.effects.Length;idx++)
+        {
+            var i = actionArray.effects[idx];
+            if (StringToActionType(i) == CardActionType.Unknown)
+            {
+                Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
+                StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
+                yield break;
+            }
+        }
         
         for(int idx = 0; idx < actionArray.effects.Length;idx++)
         {
@@ -200,6 +254,15 @@ public class AI_CardEffect : MonoBehaviour
                 AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
+                
+                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
+                {
+                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_startTurn;
+                    StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
+                    yield break;
+                }
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
                     p.value, p.buffname.ToLower());
                 actionDatas.Add(ad);
@@ -214,6 +277,16 @@ public class AI_CardEffect : MonoBehaviour
                 AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true);
                 yield return new WaitWhile( () => reply3 == "");
                 ActionParams p = Decode<ActionParams>(reply3);
+                
+                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
+                {
+                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_startTurn;
+                    StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
+                    yield break;
+                }
+                
                 var ad = new CardActionData(actionType, StringToActionTarget(p.target),
                     p.value, "");
                 actionDatas.Add(ad);
@@ -276,6 +349,18 @@ public class AI_CardEffect : MonoBehaviour
         for(int idx = 0; idx < actionArray.effects.Length;idx++)
         {
             var i = actionArray.effects[idx];
+            if (StringToActionType(i) == CardActionType.Unknown)
+            {
+                Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
+                StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
+                yield break;
+            }
+        }
+        for(int idx = 0; idx < actionArray.effects.Length;idx++)
+        {
+            var i = actionArray.effects[idx];
             string reply3 = "";
             string prompt3Sent;
             if (i == "Add Custom Status")
@@ -284,6 +369,16 @@ public class AI_CardEffect : MonoBehaviour
                 AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; }, true);
                 yield return new WaitWhile(() => reply3 == "");
                 CustomEffectParams p = Decode<CustomEffectParams>(reply3);
+                
+                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
+                {
+                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_enemy;
+                    StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
+                    yield break;
+                }
+                
                 var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
                     p.value, p.buffname.ToLower());
                 actionDatas.Add(ad);
@@ -297,6 +392,16 @@ public class AI_CardEffect : MonoBehaviour
                 AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; }, true);
                 yield return new WaitWhile(() => reply3 == "");
                 ActionParams p = Decode<ActionParams>(reply3);
+                
+                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
+                {
+                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_enemy;
+                    StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
+                    yield break;
+                }
+
                 var ad = new CardActionData(actionType, StringToActionTarget(p.target),
                     p.value, "");
                 actionDatas.Add(ad);
