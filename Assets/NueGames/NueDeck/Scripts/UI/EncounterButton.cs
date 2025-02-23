@@ -3,6 +3,7 @@ using NueGames.NueDeck.Scripts.Enums;
 using NueGames.NueDeck.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace NueGames.NueDeck.Scripts.UI
 {
@@ -31,6 +32,8 @@ namespace NueGames.NueDeck.Scripts.UI
                     break;
                 case EncounterButtonStatus.Passive:
                     button.interactable = false;
+                    button.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f);
+                    GetComponentInChildren<TMP_Text>().color = new Color(0.5f, 0.5f, 0.5f);
                     break;
                 case EncounterButtonStatus.Completed:
                     button.interactable = false;

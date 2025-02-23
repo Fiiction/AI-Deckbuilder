@@ -34,7 +34,7 @@ public class AI_DebugCanvas : MonoBehaviour
     void Update()
     {
         text.text = AI_IntegrationManager.instance.debugStr;
-        if (Input.GetKey(KeyCode.F1))
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             active = !active;
             panel.gameObject.SetActive(active);
