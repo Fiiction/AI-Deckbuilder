@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NueGames.NueDeck.Scripts.Managers;
+using Newtonsoft.Json;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 
 public class AI_IntegrationManager : MonoBehaviour
@@ -29,6 +31,7 @@ public class AI_IntegrationManager : MonoBehaviour
     [SerializeField]public List<DeepseekParams> LLMParams = new();
     [SerializeField, TextArea(8, 12)] private string initialPrompt;
     [SerializeField, TextArea(4, 12)] private string startGamePrompt;
+    [SerializeField, TextArea(2, 4)] private string jsonCorrectionPrompt;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public void SetActiveParams(string paramName)
@@ -76,7 +79,7 @@ public class AI_IntegrationManager : MonoBehaviour
         instance = this;
     }
 
-    public void Request(string str, Action<string> callback, bool replyWithJson = false)
+    public void Request(string str, Action<string> callback, bool replyWithJson = false, Type jsonType = null)
     {
         debugStr += "\n<b>Request</b>: \n" + str;
         str = pendingPrompts +"\n" + str;
@@ -88,10 +91,26 @@ public class AI_IntegrationManager : MonoBehaviour
         Deepseek.Request(_conversationSoFar, activeParams,
             reply =>
             {
+                // if(Random.value<0.6f && jsonType != null)
+                //     reply = reply.Substring(0, reply.Length - 15);
                 debugStr += "\n<b>Reply</b>: \n" + reply;
-                Debug.Log("Deepseek Reply:\n" + reply);
+                Debug.Log("LLM Reply:\n" + reply);
                 _conversationSoFar.Add(new Message(reply, Role.AI));
-                callback.Invoke(reply);
+
+                if (replyWithJson && jsonType != null)
+                {
+                    if (IsValidJson(reply, jsonType))
+                        callback.Invoke(reply);
+                    else
+                    {
+                        Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
+                        debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
+                        pendingPrompts += jsonCorrectionPrompt + "\n";
+                        Request(str, callback, replyWithJson, jsonType);
+                    }
+                }
+                else
+                    callback.Invoke(reply);
             }, null, null, replyWithJson);
         
     }
@@ -232,4 +251,28 @@ public class AI_IntegrationManager : MonoBehaviour
     
 
     #endregion
+    
+    
+    public bool IsValidJson(string json, Type type)
+    {
+        
+        int st = json.IndexOf("{");
+        int ed = json.LastIndexOf("}");
+        json = json.Substring(st, ed-st+1);
+        
+        try
+        {
+            var settings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+
+            var obj = JsonConvert.DeserializeObject(json, type, settings);
+            return true;
+        }
+        catch (JsonException ex)
+        {
+            return false;
+        }
+    }
 }

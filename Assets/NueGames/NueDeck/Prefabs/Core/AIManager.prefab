@@ -1074,6 +1074,9 @@ MonoBehaviour:
 
 
     ##EnemyDescs##'
+  jsonCorrectionPrompt: "Error occured parsing your reply in json format. Please
+    make sure you reply with one single Json structure, without any other information.
+    \n"
   gameStartPending: 0
   levelCnt: 0
   startGameMsgCnt: -1
