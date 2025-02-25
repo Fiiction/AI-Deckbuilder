@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Defend Intention
   m_EditorClassIdentifier: 
   enemyIntentionType: 1
-  intentionSprite: {fileID: 5073636712406867673, guid: 1fb0c0cb02c616d49815abb7a9a0fc0f, type: 3}
+  intentionSprite: {fileID: 21300000, guid: ab64cad5a5a12f0428ee90b65b26abb2, type: 3}

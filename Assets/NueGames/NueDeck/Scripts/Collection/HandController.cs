@@ -336,7 +336,8 @@ namespace NueGames.NueDeck.Scripts.Collection
             ref CharacterBase targetCharacter)
         {
             RaycastHit hit;
-            if (Physics.Raycast(mainRay, out hit, 1000, targetLayer))
+            bool hitSomething = Physics.Raycast(mainRay, out hit, 1000, targetLayer);
+            if (hitSomething)
             {
                 var character = hit.collider.gameObject.GetComponent<ICharacter>();
 

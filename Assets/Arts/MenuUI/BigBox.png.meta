@@ -103,13 +103,13 @@ TextureImporter:
       name: BigBox_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 19
         y: 0
         width: 2722
         height: 1212
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 17, z: 32, w: 21}
+      border: {x: 57, y: 17, z: 50, w: 21}
       customData: 
       outline: []
       physicsShape: []

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using NueGames.NueDeck.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,19 +9,30 @@ namespace NueGames.NueDeck.Scripts.Utils
     [DefaultExecutionOrder(-11)]
     public class CoreLoader : MonoBehaviour
     {
+        public GameObject managerRootPrefab;
+        public static GameObject managerRootInstance = null;
+
+        IEnumerator ResetCoroutine()
+        {
+            yield return 0;
+            managerRootInstance = Instantiate(managerRootPrefab);
+            DontDestroyOnLoad(managerRootInstance);
+        }
+        
         private void Awake()
         {
-            try
+            if (SceneManager.GetActiveScene().buildIndex != 0)
             {
-                if (!GameManager.Instance)
-                    SceneManager.LoadScene("NueCore", LoadSceneMode.Additive);
                 Destroy(gameObject);
+                return;
             }
-            catch (Exception e)
+            if (managerRootInstance != null)
             {
-                Debug.LogError("You should add NueCore scene to build settings!");
-                throw;
+                Destroy(managerRootInstance);
+                managerRootInstance = null;
             }
+            
+            StartCoroutine(ResetCoroutine());
            
         }
     }

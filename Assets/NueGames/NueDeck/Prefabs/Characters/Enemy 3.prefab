@@ -451,11 +451,15 @@ PrefabInstance:
     - target: {fileID: 6775776604672554816, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 11400000, guid: dc7ab81174a6a934a8b5a2de66745c99, type: 2}
     - target: {fileID: 6775776604672554816, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 5467164075592769361, guid: dc7ab81174a6a934a8b5a2de66745c99, type: 2}
+    - target: {fileID: 6775776604672554816, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7142332272639297443, guid: 4a531535fdf794e4893297aa72798b93, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -30.4

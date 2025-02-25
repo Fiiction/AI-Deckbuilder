@@ -20,7 +20,8 @@ namespace NueGames.NueDeck.Scripts.Utils
         }
         public void OpenMainMenuScene()
         {
-            StartCoroutine(DelaySceneChange(SceneType.MainMenu));
+            Application.Quit();
+            //StartCoroutine(DelaySceneChange(SceneType.MainMenu));
         }
         private IEnumerator DelaySceneChange(SceneType type)
         {

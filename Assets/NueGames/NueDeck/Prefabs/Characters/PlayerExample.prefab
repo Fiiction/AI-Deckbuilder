@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 116970917414028300}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SpriteParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1754129541537614217}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: TextSpawnRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8657860813120470226}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FxParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2835035829201671619}
   - component: {fileID: 2835035829201671620}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: p1_front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 2835035829204582327}
   - component: {fileID: 1757283783}
   - component: {fileID: 1757283782}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: PlayerExample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6157671411913646570}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: DescriptionRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,26 +323,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2835035829204582326}
     m_Modifications:
+    - target: {fileID: 642144587089783271, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1056161459789275137, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1056161459789275137, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_fontSize
-      value: 6
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 1056161459789275137, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 50c2e3e27cb0b6940a042d502bb01ea1, type: 2}
+      objectReference: {fileID: 11400000, guid: dc7ab81174a6a934a8b5a2de66745c99, type: 2}
     - target: {fileID: 1056161459789275137, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_fontSizeBase
-      value: 6
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 1056161459789275137, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 1760276239494290261, guid: 50c2e3e27cb0b6940a042d502bb01ea1, type: 2}
+      objectReference: {fileID: 5467164075592769361, guid: dc7ab81174a6a934a8b5a2de66745c99, type: 2}
     - target: {fileID: 1056161459789275137, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 1
@@ -435,6 +439,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2907057892072630909, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3053147385197142743, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_SizeDelta.x
       value: 49.69
@@ -451,6 +459,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4307134559339480477, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4383464602382946173, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 33.3
@@ -463,22 +475,26 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5028886797325955748, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5093173911016622206, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_fontSize
-      value: 6
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 5093173911016622206, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 50c2e3e27cb0b6940a042d502bb01ea1, type: 2}
+      objectReference: {fileID: 11400000, guid: dc7ab81174a6a934a8b5a2de66745c99, type: 2}
     - target: {fileID: 5093173911016622206, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_fontSizeBase
-      value: 6
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 5093173911016622206, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 1760276239494290261, guid: 50c2e3e27cb0b6940a042d502bb01ea1, type: 2}
+      objectReference: {fileID: 5467164075592769361, guid: dc7ab81174a6a934a8b5a2de66745c99, type: 2}
     - target: {fileID: 5093173911016622206, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -486,6 +502,10 @@ PrefabInstance:
     - target: {fileID: 5572609017615024000, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_Name
       value: AllyCanvas Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5572609017615024000, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6779519733593896437, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -498,6 +518,14 @@ PrefabInstance:
     - target: {fileID: 6779519733593896437, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556913961963066689, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794574530418795455, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1113787055402685448, guid: 06cd4b0ebbcba2f4896b474ce827c4bc, type: 3}

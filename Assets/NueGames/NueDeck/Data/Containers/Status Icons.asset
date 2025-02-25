@@ -15,7 +15,7 @@ MonoBehaviour:
   statusIconBasePrefab: {fileID: 6777904196308813527, guid: f4e76bc2e67da6241b52b8d7c6034e01, type: 3}
   statusIconList:
   - iconStatus: 1
-    iconSprite: {fileID: -1513487178384027574, guid: a707003c96586cc41b22ae32a9cdb636, type: 3}
+    iconSprite: {fileID: 21300000, guid: ab64cad5a5a12f0428ee90b65b26abb2, type: 3}
     specialKeywords: 00000000
   - iconStatus: 2
     iconSprite: {fileID: -214828719786938277, guid: a707003c96586cc41b22ae32a9cdb636, type: 3}

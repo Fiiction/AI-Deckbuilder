@@ -159,6 +159,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.081
       objectReference: {fileID: 0}
+    - target: {fileID: 2452178601341196022, guid: 36c7284207bc0f143bdc3f1933146cf5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305065158385358273, guid: 36c7284207bc0f143bdc3f1933146cf5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4975396874289159475, guid: 36c7284207bc0f143bdc3f1933146cf5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 7260925355206061662, guid: 36c7284207bc0f143bdc3f1933146cf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.9789999
@@ -388,6 +400,14 @@ PrefabInstance:
     - target: {fileID: 7048625805859230003, guid: 5e81fa3d17dd2f6478c49d213ec328b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7048625806080352387, guid: 5e81fa3d17dd2f6478c49d213ec328b0, type: 3}
+      propertyPath: targetLayer.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 7048625806080352387, guid: 5e81fa3d17dd2f6478c49d213ec328b0, type: 3}
+      propertyPath: selectableLayer.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
