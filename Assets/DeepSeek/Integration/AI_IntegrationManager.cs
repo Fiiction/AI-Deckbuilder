@@ -115,7 +115,7 @@ public class AI_IntegrationManager : MonoBehaviour
         
     }
 
-    public void CardQueueRequest(string str, Action<string> callback, bool replyWithJson = false)
+    public void CardQueueRequest(string str, Action<string> callback, bool replyWithJson = false, Type jsonType = null)
     {
         if(str.Contains("##"))
             Debug.LogError("Unfilled key found:\n" + str);
@@ -129,7 +129,20 @@ public class AI_IntegrationManager : MonoBehaviour
                 debugStr += "\n<b><color=#AAAAFF>Card Reply</b></color>: \n" + reply;
                 Debug.Log("Card Reply:\n" + reply);
                 _cardGenConversationSoFar.Add(new Message(reply, Role.AI));
-                callback.Invoke(reply);
+                if (replyWithJson && jsonType != null)
+                {
+                    if (IsValidJson(reply, jsonType))
+                        callback.Invoke(reply);
+                    else
+                    {
+                        Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
+                        debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
+                        pendingPrompts += jsonCorrectionPrompt + "\n";
+                        CardQueueRequest(str, callback, replyWithJson, jsonType);
+                    }
+                }
+                else
+                    callback.Invoke(reply);
             }, null, null, replyWithJson);
         
     }

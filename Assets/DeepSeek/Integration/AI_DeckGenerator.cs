@@ -75,7 +75,7 @@ public class AI_DeckGenerator : MonoBehaviour
         int n = AI_IntegrationManager.instance._conversationSoFar.Count;
         //Basic Card 1
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard1, str =>{reply2 = str;}, true);
+        AI_IntegrationManager.instance.Request(prompt_basicCard1, str =>{reply2 = str;}, true, typeof(CardDataReply));
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr1 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd1 = ConvertCardData(cdr1);
@@ -84,7 +84,7 @@ public class AI_DeckGenerator : MonoBehaviour
 
         //Basic Card 2
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard2, str =>{reply2 = str;}, true);
+        AI_IntegrationManager.instance.Request(prompt_basicCard2, str =>{reply2 = str;}, true, typeof(CardDataReply));
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr2 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd2 = ConvertCardData(cdr2);
@@ -93,7 +93,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         //Basic Card 3
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard3, str =>{reply2 = str;}, true);
+        AI_IntegrationManager.instance.Request(prompt_basicCard3, str =>{reply2 = str;}, true, typeof(CardDataReply));
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr3 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd3 = ConvertCardData(cdr3);
@@ -103,7 +103,7 @@ public class AI_DeckGenerator : MonoBehaviour
         
         //Basic Card 4
         reply2 = "";
-        AI_IntegrationManager.instance.Request(prompt_basicCard4, str =>{reply2 = str;}, true);
+        AI_IntegrationManager.instance.Request(prompt_basicCard4, str =>{reply2 = str;}, true, typeof(CardDataReply));
         yield return new WaitWhile( () => reply2 == "");
         CardDataReply cdr4 = AI_CardEffect.Decode<CardDataReply>(reply2);
         CardData cd4 = ConvertCardData(cdr4);
@@ -145,7 +145,7 @@ public class AI_DeckGenerator : MonoBehaviour
             prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
             prompt2Send = prompt2Send.Replace("##Total##", rareCardCnt.ToString());
             
-            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true);
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true, typeof(CardDataReply));
             
             yield return new WaitWhile( () => reply2 == "");
             
@@ -189,7 +189,7 @@ public class AI_DeckGenerator : MonoBehaviour
             prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
             prompt2Send = prompt2Send.Replace("##Total##", epicCardCnt.ToString());
             
-            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true);
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true, typeof(CardDataReply));
             
             yield return new WaitWhile( () => reply2 == "");
             
@@ -233,7 +233,7 @@ public class AI_DeckGenerator : MonoBehaviour
             prompt2Send = prompt2Send.Replace("##Number##", numbers[i]);
             prompt2Send = prompt2Send.Replace("##Total##", legendCardCnt.ToString());
             
-            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true);
+            AI_IntegrationManager.instance.CardQueueRequest(prompt2Send, str =>{reply2 = str;}, true, typeof(CardDataReply));
             
             yield return new WaitWhile( () => reply2 == "");
             
