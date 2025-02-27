@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'LLM Service
+  m_text: 'LLM Service Preset
 
 '
   m_isRightToLeft: 0
@@ -715,7 +715,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: alpha 02/23/2025
+  m_text: alpha 02/25/2025
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -1948,6 +1948,8 @@ MonoBehaviour:
     desc: a sorrowful warrior who killed the dragon she once loved
   - name: Reeves
     desc: a 10 yrs old boy who is a genius hacker
+  - name: Ciderella
+    desc: an elf made of brewed apple juice (not cinderella)
   netSettingPanel: {fileID: 20628558}
 --- !u!1 &575709165
 GameObject:
