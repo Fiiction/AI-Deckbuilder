@@ -21,12 +21,12 @@ namespace NueGames.NueDeck.ThirdParty.NueTooltip.Triggers
 
         public void ShowTooltipInfo(TooltipManager tooltipManager, string content, string header = "", Transform tooltipStaticTransform = null,CursorType targetCursor = CursorType.Default,Camera cam = null, float delayShow =0)
         {
-            tooltipManager.ShowTooltip(content,header,tooltipStaticTransform,targetCursor,cam,delayShow);
+            // tooltipManager.ShowTooltip(content,header,tooltipStaticTransform,targetCursor,cam,delayShow);
         }
 
         public virtual void HideTooltipInfo(TooltipManager tooltipManager)
         {
-            TooltipManager.Instance.HideTooltip();
+            // TooltipManager.Instance.HideTooltip();
         }
     }
 }

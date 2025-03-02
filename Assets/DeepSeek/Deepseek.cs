@@ -229,6 +229,11 @@ public static class Deepseek
                 Debug.Log($"<color=red>Request error:</color> <b>{request.error}</b>\n" +
                           $"<b>URL: {parameters.url}</b>\n" +
                           $"<b>Response text:</b> {request.downloadHandler.text}");
+                AI_IntegrationManager.instance.debugStr +=
+                    $"\n<color=red>Request error:</color> <b>{request.error}</b>\n" +
+                    $"<b>URL: {parameters.url}</b>\n" +
+                    $"<b>Response text:</b> {request.downloadHandler.text}\n";
+                AI_DebugCanvas.instance.AddWarning($"Request error: {request.error}");
                 return;
             }
 

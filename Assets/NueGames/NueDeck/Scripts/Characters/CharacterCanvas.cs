@@ -130,37 +130,38 @@ namespace NueGames.NueDeck.Scripts.Characters
         #region Tooltip
         public void ShowTooltipInfo()
         {
-            var tooltipManager = TooltipManager.Instance;
-            var specialKeywords = new List<SpecialKeywords>();
             
-            foreach (var statusIcon in StatusDict)
-            {
-                if (statusIcon.Value == null) continue;
-               
-                var statusData = statusIcon.Value.MyStatusIconData;
-                foreach (var statusDataSpecialKeyword in statusData.SpecialKeywords)
-                {
-                    if (specialKeywords.Contains(statusDataSpecialKeyword)) continue;
-                    specialKeywords.Add(statusDataSpecialKeyword);
-                }
-            }
-            
-            foreach (var specialKeyword in specialKeywords)
-            {
-                var specialKeywordData =tooltipManager.SpecialKeywordData.SpecialKeywordBaseList.Find(x => x.SpecialKeyword == specialKeyword);
-                if (specialKeywordData != null)
-                    ShowTooltipInfo(tooltipManager,specialKeywordData.GetContent(),specialKeywordData.GetHeader(),descriptionRoot);
-            }
+            // var tooltipManager = TooltipManager.Instance;
+            // var specialKeywords = new List<SpecialKeywords>();
+            //
+            // foreach (var statusIcon in StatusDict)
+            // {
+            //     if (statusIcon.Value == null) continue;
+            //    
+            //     var statusData = statusIcon.Value.MyStatusIconData;
+            //     foreach (var statusDataSpecialKeyword in statusData.SpecialKeywords)
+            //     {
+            //         if (specialKeywords.Contains(statusDataSpecialKeyword)) continue;
+            //         specialKeywords.Add(statusDataSpecialKeyword);
+            //     }
+            // }
+            //
+            // foreach (var specialKeyword in specialKeywords)
+            // {
+            //     var specialKeywordData =tooltipManager.SpecialKeywordData.SpecialKeywordBaseList.Find(x => x.SpecialKeyword == specialKeyword);
+            //     if (specialKeywordData != null)
+            //         ShowTooltipInfo(tooltipManager,specialKeywordData.GetContent(),specialKeywordData.GetHeader(),descriptionRoot);
+            // }
             
         }
         public void ShowTooltipInfo(TooltipManager tooltipManager, string content, string header = "", Transform tooltipStaticTransform = null, CursorType targetCursor = CursorType.Default,Camera cam = null, float delayShow =0)
         {
-            tooltipManager.ShowTooltip(content,header,tooltipStaticTransform,targetCursor,cam,delayShow);
+            // tooltipManager.ShowTooltip(content,header,tooltipStaticTransform,targetCursor,cam,delayShow);
         }
 
         public void HideTooltipInfo(TooltipManager tooltipManager)
         {
-            tooltipManager.HideTooltip();
+            // tooltipManager.HideTooltip();
         }
         
 

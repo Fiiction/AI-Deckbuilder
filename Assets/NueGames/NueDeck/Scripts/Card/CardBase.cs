@@ -311,12 +311,12 @@ namespace NueGames.NueDeck.Scripts.Card
         }
         public virtual void ShowTooltipInfo(TooltipManager tooltipManager, string content, string header = "", Transform tooltipStaticTransform = null, CursorType targetCursor = CursorType.Default,Camera cam = null, float delayShow =0)
         {
-            tooltipManager.ShowTooltip(content,header,tooltipStaticTransform,targetCursor,cam,delayShow);
+            // tooltipManager.ShowTooltip(content,header,tooltipStaticTransform,targetCursor,cam,delayShow);
         }
 
         public virtual void HideTooltipInfo(TooltipManager tooltipManager)
         {
-            tooltipManager.HideTooltip();
+            // tooltipManager.HideTooltip();
         }
         #endregion
        

@@ -120,6 +120,7 @@ public class AI_CardEffect : MonoBehaviour
                 Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                 AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
                 AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                AI_DebugCanvas.instance.AddWarning("Correction!");
                 AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
                 StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
                 yield break;
@@ -144,6 +145,7 @@ public class AI_CardEffect : MonoBehaviour
                 {
                     Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                     AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_DebugCanvas.instance.AddWarning("Correction!");
                     AI_IntegrationManager.instance.pendingPrompts += targetCharacter != null?
                         correctionPrompt_withTarget: correctionPrompt_noTarget;
                     StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
@@ -170,6 +172,7 @@ public class AI_CardEffect : MonoBehaviour
                 {
                     Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                     AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_DebugCanvas.instance.AddWarning("Correction!");
                     AI_IntegrationManager.instance.pendingPrompts += targetCharacter != null?
                         correctionPrompt_withTarget: correctionPrompt_noTarget;
                     StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
@@ -236,6 +239,7 @@ public class AI_CardEffect : MonoBehaviour
             {
                 Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                 AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                AI_DebugCanvas.instance.AddWarning("Correction!");
                 AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
                 StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
                 yield break;
@@ -259,6 +263,7 @@ public class AI_CardEffect : MonoBehaviour
                 {
                     Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                     AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_DebugCanvas.instance.AddWarning("Correction!");
                     AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_startTurn;
                     StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
                     yield break;
@@ -282,6 +287,7 @@ public class AI_CardEffect : MonoBehaviour
                 {
                     Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                     AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_DebugCanvas.instance.AddWarning("Correction!");
                     AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_startTurn;
                     StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
                     yield break;
@@ -353,6 +359,7 @@ public class AI_CardEffect : MonoBehaviour
             {
                 Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                 AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                AI_DebugCanvas.instance.AddWarning("Correction!");
                 AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
                 StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
                 yield break;
@@ -374,6 +381,7 @@ public class AI_CardEffect : MonoBehaviour
                 {
                     Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                     AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_DebugCanvas.instance.AddWarning("Correction!");
                     AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_enemy;
                     StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
                     yield break;
@@ -397,6 +405,7 @@ public class AI_CardEffect : MonoBehaviour
                 {
                     Debug.Log("<b><color=#FF2222>Correction!</b></color>");
                     AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+                    AI_DebugCanvas.instance.AddWarning("Correction!");
                     AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_enemy;
                     StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
                     yield break;

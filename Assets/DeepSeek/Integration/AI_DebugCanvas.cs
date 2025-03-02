@@ -6,6 +6,10 @@ public class AI_DebugCanvas : MonoBehaviour
 {
     public Image panel;
     public TMP_Text text;
+    public TMP_Text warningText;
+    public string warnings;
+    public float warningDuration = 8f;
+    private float warningTime = 0f;
     public static AI_DebugCanvas instance;
     public bool active = false;
     public float moveDist = 5f;
@@ -30,9 +34,19 @@ public class AI_DebugCanvas : MonoBehaviour
         
     }
 
+    public void AddWarning(string t)
+    {
+        warnings += "\n" + t;
+        warningText.text = "Warnings:\n" + warnings +"\n - Press F1 for details";
+        warningTime = warningDuration;
+    }
     // Update is called once per frame
     void Update()
     {
+        warningTime -= Time.deltaTime;
+        warningText.color = new Color(warningText.color.r, warningText.color.g, warningText.color.b,
+            Mathf.Clamp01(warningTime));
+        
         text.text = AI_IntegrationManager.instance.debugStr;
         if (Input.GetKeyDown(KeyCode.F1))
         {
@@ -44,6 +58,7 @@ public class AI_DebugCanvas : MonoBehaviour
 
         if (active)
         {
+            warningTime = 1f;
             curPosition += moveDist * Input.GetAxisRaw("Mouse ScrollWheel") * Vector3.up;
             text.rectTransform.anchoredPosition = curPosition;
         }

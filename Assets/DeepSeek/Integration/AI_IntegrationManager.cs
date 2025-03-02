@@ -105,6 +105,7 @@ public class AI_IntegrationManager : MonoBehaviour
                     {
                         Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
                         debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
+                        AI_DebugCanvas.instance.AddWarning("Json Correction!");
                         pendingPrompts += jsonCorrectionPrompt + "\n";
                         Request(str, callback, replyWithJson, jsonType);
                     }
@@ -137,6 +138,7 @@ public class AI_IntegrationManager : MonoBehaviour
                     {
                         Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
                         debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
+                        AI_DebugCanvas.instance.AddWarning("Json Correction!");
                         pendingPrompts += jsonCorrectionPrompt + "\n";
                         CardQueueRequest(str, callback, replyWithJson, jsonType);
                     }
