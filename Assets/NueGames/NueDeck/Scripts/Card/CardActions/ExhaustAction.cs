@@ -10,6 +10,8 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
         public override void DoAction(CardActionParameters actionParameters)
         {
             actionParameters.CardBase.Exhaust(false);
+            FxManager.SpawnFloatingText(actionParameters.SelfCharacter.TextSpawnRoot,
+                "<Color=#ffff77>消耗</color>");
         }
     }
 }

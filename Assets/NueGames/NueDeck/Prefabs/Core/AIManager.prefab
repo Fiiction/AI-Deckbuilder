@@ -79,11 +79,13 @@ MonoBehaviour:
     or \"AllEnemies\". Do NOT use enemy's name.)\r\n\t\"value\": 3 (interger, indicates
     ##ValueMeaning##) \r\n}"
   prompt3_CustomEffect: "For the ##No## effect \"Add Custom Status\", what's the
-    name of status, the target and the numeric value of this effect:\r\n\r\nPlease
-    reply with following json format: (Content in parentheses are comments. Target
-    can only be chosen from \"self\", \"targetEnemy\" or \"allEnemies\". )\r\n{\r\n\t\"buffname\":
-    \"focus\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"magic
-    focus\", etc. it should be very brief.)\r\n\t\"target\": \"self\", (or \"targetEnemy\"
+    name of status, the target and the numeric value of this effect:\r\n\r\r\n\r\u8BF7\u4FDD\u8BC1\u6240\u6709\u6548\u679C\u7684\u540D\u5B57\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names of custom effects are in Chinese; use English in all other
+    parts.\n\nPlease reply with following json format: (Content in parentheses are
+    comments. Target can only be chosen from \"self\", \"targetEnemy\" or \"allEnemies\".
+    )\r\n{\r\n\t\"buffname\": \"\u4E13\u6CE8\", (the name of the buff or debuff,
+    e.g. \"\u70E7\u4F24\", \"\u5267\u6BD2\", \"\u9B54\u6CD5\u805A\u96C6\", etc. it
+    should be very brief and in Chinese.)\r\n\t\"target\": \"self\", (or \"targetEnemy\"
     or \"allEnemies\".  Do NOT use enemy's name.)\r\n\t\"value\": 3 (interger, indicates
     how many stacks of this status are casted on target. Minus value to clear) \r\n}\r\n"
   prompt_StartTurn1: "Now player, ##PlayerDesc## ##PlayerCustomStatus##, starts a
@@ -111,14 +113,16 @@ MonoBehaviour:
     units. Do NOT use character's name.)\r\n\t\"value\": 3 (interger, indicates ##ValueMeaning##)
     \r\n}"
   prompt3_CustomEffect_Enemy: "For the effect \"Add Custom Status\", what's the name
-    of status, the target and the numeric value of this effect:\r\n\r\nPlease reply
-    with following json format: (Content in parentheses are comments. Target can
-    only be chosen from \"hero\", \"enemySelf\" and \"allEnemies\". )\r\n{\r\n\t\"buffname\":
-    \"poison\", (the name of the buff or debuff, e.g. \"burn\", \"toxic\", \"magic
-    focus\", etc.)\r\n\t\"target\": \"hero\", (or \"enemySelf\" standing for the
-    acting enemy itself, or \"allEnemies\" standing for all enemy units. Do NOT use
-    character's name.)\r\n\t\"value\": 3 (interger, indicates how many stacks of
-    this status are casted on target) \r\n}\r\n"
+    of status, the target and the numeric value of this effect:\r\n\n\r\u8BF7\u4FDD\u8BC1\u6240\u6709\u6548\u679C\u7684\u540D\u5B57\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names of custom effects are in Chinese; use English in all other
+    parts.\n\nPlease reply with following json format: (Content in parentheses are
+    comments. Target can only be chosen from \"hero\", \"enemySelf\" and \"allEnemies\".
+    )\r\n{\r\r\n\t\"buffname\": \"\u5267\u6BD2\", (the name of the buff or debuff,
+    e.g. \"\u70E7\u4F24\", \"\u5267\u6BD2\", \"\u9B54\u6CD5\u805A\u96C6\", etc. it
+    should be very brief and in Chinese.)\r\n\t\"target\": \"hero\", (or \"enemySelf\"
+    standing for the acting enemy itself, or \"allEnemies\" standing for all enemy
+    units. Do NOT use character's name.)\r\n\t\"value\": 3 (interger, indicates how
+    many stacks of this status are casted on target) \r\n}\r\n"
   processingCanvas: {fileID: 1978969409886390374}
   correctionPrompt_withTarget: 'Please notice that the target of the action can only
     be chosen from from "self", "targetEnemy" and "allEnemies". We need to reprocess
@@ -139,8 +143,8 @@ MonoBehaviour:
 
 '
   correctionPrompt_effectType: 'Please the effect can only be chosen from "Deal Damage",
-    "Heal", "Add Block", "Draw", "Gain Mana", "Stun", "Destroy the Card", and "Add
-    Custom Status". We need to reprocess the action.
+    "Heal", "Add Block", "Draw", "Gain Mana", "Stun", "Exhaust", and "Add Custom
+    Status". We need to reprocess the action.
 
 '
   actionDatas: []
@@ -452,44 +456,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f99d277d073513e41b17436db9f0b404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt_description: 'In this game, player can spend 3 manas to use cards on each
-    turn. Cards represent protagonist''s actions.
-
-    Most cards cost 1 mana. Very
-    powerful moves will cost 2 or 3 mana. 0-mana cards represent swift but weaker
-    moves.
-
-    The effects of a card include dealing damage to target, healing the
-    user, adding tacks of "block" (blocking same amount of upcoming damage), applying
-    buff to user or casting debuff to targets.
-
-    Typically, one cost cards are
-    worth 5 damage, or 5 stacks of block, or 3 stacks of buff/debuff. Cards with
-    higher rarity can be stronger.
-
-
-
-    The protagonist is ##HeroName##, ##HeroDesc##.
-    Now I need you to generate the starting deck for the player.
-
-    The starting
-    deck contains 4 copies of a basic attack card, 4 copies of a basic defence(blocking)
-    card, 2 copies of a spec
-
-    Please consider what''s the hero''s play style
-    in a turn-based card game.
-
-    Please also design the illustration of these
-    cards. They should look unique and distinctive in colors and other visual elements.
-
-    
-
-    ##StableEnhance##
-
-
-    Please
+  prompt_description: "In this game, player can spend 3 manas to use cards on each
+    turn. Cards represent protagonist's actions.\nMost cards cost 1 mana. Very powerful
+    moves will cost 2 or 3 mana. 0-mana cards represent swift but weaker moves.\nThe
+    effects of a card include dealing damage to target, healing the user, adding
+    tacks of \"block\" (blocking same amount of upcoming damage), applying buff to
+    user or casting debuff to targets.\nTypically, one cost cards are worth 5 damage,
+    or 5 stacks of block, or 3 stacks of buff/debuff. Cards with higher rarity can
+    be stronger.\n\n\nThe protagonist is ##HeroName##, ##HeroDesc##. Now I need you
+    to generate the starting deck for the player.\nThe starting deck contains 4 copies
+    of a basic attack card, 4 copies of a basic defence(blocking) card, 2 copies
+    of a spec\nPlease consider what's the hero's play style in a turn-based card
+    game.\nPlease also design the illustration of these cards. They should look unique
+    and distinctive in colors and other visual elements.\n\n\n##StableEnhance##\n\nPlease
     tell me with natural language, what could be the name, narrative design, visual,
-    and the effect in gameplay of those 4 unique cards.'
+    and the effect in gameplay of those 4 unique cards.\n\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\n"
   prompt_stableEnhance: 'Cards'' effect(s) can be one or more chosen from follow
     types:
 
@@ -515,52 +498,59 @@ MonoBehaviour:
     add/remove custom buff or debuff to object. Please store any effects that need
     to be checked out in the future as custom status
 
-    
 
-    Please only include
-    forementioned effects. We do not support discarding, creating new cards or summoning
-    minions. Please avoid these effects in card design.
+
+    Please only include forementioned
+    effects. We do not support discarding, creating new cards or summoning minions.
+    Please avoid these effects in card design.
 
 '
   prompt_effects: "Please briefly introduce custom effects (buffs/debuffs) that could
-    be brought by these ##Rarity## cards. \nFor example: \nStrength: increase the
-    amount of damage directly dealt by the character one per stack; \nBurn: deal
-    damage to the owner one per stack at the start of each turn, and lower the damage
-    dealt by the owner one per stack."
-  prompt_basicCard1: "Now please specify the design of the basic attack card.\r\nPlease
-    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
-    \"Punch\",\r\n\t\"description\": \"Punch the targeted enemy with mighty power.\",\r\n\t\"manaCost\":
+    be brought by these ##Rarity## cards. \r\n\r\u8BF7\u4FDD\u8BC1\u6240\u6709\u6548\u679C\u7684\u540D\u5B57\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names of custom effects are in Chinese; use English in all other
+    parts.\nFor example: \n\u529B\u91CF: increase the amount of damage directly dealt
+    by the character one per stack; \nBurn: deal damage to the owner one per stack
+    at the start of each turn, and lower the damage dealt by the owner one per stack."
+  prompt_basicCard1: "Now please specify the design of the basic attack card.\n\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"\u91CD\u62F3\",\r\n\t\"description\":
+    \"\u7528\u5DE8\u5927\u7684\u529B\u91CF\u62F3\u51FB\u654C\u4EBA\u3002\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": true,\r\n\t\"prompt\": \"Punch, dynamic, sense of power,
     big fist, single fist with sense of power,\" (prompt for Stable Diffusion card
     image generation. Try describe a dynamic action, emphasizing the attacking intention)
     \r\n}"
   prompt_basicCard2: "Now please specify the design of the basic defence(blocking)
-    card.\r\nPlease reply with following json format: (content in parentheses are
-    comments)\r\n{\r\n\t\"cardName\": \"Arcane Barrier\",\r\n\t\"description\": \"Focus
-    arcane energy to form a barrier, neutralizing upcoming damage.\",\r\n\t\"manaCost\":
+    card.\n\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"\u5965\u672F\u7ED3\u754C\",\r\n\t\"description\":
+    \"\u805A\u7126\u5965\u672F\u80FD\u91CF\u5F62\u6210\u7ED3\u754C\uFF0C\u963B\u6321\u5916\u6765\u7684\u653B\u51FB\u3002\",\r\n\t\"manaCost\":
     1,\r\n\t\"needTarget\": false,(if this card need a single enemy as target)\r\n\t\"prompt\":
     \"Arcane Barrier, magical power, blue sphere, blue aura, magical,\" (prompt for
     Stable Diffusion card image generation. Try describe a dynamic action. Images
     of different cards should look unique and distinctive, in colors and other visual
     elements.) \n}"
-  prompt_basicCard3: "Now please specify the design of the special supporting card.\r\nPlease
-    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
-    \"Energy Charge\",\r\n\t\"description\": \"Charge up electro energy, enpower
-    future attacks in this game.\",\r\n\t\"manaCost\": 2,\r\n\t\"needTarget\": false,
-    (if this card need a single enemy as target)\r\n\t\"prompt\": \"Charging Energy,
-    gathering energy, cybernetic,\" (prompt for Stable Diffusion card image generation.
-    Try not include character in card image and describe a dynamic action.  Images
+  prompt_basicCard3: "Now please specify the design of the special supporting card.\n\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"\u5145\u80FD\",\r\n\t\"description\":
+    \"\u805A\u96C6\u7535\u80FD\uFF0C\u589E\u5F3A\u672C\u5C40\u6E38\u620F\u4E2D\u9020\u6210\u7684\u4F24\u5BB3\u3002\",\r\n\t\"manaCost\":
+    2,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
+    \"Charging Energy, gathering energy, cybernetic,\" (prompt for Stable Diffusion
+    card image generation. Try not include character in card image and describe a
+    dynamic action.  Images of different cards should look unique and distinctive,
+    in colors and other visual elements.) \r\n}"
+  prompt_basicCard4: "Now please specify the design of the special offensive card.\n\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"\u5965\u672F\u98CE\u66B4\",\r\n\t\"description\":
+    \"\u91CA\u653E\u5927\u91CF\u6CD5\u529B\uFF0C\u5BF9\u6240\u6709\u654C\u4EBA\u9020\u6210\u98CE\u66B4\u7248\u7684\u653B\u51FB\u3002\",\r\n\t\"manaCost\":
+    3,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
+    \"Arcane Cascade, huge barrage with magical shoots, magical attack,\" (prompt
+    for Stable Diffusion card image generation. Try describe a dynamic action. Images
     of different cards should look unique and distinctive, in colors and other visual
-    elements.) \r\n}"
-  prompt_basicCard4: "Now please specify the design of the special offensive card.\r\nPlease
-    reply with following json format: (content in parentheses are comments)\r\n{\r\n\t\"cardName\":
-    \"Arcane Cascade\",\r\n\t\"description\": \"Spend a huge amount of arcane energy,
-    deal a lot of damage to all enemies.\",\r\n\t\"manaCost\": 3,\r\n\t\"needTarget\":
-    false, (if this card need a single enemy as target)\r\n\t\"prompt\": \"Arcane
-    Cascade, huge barrage with magical shoots, magical attack,\" (prompt for Stable
-    Diffusion card image generation. Try describe a dynamic action. Images of different
-    cards should look unique and distinctive, in colors and other visual elements)
-    \r\n}"
+    elements) \r\n}"
   rareCardCnt: 3
   prompt_rareDescription: 'Now I need you to design the rare cards for the hero ##HeroName##,
     ##HeroDesc##.
@@ -584,9 +574,11 @@ MonoBehaviour:
     cards, and then describe the design of ##Total## cards in natural language. Don''t
     reply with json.'
   prompt_rareCard: "Now I need you to specify the design of ##Number## out of ##Total##
-    rare cards.\r\n\r\nPlease reply with following json format: (content in parentheses
-    are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
-    \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
+    rare cards.\r\n\r\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\n\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"\u9B54\u6CD5\u589E\u5E45\",\r\n\t\"description\":
+    \"\u4F7F\u672C\u56DE\u5408\u4E2D\u4F7F\u7528\u7684\u4E0B\u4E00\u5F20\u9B54\u6CD5\u5361\u724C\u6548\u679C\u7FFB\u500D\u3002\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
     \"magical power, magic chanting, huge energy flow\" (prompt for Stable Diffusion
     card image generation. Images of different cards should look unique and distinctive,
@@ -615,9 +607,11 @@ MonoBehaviour:
     and designing these rare cards, and then describe the design of ##Total## cards
     in natural language. Don''t reply with json.'
   prompt_epicCard: "Now I need you to specify the design of ##Number## out of ##Total##
-    epic cards.\r\n\r\nPlease reply with following json format: (content in parentheses
-    are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
-    \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
+    epic cards.\r\n\r\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\n\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"\u9B54\u6CD5\u589E\u5E45\",\r\n\t\"description\":
+    \"\u4F7F\u672C\u56DE\u5408\u4E2D\u4F7F\u7528\u7684\u4E0B\u4E00\u5F20\u9B54\u6CD5\u5361\u724C\u6548\u679C\u7FFB\u500D\u3002\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
     \"magical power, magic chanting, huge energy flow\" (prompt for Stable Diffusion
     card image generation. Images of different cards should look unique and distinctive,
@@ -647,9 +641,11 @@ MonoBehaviour:
     these rare cards, and then describe the design of ##Total## cards in natural
     language. Don''t reply with json.'
   prompt_legendCard: "Now I need you to specify the design of ##Number## out of ##Total##
-    legendary cards.\r\n\r\nPlease reply with following json format: (content in
-    parentheses are comments)\r\n{\r\n\t\"cardName\": \"Magic Augmentation\",\r\n\t\"description\":
-    \"Double the effect of the next magic card played in this turn.\",\r\n\t\"manaCost\":
+    legendary cards.\r\n\r\u8BF7\u4FDD\u8BC1\u6240\u6709\u5361\u724C\u7684\u540D\u5B57\u548C\u63CF\u8FF0\u662F\u4E2D\u6587\uFF1B\u5728\u6240\u6709\u5176\u5B83\u90E8\u5206\u4F7F\u7528\u82F1\u6587\u3002Please
+    make sure the names and description of cards are in Chinese; use English in all
+    other parts.\r\n\r\nPlease reply with following json format: (content in parentheses
+    are comments)\r\n{\r\n\t\"cardName\": \"\u9B54\u6CD5\u589E\u5E45\",\r\n\t\"description\":
+    \"\u4F7F\u672C\u56DE\u5408\u4E2D\u4F7F\u7528\u7684\u4E0B\u4E00\u5F20\u9B54\u6CD5\u5361\u724C\u6548\u679C\u7FFB\u500D\u3002\",\r\n\t\"manaCost\":
     0,\r\n\t\"needTarget\": false, (if this card need a single enemy as target)\r\n\t\"prompt\":
     \"magical power, magic chanting, huge energy flow\" (prompt for Stable Diffusion
     card image generation. Images of different cards should look unique and distinctive,

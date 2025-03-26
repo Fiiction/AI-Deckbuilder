@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "LLM\uFF08\u5927\u8BED\u8A00\u6A21\u578B\uFF09 \u670D\u52A1\u5668\u9884\u8BBE\n"
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B (LLM) \u670D\u52A1\u5668\u9884\u8BBE\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -690,8 +690,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -39.205, y: 203.2}
-  m_SizeDelta: {x: 366.5035, y: 50}
+  m_AnchoredPosition: {x: -9.6509, y: 203.2}
+  m_SizeDelta: {x: 425.6117, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191012176
 MonoBehaviour:
@@ -713,7 +713,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "alpha 03/26/2025 \u4E2D\u6587\u7248"
+  m_text: "alpha 03/26/2025 \u4E2D\u6587\u5185\u6D4B\u7248"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -1444,9 +1444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'URL
-
-'
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B URL\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -1667,6 +1665,8 @@ MonoBehaviour:
     desc: "\u6C89\u6E4E\u4E2D\u7684\u6B66\u58EB\uFF0C\u66FE\u7ECF\u6740\u6B7B\u4E86\u5979\u5FC3\u7231\u7684\u9F99"
   - name: "\u5229\u5F17\u65AF"
     desc: "10\u5C81\u7684\u5929\u624D\u9ED1\u5BA2\u5C0F\u7537\u5B69"
+  - name: "\u963F\u5C14\u897F\u65AF"
+    desc: "\u6A59\u53D1\u7684\u5251\u58EB\uFF0C\u7A7F\u68AD\u4E8E\u591A\u4E2A\u4E16\u754C\u7684\u5192\u9669\u8005"
   netSettingPanel: {fileID: 20628558}
 --- !u!1 &575709165
 GameObject:
@@ -1961,7 +1961,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: API KEY
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B API KEY"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -6547,9 +6547,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Model Name
-
-'
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B Model Name\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}

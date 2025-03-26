@@ -19,7 +19,7 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             {
                 FxManager.PlayFx(actionParameters.TargetCharacter.transform,FxType.Stun);
                 FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
-                    "<Color=#cc77ff>Stun: " + value +"</color>");
+                    "<Color=#cc77ff>晕眩: " + value +"</color>");
             }
            
         }

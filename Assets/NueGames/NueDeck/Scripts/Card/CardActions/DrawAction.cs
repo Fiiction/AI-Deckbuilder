@@ -20,7 +20,7 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             {
                 FxManager.PlayFx(actionParameters.SelfCharacter.transform, FxType.Buff);
                 FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
-                    "<Color=#ffff77>Draw cards: " + value +"</color>");
+                    "<Color=#ffff77>抽卡: " + value +"</color>");
             }
 
         }

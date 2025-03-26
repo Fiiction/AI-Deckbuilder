@@ -19,7 +19,7 @@ namespace NueGames.NueDeck.Scripts.Card.CardActions
             {
                 FxManager.PlayFx(actionParameters.SelfCharacter.transform, FxType.Buff);
                 FxManager.SpawnFloatingText(actionParameters.TargetCharacter.TextSpawnRoot,
-                    "<Color=#4499ee>+Mana: " + value +"</color>");
+                    "<Color=#4499ee>+额外法力: " + value +"</color>");
             }
             
         }
