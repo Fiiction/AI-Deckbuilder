@@ -1659,8 +1659,6 @@ MonoBehaviour:
     desc: "\u88C5\u5907\u7740\u706B\u7BAD\u80CC\u5305\u7684\u8717\u725B\u5973\u5B69"
   - name: "\u4E9A\u5E93\u5A05"
     desc: "\u53EF\u7231\u7684\u5C0F\u5973\u5DEB\uFF0C\u80FD\u591F\u64CD\u63A7\u6C34\u5143\u7D20\u7684\u529B\u91CF"
-  - name: "\u5362\u514B\u9C81\u514B"
-    desc: "\u5929\u771F\u7684\u9752\u86D9\u7537\u5B69\uFF0C\u62FF\u7740\u4ED6\u7684\u8377\u53F6\u906E\u9633\u4F1E"
   - name: "\u90C1\u6B27"
     desc: "\u6C89\u6E4E\u4E2D\u7684\u6B66\u58EB\uFF0C\u66FE\u7ECF\u6740\u6B7B\u4E86\u5979\u5FC3\u7231\u7684\u9F99"
   - name: "\u5229\u5F17\u65AF"
@@ -1835,28 +1833,19 @@ MonoBehaviour:
   m_MultiSelect: 0
   m_Options:
     m_Options:
-    - m_Text: DeepseekV3_Official
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Gemini2.0Flash
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: QWen2.5Max
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: DeepseekV3_Ali
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Doubao1.5Pro
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Claude3.5Haiku
+    - m_Text: Gemini2.0Flash
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: DeepseekV3_Ali
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: DeepseekV3_SiliconFlow
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: GPT-4o
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Custom
@@ -2787,7 +2776,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.9, y: 29.1}
+  m_AnchoredPosition: {x: -70.9, y: 38.92}
   m_SizeDelta: {x: 366.5035, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &739210161
@@ -6411,7 +6400,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DeepseekV3_Official
+  m_text: QWen2.5Max
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
