@@ -65,13 +65,13 @@ MonoBehaviour:
     Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
     stacks of block, blocking same amount of upcoming damage\r\r\n- Draw: draw cards\r\n-
     Gain Mana: gain mana to do more actions in this turn\r\n- Stun: stunning the
-    object, prevent it to move in following rounds\r\n- Destroy the Card: destroying
-    the card used permanently (Exhaiust the card)\n- Add Custom Status: add/remove
-    custom buff or debuff to object. Please store any effects that need to be checked
-    out in the future as custom status\n\nThe object of each of these effects can
-    be the user, the targeted enemy or all enemies, which will be chosen later.\nYou
-    can choose one same effect 2 or more times, if it's dealt on different objects,
-    or casting 2 different custom effect at the same time.\r\n\r"
+    object, prevent it to move in following rounds\r\n- Exhaust: destroying the card
+    used permanently (Exhaust the card)\n- Add Custom Status: add/remove custom buff
+    or debuff to object. Please store any effects that need to be checked out in
+    the future as custom status\n\nThe object of each of these effects can be the
+    user, the targeted enemy or all enemies, which will be chosen later.\nYou can
+    choose one same effect 2 or more times, if it's dealt on different objects, or
+    casting 2 different custom effect at the same time.\r\n\r"
   prompt3_Normal: "For the ##No## effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (Content in parentheses are comments. Target can only be chosen from \"self\",
@@ -474,18 +474,54 @@ MonoBehaviour:
 
     The starting
     deck contains 4 copies of a basic attack card, 4 copies of a basic defence(blocking)
-    card, 2 copies of a special supporting card, and 2 copies of a special offence
-    card.
+    card, 2 copies of a spec
 
-    Please consider what''s the hero''s play style in a turn-based card
-    game.
+    Please consider what''s the hero''s play style
+    in a turn-based card game.
 
-    Please also design the illustration of these cards. They should look
-    unique and distinctive in colors and other visual elements.
+    Please also design the illustration of these
+    cards. They should look unique and distinctive in colors and other visual elements.
 
-    Please tell
-    me with natural language, what could be the name, narrative design, visual, and
-    the effect in gameplay of those 4 unique cards.'
+    
+
+    ##StableEnhance##
+
+
+    Please
+    tell me with natural language, what could be the name, narrative design, visual,
+    and the effect in gameplay of those 4 unique cards.'
+  prompt_stableEnhance: 'Cards'' effect(s) can be one or more chosen from follow
+    types:
+
+    - Deal Damage: Deal damage to target
+
+    - Heal: Heal target
+
+    -
+    Add Block: Add stacks of block, blocking same amount of upcoming damage
+
+    -
+    Draw: draw cards
+
+    - Gain Mana: gain mana to do more actions in this turn
+
+    -
+    Stun: stunning the object, prevent it to move in following rounds
+
+    - Exhaust:
+    destroying the card used permanently (Exhaust the card)
+
+    - Add Custom Status:
+    add/remove custom buff or debuff to object. Please store any effects that need
+    to be checked out in the future as custom status
+
+    
+
+    Please only include
+    forementioned effects. We do not support discarding, creating new cards or summoning
+    minions. Please avoid these effects in card design.
+
+'
   prompt_effects: "Please briefly introduce custom effects (buffs/debuffs) that could
     be brought by these ##Rarity## cards. \nFor example: \nStrength: increase the
     amount of damage directly dealt by the character one per stack; \nBurn: deal

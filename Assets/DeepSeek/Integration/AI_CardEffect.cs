@@ -549,6 +549,7 @@ public class AI_CardEffect : MonoBehaviour
            case "steal life": return CardActionType.LifeSteal;
            case "stun": return CardActionType.Stun;
            case "destroy the card": return CardActionType.Exhaust;
+           case "exhaust": return CardActionType.Exhaust;
            case "add custom status": return CardActionType.CustomEffect;
            default: 
                Debug.LogWarning("Unknown card action type: " + str);
@@ -568,7 +569,7 @@ public class AI_CardEffect : MonoBehaviour
             case CardActionType.EarnMana: return "Gain Mana";
             case CardActionType.LifeSteal: return "Steal Life";
             case CardActionType.Stun: return "Stun";
-            case CardActionType.Exhaust: return "Destroy the Card";
+            case CardActionType.Exhaust: return "Exhaust";
             case CardActionType.CustomEffect: return "Add Custom Status";
             default:
                 Debug.LogWarning("Unknown card action type: " + actionType);

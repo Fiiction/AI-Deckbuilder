@@ -14,7 +14,8 @@ using NueGames.NueDeck.Scripts.Managers;
 public class AI_DeckGenerator : MonoBehaviour
 {
     public static AI_DeckGenerator instance;
-    [SerializeField, TextArea(15,20)] private string prompt_description;
+    [SerializeField, TextArea(20,25)] private string prompt_description;
+    [SerializeField, TextArea(8,12)] private string prompt_stableEnhance;
     //[SerializeField, TextArea(15,20)] private string prompt_jsonFormat;
     [SerializeField, TextArea(8,12)] private string prompt_effects;
     [Header("----- Basic Cards -----")]
@@ -66,6 +67,7 @@ public class AI_DeckGenerator : MonoBehaviour
         string prompt1Send = prompt_description;
         prompt1Send = prompt1Send.Replace("##HeroName##", AI_IntegrationManager.instance.heroName);
         prompt1Send = prompt1Send.Replace("##HeroDesc##", AI_IntegrationManager.instance.heroDesc);
+        prompt1Send = prompt1Send.Replace("##StableEnhance##", prompt_stableEnhance);
         
         reply1 = "";
         AI_IntegrationManager.instance.Request(prompt1Send, str =>{reply1 = str;});
