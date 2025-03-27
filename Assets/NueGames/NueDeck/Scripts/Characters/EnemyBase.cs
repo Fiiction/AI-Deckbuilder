@@ -20,7 +20,7 @@ namespace NueGames.NueDeck.Scripts.Characters
         public EnemyCharacterData EnemyCharacterData => enemyCharacterData;
         public EnemyCanvas EnemyCanvas => enemyCanvas;
         public SoundProfileData DeathSoundProfileData => deathSoundProfileData;
-
+        public bool dead = false;
         #region Setup
         public override void BuildCharacter()
         {
@@ -35,6 +35,7 @@ namespace NueGames.NueDeck.Scripts.Characters
         protected override void OnDeath()
         {
             base.OnDeath();
+            dead = true;
             CombatManager.OnAllyTurnStarted -= ShowNextAbility;
             CombatManager.OnEnemyTurnStarted -= characterStats.TriggerAllStatus;
            
@@ -71,7 +72,8 @@ namespace NueGames.NueDeck.Scripts.Characters
             AI_CardEffect.instance.EnemyTurn(this,
                 NextAbility.Name, NextAbility.Desc, ()=>{waiting = false; });
             yield return StartCoroutine(GoCoroutine());
-            yield return new WaitWhile(() => waiting);
+            yield return new WaitWhile(() => waiting && !dead);
+            if(dead) yield break;
             yield return StartCoroutine(BackCoroutine());
         }
 

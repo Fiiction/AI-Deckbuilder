@@ -162,11 +162,23 @@ namespace NueGames.NueDeck.Scripts.Managers
             if (CurrentAlliesList.Count<=0)
                 LoseCombat();
         }
+
+        private bool enemyTurnProcessing = false;
+        private List<EnemyBase> DiePendingEnemies = new List<EnemyBase>();
         public void OnEnemyDeath(EnemyBase targetEnemy)
         {
-            CurrentEnemiesList.Remove(targetEnemy);
-            if (CurrentEnemiesList.Count<=0)
-                WinCombat();
+            if (enemyTurnProcessing)
+            {
+                DiePendingEnemies.Add(targetEnemy);
+                if(DiePendingEnemies.Count >= CurrentEnemiesList.Count)
+                    WinCombat();
+            }
+            else
+            {
+                CurrentEnemiesList.Remove(targetEnemy);
+                if (CurrentEnemiesList.Count<=0)
+                    WinCombat();
+            }
         }
         public void DeactivateCardHighlights()
         {
@@ -234,6 +246,7 @@ namespace NueGames.NueDeck.Scripts.Managers
         }
         private void WinCombat()
         {
+            CurrentEnemiesList.Clear();
             if (CurrentCombatStateType == CombatStateType.EndCombat) return;
             
             AI_IntegrationManager.instance.OnEndGame();
@@ -269,13 +282,24 @@ namespace NueGames.NueDeck.Scripts.Managers
         private IEnumerator EnemyTurnRoutine()
         {
             var waitDelay = new WaitForSeconds(0.6f);
-
+            enemyTurnProcessing = true;
             foreach (var currentEnemy in CurrentEnemiesList)
             {
+                if(currentEnemy.dead)
+                    continue;
                 yield return currentEnemy.StartCoroutine(nameof(EnemyExample.ActionRoutine));
                 yield return waitDelay;
+                if(CurrentCombatStateType == CombatStateType.EndCombat)
+                    break;
             }
 
+            enemyTurnProcessing = false;
+            foreach (var i in DiePendingEnemies)
+            {
+                CurrentEnemiesList.Remove(i);
+            }
+            DiePendingEnemies.Clear();
+            
             if (CurrentCombatStateType != CombatStateType.EndCombat)
                 CurrentCombatStateType = CombatStateType.AllyTurn;
         }
