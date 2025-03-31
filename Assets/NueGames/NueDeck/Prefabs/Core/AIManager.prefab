@@ -1221,24 +1221,24 @@ MonoBehaviour:
     timeout: 0
     throttle: 0
     _serialized: 1
-  initialPrompt: "We are simulating a deckbuilding card game like Slay the Spire.
+  preInitialPrompt: "We are simulating a deckbuilding card game like Slay the Spire.
     \r\nI will give you informations of a card usage, and request you to reply with
     what's the consequence of the action. Also, I will need you to help me with prompts
-    of Stable Diffusion image generation for characters and cards.\r\nThe protagonist
-    is ##HeroName##, who is ##HeroDesc##. Please help me with a brief background
-    story (within 50 words) and prompts for image generation of the hero. If it comes
-    from an existing fictional work (game, comic, etc.), refer to the original work's
-    setting.\nThe prompt for image generation should include the characters' appearance,
-    outfit, and the art style of original work, etc.. The prompt should cover the
-    hero's feature from head to feet, to make the image generation model more likely
-    to produce a full-body portrait.\r\r\nPlease reply with following json structure:
-    (example is a reply for the character Hanzo from Overwatch) Please DO NOT repeat
-    any json structure I provided.\r\n{\r\n\t\"backgroundStory\": \"Mastering his
-    skills as a bowman and an assassin, Hanzo Shimada strives to prove himself as
-    a warrior without peer. He has a cynical view on the nature of the world, and
-    believes that compassion has no place in battle\",\r\n\t\"prompt\": \"Hanzo,
-    1 man, archer, Japanese, Traditional Japanese Outfit, holding a bow, Character
-    from Overwatch, \"\r\n}"
+    of Stable Diffusion image generation for characters and cards.\r\nNow we have
+    to do the background setup of the hero. The protagonist is ##HeroName##, who
+    is ##HeroDesc##.\r\nPlease reply with Chinese, describing the appearance and
+    outfit of the character from head to toe and as clear as possible, then imagine
+    the background story of this character."
+  initialPrompt: "Now please structurize the background story and the prompt for
+    Stable Diffusion image generation of this character.\r\nReply with a background
+    story in Chinese, and prompt for image generation in English.\r\nThe prompt for
+    image generation should include the characters' appearance, outfit, and the art
+    style of original work, etc.. and suitable for SDXL image generation. Break up 
+    different elements, separating them with commas.\r\nPlease reply with following
+    json structure: (example is a reply for the character Hanzo from Overwatch)\r\n{\r\n\t\"backgroundStory\":
+    \"\u5C9B\u7530\u534A\u85CF\u638C\u63E1\u4E86\u5F13\u7BAD\u624B\u548C\u523A\u5BA2\u7684\u6280\u80FD\uFF0C\u4ED6\u52AA\u529B\u8BC1\u660E\u81EA\u5DF1\u662F\u4E00\u540D\u65E0\u4E0E\u4F26\u6BD4\u7684\u6218\u58EB\u3002\u4ED6\u5BF9\u4E16\u754C\u7684\u672C\u8D28\u6301\u6124\u4E16\u5AC9\u4FD7\u7684\u770B\u6CD5\uFF0C\u8BA4\u4E3A\u6148\u60B2\u5728\u6218\u6597\u4E2D\u6CA1\u6709\u7528\u6B66\u4E4B\u5730\",\r\n\t\"prompt\":
+    \"Hanzo, 1 man, archer, Japanese, Traditional Japanese Outfit, holding a bow,
+    Character from Overwatch, 3D rendering\"\r\n}"
   startGamePrompt: 'Now player as ##HeroName##, ##HeroDesc##, enters a fight.
 
     There

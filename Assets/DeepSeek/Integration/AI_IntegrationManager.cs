@@ -29,6 +29,7 @@ public class AI_IntegrationManager : MonoBehaviour
     public string debugStr = "";
 
     [SerializeField]public List<DeepseekParams> LLMParams = new();
+    [SerializeField, TextArea(8, 12)] private string preInitialPrompt;
     [SerializeField, TextArea(8, 12)] private string initialPrompt;
     [SerializeField, TextArea(4, 12)] private string startGamePrompt;
     [SerializeField, TextArea(2, 4)] private string jsonCorrectionPrompt;
@@ -199,6 +200,10 @@ public class AI_IntegrationManager : MonoBehaviour
         AI_DeckGenerator.instance.GenerateStartDeck();
     }
 
+    public void PreInitResponse(string s)
+    {
+        Request(initialPrompt, InitialResponse);
+    }
     public void Init()
     {
         initInformation = "";
@@ -210,9 +215,9 @@ public class AI_IntegrationManager : MonoBehaviour
         int startGameMsgCnt = -1;
         int startTurnMsgCnt = -1;
         int cardGenMessageMerged = -1;
-        string initialPromptToSend = initialPrompt.Replace("##HeroName##", heroName);
+        string initialPromptToSend = preInitialPrompt.Replace("##HeroName##", heroName);
         initialPromptToSend = initialPromptToSend.Replace("##HeroDesc##", heroDesc);
-        Request(initialPromptToSend, InitialResponse);
+        Request(initialPromptToSend, PreInitResponse);
     }
     
     void Start()
