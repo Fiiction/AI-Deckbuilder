@@ -191,7 +191,7 @@ public class AI_IntegrationManager : MonoBehaviour
     public void InitialResponse(string s)
     {
         baseInitPercentage += 20;
-        initInformation += "basic information processed.\n";
+        initInformation += "基础信息已处理。\n";
         HeroReply heroReply = AI_CardEffect.Decode<HeroReply>(s);
 
         heroStory = heroReply.backgroundStory;

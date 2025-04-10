@@ -41,7 +41,7 @@ public class AI_ImageGeneration : MonoBehaviour
 
     public void SetHeroSprite(Texture2D[] tex)
     {
-        AI_IntegrationManager.instance.initInformation += "hero art created.\n";
+        AI_IntegrationManager.instance.initInformation += "角色图像已生成。\n";
         heroImgGenerated++;
         heroSprite = Sprite.Create(tex[0], new Rect(0, 0, tex[0].width, tex[0].height),
             new Vector2(0.5f, 0.5f), 600f);
@@ -50,7 +50,7 @@ public class AI_ImageGeneration : MonoBehaviour
     
     public void SetHeroSprite(Texture2D tex)
     {
-        AI_IntegrationManager.instance.initInformation += "hero art created.\n";
+        AI_IntegrationManager.instance.initInformation += "角色图像已生成。\n";
         heroImgGenerated++;
         heroSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height),
             new Vector2(0.5f, 0.5f), 600f);
@@ -92,7 +92,7 @@ public class AI_ImageGeneration : MonoBehaviour
         comfyProcessor.QueuePrompt(prompts, true, tex =>
         {
             cardImgGenerated ++;
-            AI_IntegrationManager.instance.initInformation += "card image generated.\n";
+            AI_IntegrationManager.instance.initInformation += "卡牌插图已绘制。\n";
             Sprite s = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height),
                 new Vector2(0.5f, 0.5f), 400f);
             callback?.Invoke(s);

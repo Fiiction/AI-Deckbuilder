@@ -74,7 +74,7 @@ public class AI_CardEffect : MonoBehaviour
         userDesc = userData.CharacterDescription;
         userStatusStr = CharacterStatusString(self);
         
-        processingCanvas.StartProcessing("Card Processing:");
+        processingCanvas.StartProcessing("卡牌效果处理中：");
         cardInTurnCnt++;
         
         if(targetCharacter != null)
@@ -199,7 +199,7 @@ public class AI_CardEffect : MonoBehaviour
         yield return new WaitUntil(() => AI_IntegrationManager.instance.gameStartPending == false);
         Debug.Log("<b>Turn Start</b>");
         cardInTurnCnt = 0;
-        processingCanvas.StartProcessing("Turn Start Processing:");
+        processingCanvas.StartProcessing("回合开始处理中：");
         float tick = Time.time;
         //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
         reply1 = "";
@@ -328,7 +328,7 @@ public class AI_CardEffect : MonoBehaviour
     IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActionName, string enemyActionDesc, Action callback)
     {
         
-        processingCanvas.StartProcessing("Enemy Action Processing:");
+        processingCanvas.StartProcessing("敌人行动处理中：");
         float tick = Time.time;
         //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
         reply1 = "";

@@ -268,7 +268,7 @@ public class AI_DeckGenerator : MonoBehaviour
     public CardData ConvertCardData(CardDataReply r, RarityType rarity = RarityType.Common)
     {
         cardGenerated++;
-        AI_IntegrationManager.instance.initInformation += "card designed.\n";
+        AI_IntegrationManager.instance.initInformation += "卡牌设计完成。\n";
         CardData d = new CardData(r.cardName, r.description, r.manaCost, r.needTarget, rarity);
         AI_ImageGeneration.instance.GenerateCardSprite(r.prompt, s => d.SetCardSprite(s));
         return d;
