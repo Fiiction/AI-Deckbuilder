@@ -147,6 +147,9 @@ MonoBehaviour:
     Status". We need to reprocess the action.
 
 '
+  cardEffectStr: "\u5361\u724C\u6548\u679C\u5904\u7406\u4E2D\uFF1A"
+  turnStartStr: "\u56DE\u5408\u5F00\u59CB\u5904\u7406\u4E2D\uFF1A"
+  enemyMoveStr: "\u654C\u4EBA\u884C\u52A8\u5904\u7406\u4E2D\uFF1A"
   actionDatas: []
   cardsUsedInBattle: 0
   turnCnt: 0
@@ -1249,6 +1252,10 @@ MonoBehaviour:
   jsonCorrectionPrompt: "Error occured parsing your reply in json format. Please
     make sure you reply with one single Json structure, without any other information.
     \n"
+  basicInformationStr: "\u89D2\u8272\u57FA\u7840\u8BBE\u5B9A\u5904\u7406\u5B8C\u6210\u3002"
+  heroArtStr: "\u89D2\u8272\u63D2\u56FE\u5DF2\u751F\u6210\u3002"
+  cardProcessedStr: "\u5361\u724C\u8BBE\u8BA1\u5B8C\u6210\u3002"
+  cardArtStr: "\u5361\u724C\u63D2\u56FE\u7ED8\u5236\u5B8C\u6210\u3002"
   gameStartPending: 0
   levelCnt: 0
   startGameMsgCnt: -1

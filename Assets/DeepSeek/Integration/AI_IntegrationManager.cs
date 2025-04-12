@@ -33,6 +33,11 @@ public class AI_IntegrationManager : MonoBehaviour
     [SerializeField, TextArea(8, 12)] private string initialPrompt;
     [SerializeField, TextArea(4, 12)] private string startGamePrompt;
     [SerializeField, TextArea(2, 4)] private string jsonCorrectionPrompt;
+
+    public string basicInformationStr;
+    public string heroArtStr;
+    public string cardProcessedStr;
+    public string cardArtStr;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public void SetActiveParams(string paramName)
@@ -191,7 +196,7 @@ public class AI_IntegrationManager : MonoBehaviour
     public void InitialResponse(string s)
     {
         baseInitPercentage += 20;
-        initInformation += "basic information processed.\n";
+        initInformation += basicInformationStr + "\n";
         HeroReply heroReply = AI_CardEffect.Decode<HeroReply>(s);
 
         heroStory = heroReply.backgroundStory;
