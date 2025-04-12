@@ -36,6 +36,7 @@ public class AI_CardEffect : MonoBehaviour
     [SerializeField, TextArea(4, 6)] private string correctionPrompt_enemy;
     [SerializeField, TextArea(4, 6)] private string correctionPrompt_effectType;
 
+    public string cardEffectStr, turnStartStr, enemyMoveStr;
     private string cardName;
     private string cardDesc;
     private string userName;
@@ -74,7 +75,7 @@ public class AI_CardEffect : MonoBehaviour
         userDesc = userData.CharacterDescription;
         userStatusStr = CharacterStatusString(self);
         
-        processingCanvas.StartProcessing("卡牌效果处理中：");
+        processingCanvas.StartProcessing(cardEffectStr);
         cardInTurnCnt++;
         
         if(targetCharacter != null)
@@ -199,7 +200,7 @@ public class AI_CardEffect : MonoBehaviour
         yield return new WaitUntil(() => AI_IntegrationManager.instance.gameStartPending == false);
         Debug.Log("<b>Turn Start</b>");
         cardInTurnCnt = 0;
-        processingCanvas.StartProcessing("回合开始处理中：");
+        processingCanvas.StartProcessing(turnStartStr);
         float tick = Time.time;
         //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
         reply1 = "";
@@ -328,7 +329,7 @@ public class AI_CardEffect : MonoBehaviour
     IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActionName, string enemyActionDesc, Action callback)
     {
         
-        processingCanvas.StartProcessing("敌人行动处理中：");
+        processingCanvas.StartProcessing(enemyMoveStr);
         float tick = Time.time;
         //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
         reply1 = "";
