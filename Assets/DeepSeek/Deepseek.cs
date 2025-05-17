@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
+using Newtonsoft.Json;
 
 public enum Role {
     User,
@@ -170,29 +171,38 @@ public static class Deepseek
         }
 
         string requestJson = "";
+        Dictionary<string, object> paramDict = new();
+        paramDict.Add("model", parameters.modelName);
+        paramDict.Add("temperature", parameters.temperature);
+        paramDict.Add("messages", ConvertMessages(messages, parameters.role));
         if (replyWithJson)
-        {
-            var requestObject = new JsonRequestMessage
-            {
-                model = parameters.modelName,
-                temperature = parameters.temperature,
-                messages = ConvertMessages(messages, parameters.role),
-                response_format = new JsonFormat{type = jsonFormat} 
-            };
-            //Debug.Log("ModelName: " + requestObject.model);
-            requestJson = JsonUtility.ToJson(requestObject);
-        }
-        else
-        {
-            var requestObject = new RequestMessage
-            {
-                model = parameters.modelName,
-                temperature = parameters.temperature,
-                messages = ConvertMessages(messages, parameters.role)
-            };
-            //Debug.Log("ModelName: " + requestObject.model);
-            requestJson = JsonUtility.ToJson(requestObject);
-        }
+            paramDict.Add("response_format", new JsonFormat{type = jsonFormat});
+        if (parameters.modelName.Contains("gemini-2.5-flash"))
+            paramDict.Add("reasoning_effort", "low");
+        requestJson = JsonConvert.SerializeObject(paramDict);
+        // if (replyWithJson)
+        // {
+        //     var requestObject = new JsonRequestMessage
+        //     {
+        //         model = parameters.modelName,
+        //         temperature = parameters.temperature,
+        //         messages = ConvertMessages(messages, parameters.role),
+        //         response_format = new JsonFormat{type = jsonFormat} 
+        //     };
+        //     //Debug.Log("ModelName: " + requestObject.model);
+        //     requestJson = JsonUtility.ToJson(requestObject);
+        // }
+        // else
+        // {
+        //     var requestObject = new RequestMessage
+        //     {
+        //         model = parameters.modelName,
+        //         temperature = parameters.temperature,
+        //         messages = ConvertMessages(messages, parameters.role)
+        //     };
+        //     //Debug.Log("ModelName: " + requestObject.model);
+        //     requestJson = JsonUtility.ToJson(requestObject);
+        // }
 
         var requestRecord = new RequestRecord();
         var request = GetWebRequest(requestJson, parameters, failureCallback, requestRecord);
