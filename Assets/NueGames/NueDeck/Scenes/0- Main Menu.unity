@@ -153,8 +153,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.9, y: 29.1}
-  m_SizeDelta: {x: 366.5035, y: 50}
+  m_AnchoredPosition: {x: -35.972404, y: 29.1}
+  m_SizeDelta: {x: 436.3587, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3000837
 MonoBehaviour:
@@ -176,9 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'LLM Service Preset
-
-'
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B (LLM) \u670D\u52A1\u5668\u9884\u8BBE\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -692,8 +690,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -39.205, y: 203.2}
-  m_SizeDelta: {x: 366.5035, y: 50}
+  m_AnchoredPosition: {x: 13.8, y: 203.2}
+  m_SizeDelta: {x: 463.7, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191012176
 MonoBehaviour:
@@ -715,7 +713,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: alpha 05/17/2025
+  m_text: "alpha 04/12/2025 \u4E2D\u6587\u5185\u6D4B\u7248"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -1446,9 +1444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'URL
-
-'
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B URL\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -1651,26 +1647,24 @@ MonoBehaviour:
   initInfoText: {fileID: 20628560}
   percentageText: {fileID: 1784766012}
   heroInfos:
-  - name: Primula
-    desc: delightful little witch with magic of life's essence
-  - name: Prometheus
-    desc: the ancient greek guy who stolen the power of fire for people, yay
-  - name: Joe
-    desc: a random couch potato who likes pizza and horror movies
-  - name: Aatrox
-    desc: the Darkin Blade, champion from League of Legends
-  - name: Snailla
-    desc: a snail girl with jetpack on her big shell who moves really fast
-  - name: Aqua
-    desc: cute little witch with power of water element
-  - name: Lukeluke
-    desc: an innocent frog boy, holding a giant leaf as an umbrella
-  - name: Yuio
-    desc: a sorrowful warrior who killed the dragon she once loved
-  - name: Reeves
-    desc: a 10 yrs old boy who is a genius hacker
-  - name: Ciderella
-    desc: an elf made of brewed apple juice (not cinderella)
+  - name: "\u62A5\u6625\u82B1"
+    desc: "\u5F00\u5FC3\u7684\u5C0F\u5973\u5DEB\uFF0C\u638C\u63A7\u7740\u751F\u547D\u7684\u529B\u91CF"
+  - name: "\u666E\u7F57\u7C73\u4FEE\u65AF"
+    desc: "\u53E4\u5E0C\u814A\u4F20\u8BF4\u4E2D\u7684\u82F1\u96C4\uFF0C\u4E3A\u4EBA\u6C11\u5E26\u6765\u4E86\u706B\u7130"
+  - name: "\u4E54\u5C14"
+    desc: "\u6765\u81EA\u7F8E\u56FD\u7684\u5B85\u7537\uFF0C\u559C\u6B22\u62AB\u8428\u548C\u6050\u6016\u7535\u5F71"
+  - name: "\u4E9A\u6258\u514B\u65AF"
+    desc: "\u6697\u88D4\u5251\u9B54\uFF0C\u4ECE\u53EC\u5524\u5E08\u5CE1\u8C37\u800C\u6765\u7684\u82F1\u96C4"
+  - name: "\u4E1D\u5185\u62C9"
+    desc: "\u88C5\u5907\u7740\u706B\u7BAD\u80CC\u5305\u7684\u8717\u725B\u5973\u5B69"
+  - name: "\u4E9A\u5E93\u5A05"
+    desc: "\u53EF\u7231\u7684\u5C0F\u5973\u5DEB\uFF0C\u80FD\u591F\u64CD\u63A7\u6C34\u5143\u7D20\u7684\u529B\u91CF"
+  - name: "\u90C1\u6B27"
+    desc: "\u6C89\u6E4E\u4E2D\u7684\u6B66\u58EB\uFF0C\u66FE\u7ECF\u6740\u6B7B\u4E86\u5979\u5FC3\u7231\u7684\u9F99"
+  - name: "\u5229\u5F17\u65AF"
+    desc: "10\u5C81\u7684\u5929\u624D\u9ED1\u5BA2\u5C0F\u7537\u5B69"
+  - name: "\u963F\u5C14\u897F\u65AF"
+    desc: "\u6A59\u53D1\u7684\u5251\u58EB\uFF0C\u7A7F\u68AD\u4E8E\u591A\u4E2A\u4E16\u754C\u7684\u5192\u9669\u8005"
   netSettingPanel: {fileID: 20628558}
 --- !u!1 &575709165
 GameObject:
@@ -1839,28 +1833,19 @@ MonoBehaviour:
   m_MultiSelect: 0
   m_Options:
     m_Options:
-    - m_Text: Gemini2.0Flash
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Gemini2.5Flash(AdaptiveThinking)
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: DeepseekV3_SiliconFlow
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: QWen2.5Max
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: DeepseekV3_Ali
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Doubao1.5Pro
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Claude3.5Haiku
+    - m_Text: Gemini2.0Flash
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: DeepseekV3_Official
+    - m_Text: DeepseekV3_Ali
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: DeepseekV3_SiliconFlow
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Custom
@@ -1965,7 +1950,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: API KEY
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B API KEY"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -2791,7 +2776,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.9, y: 29.1}
+  m_AnchoredPosition: {x: -70.9, y: 38.92}
   m_SizeDelta: {x: 366.5035, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &739210161
@@ -2814,7 +2799,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Image Generation Server
+  m_text: "\u56FE\u50CF\u751F\u6210\u670D\u52A1\u5668\u5730\u5740"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -3270,9 +3255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Random
-
-'
+  m_text: "\u968F\u673A"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -3558,7 +3541,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Build your own character!
+  m_text: "\u60F3\u8C61\u4F60\u7684\u89D2\u8272\uFF01"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -3585,8 +3568,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4567,7 +4550,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1399362516
 MonoBehaviour:
@@ -4628,7 +4611,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 20
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -5137,7 +5120,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.9, y: 33.999996}
+  m_AnchoredPosition: {x: -70.9, y: 36.97}
   m_SizeDelta: {x: 366.5035, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1517508216
@@ -5160,9 +5143,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Name
-
-'
+  m_text: "\u540D\u5B57"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -5189,8 +5170,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6419,7 +6400,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gemini2.0Flash
+  m_text: QWen2.5Max
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -6555,9 +6536,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Model Name
-
-'
+  m_text: "\u5927\u8BED\u8A00\u6A21\u578B Model Name\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -6936,7 +6915,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.9, y: 34}
+  m_AnchoredPosition: {x: -70.9, y: 36.97}
   m_SizeDelta: {x: 366.5035, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1939115746
@@ -6959,9 +6938,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Description
-
-'
+  m_text: "\u63CF\u8FF0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -6988,8 +6965,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7870,15 +7847,6 @@ MonoBehaviour:
     apiKey: AIzaSyC1H5ROCPmAClj2aExPONEkIKFKEQA-kRU
     url: https://generativelanguage.googleapis.com/v1beta:chatCompletions
     modelName: gemini-2.0-flash
-    temperature: 0.4
-    role: 
-    timeout: 0
-    throttle: 0
-    _serialized: 1
-  - name: Gemini2.5Flash(AdaptiveThinking)
-    apiKey: AIzaSyC1H5ROCPmAClj2aExPONEkIKFKEQA-kRU
-    url: https://generativelanguage.googleapis.com/v1beta:chatCompletions
-    modelName: gemini-2.5-flash-preview-04-17
     temperature: 0.4
     role: 
     timeout: 0

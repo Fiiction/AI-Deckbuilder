@@ -5,7 +5,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
-using Newtonsoft.Json;
 
 public enum Role {
     User,
@@ -69,14 +68,14 @@ public static class Deepseek
     // ReSharper disable once MemberCanBePrivate.Global
     public static Action Request(IEnumerable<Message> messages, DeepseekParams parameters,
                                  Action<string> completeCallback, Action<long, string> failureCallback,
-                                 Action<string> updateCallback = null, bool replyWithJson = false, Type jsonType = null)
+                                 Action<string> updateCallback = null, bool replyWithJson = false)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
         Debug.Assert(messages != null, "Messages cannot be null.");
 
         if (updateCallback == null) {
-            return QuickRequest(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
+            return QuickRequest(messages, parameters, completeCallback, failureCallback, replyWithJson);
         }
 
         // Throttle.
@@ -120,10 +119,10 @@ public static class Deepseek
     }
 
     private static Action QuickRequest(IEnumerable<Message> messages, DeepseekParams parameters,
-                                       Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
+                                       Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false)
     {
         
-        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
+        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback, replyWithJson);
         ChatGptContainer.Instance.StartCoroutine(enumerator);
 
         void CancelCallback() {
@@ -135,9 +134,9 @@ public static class Deepseek
 
     private static IEnumerator QuickRequestCoroutine(IEnumerable<Message> messages, DeepseekParams parameters,
                                                      Action<string> completeCallback,
-                                                     Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
+                                                     Action<long, string> failureCallback, bool replyWithJson = false)
     {
-        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
+        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback, replyWithJson);
         yield break;
     }
     private static void LogRequest(UnityWebRequest request)
@@ -155,7 +154,7 @@ public static class Deepseek
         Debug.Log(log.ToString());
     }
     private static Action QuickRequestBlocking(IEnumerable<Message> messages, DeepseekParams parameters,
-                                               Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
+                                               Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
@@ -171,44 +170,29 @@ public static class Deepseek
         }
 
         string requestJson = "";
-        Dictionary<string, object> paramDict = new();
-        paramDict.Add("model", parameters.modelName);
-        paramDict.Add("temperature", parameters.temperature);
-        paramDict.Add("messages", ConvertMessages(messages, parameters.role));
         if (replyWithJson)
-            paramDict.Add("response_format", new JsonFormat{type = jsonFormat});
-        if (parameters.modelName.Contains("gemini-2.5-flash"))
         {
-            if(jsonType == typeof(AI_CardEffect.ActionParams) || jsonType == typeof(AI_CardEffect.CustomEffectParams))
-                paramDict.Add("reasoning_effort", "none");
-            else
-                paramDict.Add("reasoning_effort", "low");
-            Debug.Log($"<color=#33FFFF>Gemini 2.5 Reasoning: {paramDict["reasoning_effort"]}</color>");
+            var requestObject = new JsonRequestMessage
+            {
+                model = parameters.modelName,
+                temperature = parameters.temperature,
+                messages = ConvertMessages(messages, parameters.role),
+                response_format = new JsonFormat{type = jsonFormat} 
+            };
+            //Debug.Log("ModelName: " + requestObject.model);
+            requestJson = JsonUtility.ToJson(requestObject);
         }
-        requestJson = JsonConvert.SerializeObject(paramDict);
-        // if (replyWithJson)
-        // {
-        //     var requestObject = new JsonRequestMessage
-        //     {
-        //         model = parameters.modelName,
-        //         temperature = parameters.temperature,
-        //         messages = ConvertMessages(messages, parameters.role),
-        //         response_format = new JsonFormat{type = jsonFormat} 
-        //     };
-        //     //Debug.Log("ModelName: " + requestObject.model);
-        //     requestJson = JsonUtility.ToJson(requestObject);
-        // }
-        // else
-        // {
-        //     var requestObject = new RequestMessage
-        //     {
-        //         model = parameters.modelName,
-        //         temperature = parameters.temperature,
-        //         messages = ConvertMessages(messages, parameters.role)
-        //     };
-        //     //Debug.Log("ModelName: " + requestObject.model);
-        //     requestJson = JsonUtility.ToJson(requestObject);
-        // }
+        else
+        {
+            var requestObject = new RequestMessage
+            {
+                model = parameters.modelName,
+                temperature = parameters.temperature,
+                messages = ConvertMessages(messages, parameters.role)
+            };
+            //Debug.Log("ModelName: " + requestObject.model);
+            requestJson = JsonUtility.ToJson(requestObject);
+        }
 
         var requestRecord = new RequestRecord();
         var request = GetWebRequest(requestJson, parameters, failureCallback, requestRecord);

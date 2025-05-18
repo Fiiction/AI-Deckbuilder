@@ -118,7 +118,7 @@ public class AI_IntegrationManager : MonoBehaviour
                 }
                 else
                     callback.Invoke(reply);
-            }, null, null, replyWithJson, jsonType);
+            }, null, null, replyWithJson);
         
     }
 
