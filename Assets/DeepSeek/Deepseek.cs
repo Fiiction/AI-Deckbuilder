@@ -69,14 +69,14 @@ public static class Deepseek
     // ReSharper disable once MemberCanBePrivate.Global
     public static Action Request(IEnumerable<Message> messages, DeepseekParams parameters,
                                  Action<string> completeCallback, Action<long, string> failureCallback,
-                                 Action<string> updateCallback = null, bool replyWithJson = false)
+                                 Action<string> updateCallback = null, bool replyWithJson = false, Type jsonType = null)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
         Debug.Assert(messages != null, "Messages cannot be null.");
 
         if (updateCallback == null) {
-            return QuickRequest(messages, parameters, completeCallback, failureCallback, replyWithJson);
+            return QuickRequest(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
         }
 
         // Throttle.
@@ -120,10 +120,10 @@ public static class Deepseek
     }
 
     private static Action QuickRequest(IEnumerable<Message> messages, DeepseekParams parameters,
-                                       Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false)
+                                       Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
     {
         
-        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback, replyWithJson);
+        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
         ChatGptContainer.Instance.StartCoroutine(enumerator);
 
         void CancelCallback() {
@@ -135,9 +135,9 @@ public static class Deepseek
 
     private static IEnumerator QuickRequestCoroutine(IEnumerable<Message> messages, DeepseekParams parameters,
                                                      Action<string> completeCallback,
-                                                     Action<long, string> failureCallback, bool replyWithJson = false)
+                                                     Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
     {
-        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback, replyWithJson);
+        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
         yield break;
     }
     private static void LogRequest(UnityWebRequest request)
@@ -155,7 +155,7 @@ public static class Deepseek
         Debug.Log(log.ToString());
     }
     private static Action QuickRequestBlocking(IEnumerable<Message> messages, DeepseekParams parameters,
-                                               Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false)
+                                               Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
@@ -178,7 +178,13 @@ public static class Deepseek
         if (replyWithJson)
             paramDict.Add("response_format", new JsonFormat{type = jsonFormat});
         if (parameters.modelName.Contains("gemini-2.5-flash"))
-            paramDict.Add("reasoning_effort", "low");
+        {
+            if(jsonType == typeof(AI_CardEffect.ActionParams) || jsonType == typeof(AI_CardEffect.CustomEffectParams))
+                paramDict.Add("reasoning_effort", "none");
+            else
+                paramDict.Add("reasoning_effort", "low");
+            Debug.Log($"<color=#33FFFF>Gemini 2.5 Reasoning: {paramDict["reasoning_effort"]}</color>");
+        }
         requestJson = JsonConvert.SerializeObject(paramDict);
         // if (replyWithJson)
         // {
