@@ -715,7 +715,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: alpha 05/08/2025
+  m_text: alpha 05/17/2025
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -1840,6 +1840,9 @@ MonoBehaviour:
   m_Options:
     m_Options:
     - m_Text: Gemini2.0Flash
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: Gemini2.5Flash(AdaptiveThinking)
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: DeepseekV3_SiliconFlow
@@ -7872,6 +7875,15 @@ MonoBehaviour:
     timeout: 0
     throttle: 0
     _serialized: 1
+  - name: Gemini2.5Flash(AdaptiveThinking)
+    apiKey: AIzaSyC1H5ROCPmAClj2aExPONEkIKFKEQA-kRU
+    url: https://generativelanguage.googleapis.com/v1beta:chatCompletions
+    modelName: gemini-2.5-flash-preview-04-17
+    temperature: 0.4
+    role: 
+    timeout: 0
+    throttle: 0
+    _serialized: 1
   - name: QWen2.5Max
     apiKey: sk-cf84ec7d9b824a17aa179b7654e5bc8e
     url: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
@@ -7908,7 +7920,7 @@ MonoBehaviour:
     timeout: 0
     throttle: 0
     _serialized: 1
-  setApiKey: 0
+  setApiKey: 1
   nextCanvas: {fileID: 523493938}
 --- !u!1 &3320738944825515004
 GameObject:

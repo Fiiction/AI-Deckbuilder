@@ -112,7 +112,7 @@ public class AI_IntegrationManager : MonoBehaviour
                 }
                 else
                     callback.Invoke(reply);
-            }, null, null, replyWithJson);
+            }, null, null, replyWithJson, jsonType);
         
     }
 
