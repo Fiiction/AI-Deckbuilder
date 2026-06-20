@@ -176,7 +176,8 @@ public static class Deepseek
         paramDict.Add("temperature", parameters.temperature);
         paramDict.Add("messages", ConvertMessages(messages, parameters.role));
         if (replyWithJson)
-            paramDict.Add("response_format", new JsonFormat{type = jsonFormat});
+            paramDict.Add("thinking", "{\"type\": \"enabled\"}");
+        //     paramDict.Add("response_format", new JsonFormat{type = jsonFormat});
         if (parameters.modelName.Contains("gemini-2.5-flash"))
         {
             if(jsonType == typeof(AI_CardEffect.ActionParams) || jsonType == typeof(AI_CardEffect.CustomEffectParams))

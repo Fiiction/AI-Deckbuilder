@@ -452,7 +452,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "http://183.220.246.35:60032\u200B"
+  m_text: "http://127.0.0.1:8188\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -715,7 +715,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: alpha 05/17/2025
+  m_text: alpha 06/17/2026
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -1839,6 +1839,9 @@ MonoBehaviour:
   m_MultiSelect: 0
   m_Options:
     m_Options:
+    - m_Text: MimoUltraspeed
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: Gemini2.0Flash
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2704,7 +2707,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: http://183.220.246.35:60032
+  m_Text: http://127.0.0.1:8188
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -6419,7 +6422,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gemini2.0Flash
+  m_text: MimoUltraspeed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
   m_sharedMaterial: {fileID: -5833349339609296241, guid: bb04253493361db4c83b3d8ae3a1ebf4, type: 2}
@@ -7911,10 +7914,10 @@ MonoBehaviour:
     timeout: 0
     throttle: 0
     _serialized: 1
-  - name: Claude3.5Haiku
-    apiKey: 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
-    url: https://api.anthropic.com/v1/chat/completions
-    modelName: claude-3-5-haiku-20241022
+  - name: MimoUltraspeed
+    apiKey: sk-cp63v0ecyyg1tqfvzquutl0j4gb7ecgrwq5hxsmm1gp86w69
+    url: https://api.xiaomimimo.com/v1/chat/completions
+    modelName: mimo-v2.5-pro-ultraspeed
     temperature: 0.4
     role: 
     timeout: 0
