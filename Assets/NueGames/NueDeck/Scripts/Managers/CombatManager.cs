@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NueGames.NueDeck.Scripts.Characters;
@@ -40,8 +40,8 @@ namespace NueGames.NueDeck.Scripts.Managers
             get => _currentCombatStateType;
             private set
             {
-                ExecuteCombatState(value);
                 _currentCombatStateType = value;
+                ExecuteCombatState(value);
             }
         }
         
@@ -57,18 +57,17 @@ namespace NueGames.NueDeck.Scripts.Managers
         
         
         #region Setup
-        private void Awake()
+private void Awake()
         {
             if (Instance)
             {
                 Destroy(gameObject);
                 return;
-            } 
-            else
-            {
-                Instance = this;
-                CurrentCombatStateType = CombatStateType.PrepareCombat;
             }
+
+            Instance = this;
+            TurnResetController.Ensure(this);
+            CurrentCombatStateType = CombatStateType.PrepareCombat;
         }
 
         private void Start()
@@ -112,7 +111,9 @@ namespace NueGames.NueDeck.Scripts.Managers
                     break;
                 case CombatStateType.AllyTurn:
                     
-                    turnIndex++;
+                    TurnResetController.Instance?.CaptureBeforeAllyTurn();
+                    
+turnIndex++;
                     
                     GameManager.PersistentGameplayData.CurrentMana = GameManager.PersistentGameplayData.MaxMana;
                    
@@ -304,5 +305,22 @@ namespace NueGames.NueDeck.Scripts.Managers
                 CurrentCombatStateType = CombatStateType.AllyTurn;
         }
         #endregion
-    }
+    
+
+public void PrepareForTurnReset()
+        {
+            StopAllCoroutines();
+            enemyTurnProcessing = false;
+            DiePendingEnemies.Clear();
+            OnAllyTurnStarted = null;
+            OnEnemyTurnStarted = null;
+            _currentCombatStateType = CombatStateType.PrepareCombat;
+            DeactivateCardHighlights();
+        }
+
+        public void RestartAllyTurnFromSnapshot()
+        {
+            CurrentCombatStateType = CombatStateType.AllyTurn;
+        }
+}
 }

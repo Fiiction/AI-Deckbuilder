@@ -87,43 +87,61 @@ public class AI_IntegrationManager : MonoBehaviour
 public Action Request(string str, Action<string> callback, bool replyWithJson = false,
         Type jsonType = null, Action<long, string> failureCallback = null, int timeoutSeconds = -1)
     {
-        debugStr += "\n<b>Request</b>: \n" + str;
-        str = pendingPrompts + "\n" + str;
-        pendingPrompts = "";
-        if (str.Contains("##"))
-            Debug.LogError("Unfilled key found:\n" + str);
+        bool cancelled = false;
+        Action currentCancel = null;
+        Action<string> sendRequest = null;
 
-        _conversationSoFar.Add(new Message(str, Role.User));
-        Debug.Log("Request:\n" + str);
+        sendRequest = requestText =>
+        {
+            if (cancelled)
+                return;
 
-        return LLMService.Request(_conversationSoFar, activeParams,
-            reply =>
-            {
-                debugStr += "\n<b>Reply</b>: \n" + reply;
-                Debug.Log("LLM Reply:\n" + reply);
-                _conversationSoFar.Add(new Message(reply, Role.AI));
+            debugStr += "\n<b>Request</b>: \n" + requestText;
+            string finalRequest = pendingPrompts + "\n" + requestText;
+            pendingPrompts = "";
 
-                if (replyWithJson && jsonType != null)
+            if (finalRequest.Contains("##"))
+                Debug.LogError("Unfilled key found:\n" + finalRequest);
+
+            _conversationSoFar.Add(new Message(finalRequest, Role.User));
+            Debug.Log("Request:\n" + finalRequest);
+
+            currentCancel = LLMService.Request(_conversationSoFar, activeParams,
+                reply =>
                 {
-                    if (IsValidJson(reply, jsonType))
-                    {
-                        callback?.Invoke(reply);
-                    }
-                    else
+                    if (cancelled)
+                        return;
+
+                    debugStr += "\n<b>Reply</b>: \n" + reply;
+                    Debug.Log("LLM Reply:\n" + reply);
+                    _conversationSoFar.Add(new Message(reply, Role.AI));
+
+                    if (replyWithJson && jsonType != null && !IsValidJson(reply, jsonType))
                     {
                         Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
                         debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
                         AI_DebugCanvas.instance.AddWarning("Json Correction!");
                         pendingPrompts += jsonCorrectionPrompt + "\n";
-                        Request(str, callback, replyWithJson, jsonType, failureCallback, timeoutSeconds);
+                        sendRequest(requestText);
+                        return;
                     }
-                }
-                else
-                {
+
                     callback?.Invoke(reply);
-                }
-            },
-            failureCallback, null, replyWithJson, jsonType, timeoutSeconds);
+                },
+                (statusCode, message) =>
+                {
+                    if (!cancelled)
+                        failureCallback?.Invoke(statusCode, message);
+                },
+                null, replyWithJson, jsonType, timeoutSeconds);
+        };
+
+        sendRequest(str);
+        return () =>
+        {
+            cancelled = true;
+            currentCancel?.Invoke();
+        };
     }
 
     public void CardQueueRequest(string str, Action<string> callback, bool replyWithJson = false, Type jsonType = null)

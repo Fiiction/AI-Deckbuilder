@@ -126,16 +126,8 @@ public static class LLMService
                                        bool replyWithJson = false, Type jsonType = null,
                                        int timeoutOverride = -1)
     {
-        
-        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback,
+        return QuickRequestBlocking(messages, parameters, completeCallback, failureCallback,
             replyWithJson, jsonType, timeoutOverride);
-        ChatGptContainer.Instance.StartCoroutine(enumerator);
-
-        void CancelCallback() {
-            ChatGptContainer.Instance.StopCoroutine(enumerator);
-        }
-
-        return CancelCallback;
     }
 
     private static IEnumerator QuickRequestCoroutine(IEnumerable<Message> messages, LLMParams parameters,

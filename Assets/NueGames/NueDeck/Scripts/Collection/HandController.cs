@@ -556,5 +556,19 @@ namespace NueGames.NueDeck.Scripts.Collection
 
         #endregion
 
-    }
+    
+
+public void ResetInteractionState()
+        {
+            IsDraggingActive = false;
+            _selected = -1;
+            _dragged = -1;
+            _heldCard = null;
+            _heldCardOffset = Vector3.zero;
+            _heldCardTilt = Vector2.zero;
+            _force = Vector2.zero;
+            _mouseInsideHand = false;
+            CombatManager?.DeactivateCardHighlights();
+        }
+}
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using NueGames.NueDeck.Scripts.Data.Characters;
 using NueGames.NueDeck.Scripts.Data.Containers;
 using NueGames.NueDeck.Scripts.Enums;
@@ -48,6 +48,11 @@ namespace NueGames.NueDeck.Scripts.Characters
         #region Private Methods
 
         private int _usedAbilityCount;
+        public int UsedAbilityCount
+        {
+            get => _usedAbilityCount;
+            set => _usedAbilityCount = Mathf.Max(0, value);
+        }
         private void ShowNextAbility()
         {
             NextAbility = EnemyCharacterData.GetAbility(_usedAbilityCount);

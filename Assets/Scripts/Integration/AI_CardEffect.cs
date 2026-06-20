@@ -15,6 +15,8 @@ public class AI_CardEffect : MonoBehaviour
 {
     
     public static AI_CardEffect instance;
+    private int requestGeneration;
+    private readonly List<Action> activeRequestCancels = new();
     
     
     [SerializeField, TextArea(12,20)] private string prompt1_withTarget;
@@ -544,6 +546,7 @@ private bool TryBuildActionData(SuperActions response, bool enemyContext, bool a
 
 private IEnumerator RequestEffectsWithRetry(string prompt, Action<SuperActions> successCallback)
     {
+        int generation = requestGeneration;
         int maxAttempts = Mathf.Max(1, AI_IntegrationManager.CardEffectRetryCount + 1);
         int timeoutSeconds = Mathf.Max(1, AI_IntegrationManager.CardEffectTimeoutSeconds);
 
@@ -551,12 +554,29 @@ private IEnumerator RequestEffectsWithRetry(string prompt, Action<SuperActions> 
         {
             string reply = null;
             string failure = null;
+            Action cancelRequest = null;
 
-            AI_IntegrationManager.instance.Request(prompt, str => reply = str, true, typeof(SuperActions),
-                (statusCode, message) => failure = statusCode + ": " + message,
+            cancelRequest = AI_IntegrationManager.instance.Request(prompt,
+                str =>
+                {
+                    if (generation == requestGeneration)
+                        reply = str;
+                },
+                true, typeof(SuperActions),
+                (statusCode, message) =>
+                {
+                    if (generation == requestGeneration)
+                        failure = statusCode + ": " + message;
+                },
                 timeoutSeconds);
 
-            yield return new WaitUntil(() => reply != null || failure != null);
+            activeRequestCancels.Add(cancelRequest);
+            yield return new WaitUntil(() => generation != requestGeneration
+                                             || reply != null || failure != null);
+            activeRequestCancels.Remove(cancelRequest);
+
+            if (generation != requestGeneration)
+                yield break;
 
             if (reply != null)
             {
@@ -574,5 +594,18 @@ private IEnumerator RequestEffectsWithRetry(string prompt, Action<SuperActions> 
             if (!willRetry)
                 yield break;
         }
+    }
+
+
+public void CancelForTurnReset()
+    {
+        requestGeneration++;
+        foreach (var cancel in activeRequestCancels.ToArray())
+            cancel?.Invoke();
+
+        activeRequestCancels.Clear();
+        StopAllCoroutines();
+        actionDatas.Clear();
+        processingCanvas?.EndProcessing();
     }
 }
