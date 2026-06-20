@@ -155,6 +155,59 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7560689155620662203, guid: 559b1eed95bf8244ea1a27aad03b2c63, type: 3}
+      propertyPath: cardJson
+      value: "{\r\n  \"3\": {\r\n    \"inputs\": {\r\n      \"seed\": 428732650476192,\r\n     
+        \"steps\": 8,\r\n      \"cfg\": 2.5,\r\n      \"sampler_name\": \"euler_ancestral\",\r\n     
+        \"scheduler\": \"sgm_uniform\",\r\n      \"denoise\": 1,\r\n      \"model\":
+        [\r\n        \"13\",\r\n        0\r\n      ],\r\n      \"positive\": [\r\n       
+        \"6\",\r\n        0\r\n      ],\r\n      \"negative\": [\r\n        \"7\",\r\n       
+        0\r\n      ],\r\n      \"latent_image\": [\r\n        \"5\",\r\n        0\r\n     
+        ]\r\n    },\r\n    \"class_type\": \"KSampler\",\r\n    \"_meta\": {\r\n     
+        \"title\": \"KSampler\"\r\n    }\r\n  },\r\n  \"4\": {\r\n    \"inputs\":
+        {\r\n      \"ckpt_name\": \"dreamshaperXL_lightningDPMSDE.safetensors\"\r\n   
+        },\r\n    \"class_type\": \"CheckpointLoaderSimple\",\r\n    \"_meta\": {\r\n     
+        \"title\": \"Load Checkpoint\"\r\n    }\r\n  },\r\n  \"5\": {\r\n    \"inputs\":
+        {\r\n      \"width\": 640,\r\n      \"height\": 640,\r\n      \"batch_size\":
+        1\r\n    },\r\n    \"class_type\": \"EmptyLatentImage\",\r\n    \"_meta\":
+        {\r\n      \"title\": \"Empty Latent Image\"\r\n    }\r\n  },\r\n  \"6\":
+        {\r\n    \"inputs\": {\r\n      \"text\": \"##Prompt##, anime style, flat
+        colors, game icon, dynamic, dynamic scene, sketch\",\r\n      \"clip\": [\r\n       
+        \"13\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\": \"CLIPTextEncode\",\r\n   
+        \"_meta\": {\r\n      \"title\": \"CLIP Text Encode (Prompt)\"\r\n    }\r\n 
+        },\r\n  \"7\": {\r\n    \"inputs\": {\r\n      \"text\": \"symmetry, frame,
+        pen, crayon, notebook, table surface, portrait, character art, character
+        illustration, lowres, bad anatomy, bad hands, text, error, missing fingers,
+        extra digit, fewer digits, cropped, worst quality, low quality, jpeg artifacts,
+        signature, watermark, username, ,blurry, (((missing arms))),(((missing legs))),
+        (((extra arms))),(((extra legs))), plump,,username,blurry,,\",\r\n      \"clip\":
+        [\r\n        \"13\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
+        \"CLIPTextEncode\",\r\n    \"_meta\": {\r\n      \"title\": \"CLIP Text Encode
+        (Prompt)\"\r\n    }\r\n  },\r\n  \"8\": {\r\n    \"inputs\": {\r\n      \"samples\":
+        [\r\n        \"3\",\r\n        0\r\n      ],\r\n      \"vae\": [\r\n       
+        \"11\",\r\n        0\r\n      ]\r\n    },\r\n    \"class_type\": \"VAEDecode\",\r\n   
+        \"_meta\": {\r\n      \"title\": \"VAE Decode\"\r\n    }\r\n  },\r\n  \"9\":
+        {\r\n    \"inputs\": {\r\n      \"filename_prefix\": \"ComfyUI\",\r\n     
+        \"images\": [\r\n        \"8\",\r\n        0\r\n      ]\r\n    },\r\n   
+        \"class_type\": \"SaveImage\",\r\n    \"_meta\": {\r\n      \"title\": \"Save
+        Image\"\r\n    }\r\n  },\r\n  \"11\": {\r\n    \"inputs\": {\r\n      \"vae_name\":
+        \"sdxl_vae.safetensors\"\r\n    },\r\n    \"class_type\": \"VAELoader\",\r\n   
+        \"_meta\": {\r\n      \"title\": \"Load VAE\"\r\n    }\r\n  },\r\n  \"13\":
+        {\r\n    \"inputs\": {\r\n      \"lora_name\": \"anime_game_icon.safetensors\",\r\n     
+        \"strength_model\": 0.4,\r\n      \"strength_clip\": 0.4,\r\n      \"model\":
+        [\r\n        \"15\",\r\n        0\r\n      ],\r\n      \"clip\": [\r\n       
+        \"15\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\": \"LoraLoader\",\r\n   
+        \"_meta\": {\r\n      \"title\": \"Load LoRA\"\r\n    }\r\n  },\r\n  \"14\":
+        {\r\n    \"inputs\": {\r\n      \"stop_at_clip_layer\": -2,\r\n      \"clip\":
+        [\r\n        \"4\",\r\n        1\r\n      ]\r\n    },\r\n    \"class_type\":
+        \"CLIPSetLastLayer\",\r\n    \"_meta\": {\r\n      \"title\": \"CLIP Set
+        Last Layer\"\r\n    }\r\n  },\r\n  \"15\": {\r\n    \"inputs\": {\r\n     
+        \"lora_name\": \"Sketched_Out_Manga-000007.safetensors\",\r\n      \"strength_model\":
+        0.6,\r\n      \"strength_clip\": 0.6,\r\n      \"model\": [\r\n        \"4\",\r\n       
+        0\r\n      ],\r\n      \"clip\": [\r\n        \"14\",\r\n        0\r\n     
+        ]\r\n    },\r\n    \"class_type\": \"LoraLoader\",\r\n    \"_meta\": {\r\n     
+        \"title\": \"Load LoRA\"\r\n    }\r\n  }\r\n}"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
