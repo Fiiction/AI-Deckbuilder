@@ -8,8 +8,13 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 
+
 public class AI_IntegrationManager : MonoBehaviour
 {
+    [Header("Card Effect Request")]
+    public static int CardEffectTimeoutSeconds = 30;
+    public static int CardEffectRetryCount = 2;
+
     public static AI_IntegrationManager instance;
     public static LLMParams activeParams;
     public string heroName = "Hanzo";
@@ -79,20 +84,21 @@ public class AI_IntegrationManager : MonoBehaviour
         instance = this;
     }
 
-    public void Request(string str, Action<string> callback, bool replyWithJson = false, Type jsonType = null)
+public Action Request(string str, Action<string> callback, bool replyWithJson = false,
+        Type jsonType = null, Action<long, string> failureCallback = null, int timeoutSeconds = -1)
     {
         debugStr += "\n<b>Request</b>: \n" + str;
-        str = pendingPrompts +"\n" + str;
+        str = pendingPrompts + "\n" + str;
         pendingPrompts = "";
-        if(str.Contains("##"))
+        if (str.Contains("##"))
             Debug.LogError("Unfilled key found:\n" + str);
+
         _conversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("Request:\n" + str);
-        LLMService.Request(_conversationSoFar, activeParams,
+
+        return LLMService.Request(_conversationSoFar, activeParams,
             reply =>
             {
-                // if(Random.value<0.6f && jsonType != null)
-                //     reply = reply.Substring(0, reply.Length - 15);
                 debugStr += "\n<b>Reply</b>: \n" + reply;
                 Debug.Log("LLM Reply:\n" + reply);
                 _conversationSoFar.Add(new Message(reply, Role.AI));
@@ -100,20 +106,24 @@ public class AI_IntegrationManager : MonoBehaviour
                 if (replyWithJson && jsonType != null)
                 {
                     if (IsValidJson(reply, jsonType))
-                        callback.Invoke(reply);
+                    {
+                        callback?.Invoke(reply);
+                    }
                     else
                     {
                         Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
                         debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
                         AI_DebugCanvas.instance.AddWarning("Json Correction!");
                         pendingPrompts += jsonCorrectionPrompt + "\n";
-                        Request(str, callback, replyWithJson, jsonType);
+                        Request(str, callback, replyWithJson, jsonType, failureCallback, timeoutSeconds);
                     }
                 }
                 else
-                    callback.Invoke(reply);
-            }, null, null, replyWithJson, jsonType);
-        
+                {
+                    callback?.Invoke(reply);
+                }
+            },
+            failureCallback, null, replyWithJson, jsonType, timeoutSeconds);
     }
 
     public void CardQueueRequest(string str, Action<string> callback, bool replyWithJson = false, Type jsonType = null)

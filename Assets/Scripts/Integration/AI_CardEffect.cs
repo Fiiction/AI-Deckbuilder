@@ -58,14 +58,9 @@ public class AI_CardEffect : MonoBehaviour
     public int cardInTurnCnt = 0;
     
     public Dictionary<string, string> effectDict = new();
-    IEnumerator CardUseCoroutine(CardBase card, CharacterBase self, CharacterBase targetCharacter,
+private IEnumerator CardUseCoroutine(CardBase card, CharacterBase self, CharacterBase targetCharacter,
         Action<List<CardActionData>> callback)
     {
-        ActionArray actionArray;
-        reply1 = "";
-        reply2 = "";
-        actionDatas = new();
-        
         cardName = card.CardData.CardName;
         cardDesc = card.CardData.CardDescription;
         var userData = (self as AllyBase).AllyCharacterData;
@@ -73,117 +68,66 @@ public class AI_CardEffect : MonoBehaviour
         userName = userData.CharacterName;
         userDesc = userData.CharacterDescription;
         userStatusStr = CharacterStatusString(self);
-        
+
         processingCanvas.StartProcessing("Card Processing:");
         cardInTurnCnt++;
-        
-        if(targetCharacter != null)
+
+        if (targetCharacter != null)
         {
             var targetData = (targetCharacter as EnemyBase).EnemyCharacterData;
             targetName = targetData.CharacterName;
             targetDesc = targetData.CharacterDescription;
             targetStatusStr = CharacterStatusString(targetCharacter);
-            
-            prompt1Sent = prompt1_withTarget.Replace("##PlayerDesc##", userDesc);
-            prompt1Sent = prompt1Sent.Replace("##PlayerName##", userName);
-            prompt1Sent = prompt1Sent.Replace("##PlayerCustomStatus##", userStatusStr);
-            prompt1Sent = prompt1Sent.Replace("##CardName##", cardName);
-            prompt1Sent = prompt1Sent.Replace("##CardDesc##", cardDesc);
-            prompt1Sent = prompt1Sent.Replace("##ManaSpent##", card.CardData.ManaCost.ToString());
-            
-            prompt1Sent = prompt1Sent.Replace("##EnemyName##", targetName);
-            prompt1Sent = prompt1Sent.Replace("##EnemyDesc##", targetDesc);
-            prompt1Sent = prompt1Sent.Replace("##EnemyCustomStatus##", targetStatusStr);
+
+            prompt1Sent = prompt1_withTarget.Replace("##PlayerDesc##", userDesc)
+                .Replace("##PlayerName##", userName)
+                .Replace("##PlayerCustomStatus##", userStatusStr)
+                .Replace("##CardName##", cardName)
+                .Replace("##CardDesc##", cardDesc)
+                .Replace("##ManaSpent##", card.CardData.ManaCost.ToString())
+                .Replace("##EnemyName##", targetName)
+                .Replace("##EnemyDesc##", targetDesc)
+                .Replace("##EnemyCustomStatus##", targetStatusStr);
         }
         else
         {
-            prompt1Sent = prompt1_noTarget.Replace("##PlayerDesc##", userDesc);
-            prompt1Sent = prompt1Sent.Replace("##PlayerName##", userName);
-            prompt1Sent = prompt1Sent.Replace("##PlayerCustomStatus##", userStatusStr);
-            prompt1Sent = prompt1Sent.Replace("##CardName##", cardName);
-            prompt1Sent = prompt1Sent.Replace("##CardDesc##", cardDesc);
-            prompt1Sent = prompt1Sent.Replace("##ManaSpent##", card.CardData.ManaCost.ToString());
-        }
-        prompt1Sent = prompt1Sent.Replace("##Specific##",
-            (cardInTurnCnt <= 1 ? prompt_specific : ""));
-        
-        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply2 = str;}, true, typeof(ActionArray));
- 
-        yield return new WaitWhile( () => reply2 == "");
-        actionArray = Decode<ActionArray>(reply2);
-
-        for(int idx = 0; idx < actionArray.effects.Length;idx++)
-        {
-            var i = actionArray.effects[idx];
-            if (StringToActionType(i) == CardActionType.Unknown)
-            {
-                Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                AI_DebugCanvas.instance.AddWarning("Correction!");
-                AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
-                StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
-                yield break;
-            }
+            prompt1Sent = prompt1_noTarget.Replace("##PlayerDesc##", userDesc)
+                .Replace("##PlayerName##", userName)
+                .Replace("##PlayerCustomStatus##", userStatusStr)
+                .Replace("##CardName##", cardName)
+                .Replace("##CardDesc##", cardDesc)
+                .Replace("##ManaSpent##", card.CardData.ManaCost.ToString());
         }
 
-        for(int idx = 0; idx < actionArray.effects.Length;idx++)
+        prompt1Sent = prompt1Sent.Replace("##Specific##", prompt_specific);
+
+        SuperActions response = default;
+        bool requestSucceeded = false;
+        yield return StartCoroutine(RequestEffectsWithRetry(prompt1Sent, value =>
         {
-            var i = actionArray.effects[idx];
-            string reply3 = "";
-            string prompt3Sent;
-            if (i == "Add Custom Status")
-            {
-                prompt3Sent = prompt3_CustomEffect.Replace("##No##",numbers[idx]);
-                if (targetCharacter == null)
-                    prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true, typeof(CustomEffectParams));
-                yield return new WaitWhile( () => reply3 == "");
-                CustomEffectParams p = Decode<CustomEffectParams>(reply3);
-                
-                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
-                {
-                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                    AI_DebugCanvas.instance.AddWarning("Correction!");
-                    AI_IntegrationManager.instance.pendingPrompts += targetCharacter != null?
-                        correctionPrompt_withTarget: correctionPrompt_noTarget;
-                    StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
-                    yield break;
-                }
-                
-                var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
-                    p.value, p.buffname.ToLower());
-                actionDatas.Add(ad);
-            }
-            else
-            {
-                CardActionType actionType = StringToActionType(i);
-                prompt3Sent = prompt3_Normal.Replace("##EffectName##", i)
-                    .Replace("##No##",numbers[idx]);
-                if (targetCharacter == null)
-                    prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
-                prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true, typeof(ActionParams));
-                yield return new WaitWhile( () => reply3 == "");
-                ActionParams p = Decode<ActionParams>(reply3);
-                
-                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
-                {
-                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                    AI_DebugCanvas.instance.AddWarning("Correction!");
-                    AI_IntegrationManager.instance.pendingPrompts += targetCharacter != null?
-                        correctionPrompt_withTarget: correctionPrompt_noTarget;
-                    StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
-                    yield break;
-                }
-                var ad = new CardActionData(actionType, StringToActionTarget(p.target),
-                    p.value, "");
-                actionDatas.Add(ad);
-            }
-            
+            response = value;
+            requestSucceeded = true;
+        }));
+
+        if (!requestSucceeded)
+        {
+            actionDatas = new List<CardActionData>();
+            processingCanvas.EndProcessing();
+            callback?.Invoke(actionDatas);
+            yield break;
         }
+
+        if (!TryBuildActionData(response, false, targetCharacter != null,
+                targetCharacter != null ? correctionPrompt_withTarget : correctionPrompt_noTarget,
+                out var parsedActions,
+                out var correctionPrompt))
+        {
+            RegisterCorrection(correctionPrompt);
+            StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
+            yield break;
+        }
+
+        actionDatas = parsedActions;
         processingCanvas.EndProcessing();
         callback?.Invoke(actionDatas);
     }
@@ -194,129 +138,78 @@ public class AI_CardEffect : MonoBehaviour
         StartCoroutine(CardUseCoroutine(card, self, targetCharacter, callback));
     }
 
-    IEnumerator AllyTurnStartEffectsCoroutine(CharacterBase self, Action callback)
+private IEnumerator AllyTurnStartEffectsCoroutine(CharacterBase self, Action callback)
     {
         yield return new WaitUntil(() => AI_IntegrationManager.instance.gameStartPending == false);
         Debug.Log("<b>Turn Start</b>");
         cardInTurnCnt = 0;
         processingCanvas.StartProcessing("Turn Start Processing:");
         float tick = Time.time;
-        //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
-        reply1 = "";
-        reply2 = "";
-        actionDatas = new();
-        var userData = (self as AllyBase).AllyCharacterData;
 
+        var userData = (self as AllyBase).AllyCharacterData;
         userName = userData.CharacterName;
         userDesc = userData.CharacterDescription;
         userStatusStr = CharacterStatusString(self);
 
         string enemiesDesc = "";
-        foreach (var e in CombatManager.Instance.CurrentEnemiesList)
+        foreach (var enemy in CombatManager.Instance.CurrentEnemiesList)
         {
-            enemiesDesc += " - " + e.EnemyCharacterData.CharacterName
-                                 + ", " + CharacterStatusString(e) + "\n";
+            enemiesDesc += " - " + enemy.EnemyCharacterData.CharacterName
+                + ", " + CharacterStatusString(enemy) + "\n";
         }
-        
+
+        int ordinalIndex = Mathf.Clamp(turnCnt, 0, numbers.Length - 1);
         prompt1Sent = prompt_StartTurn1.Replace("##PlayerDesc##", userDesc)
             .Replace("##PlayerCustomStatus##", userStatusStr)
-            .Replace("##No##", numbers[turnCnt])
+            .Replace("##No##", numbers[ordinalIndex])
             .Replace("##EnemiesDesc##", enemiesDesc)
             .Replace("##Specific##", prompt_specific);
-         
+
+        SuperActions response = default;
+        bool requestSucceeded = false;
+        yield return StartCoroutine(RequestEffectsWithRetry(prompt1Sent, value =>
+        {
+            response = value;
+            requestSucceeded = true;
+        }));
+
+        if (!requestSucceeded)
+        {
+            actionDatas = new List<CardActionData>();
+            processingCanvas.EndProcessing();
+            callback?.Invoke();
+            yield break;
+        }
+
+        if (!TryBuildActionData(response, false, false, correctionPrompt_startTurn,
+                out var parsedActions, out var correctionPrompt))
+        {
+            RegisterCorrection(correctionPrompt);
+            StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
+            yield break;
+        }
+
         turnCnt++;
-        
-        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;}, true, typeof(ActionArray));
-        
-        yield return new WaitWhile( () => reply1 == "");
-        
-        ActionArray actionArray = Decode<ActionArray>(reply1);
-        
-        for(int idx = 0; idx < actionArray.effects.Length;idx++)
-        {
-            var i = actionArray.effects[idx];
-            if (StringToActionType(i) == CardActionType.Unknown)
-            {
-                Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                AI_DebugCanvas.instance.AddWarning("Correction!");
-                AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
-                StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
-                yield break;
-            }
-        }
-        
-        for(int idx = 0; idx < actionArray.effects.Length;idx++)
-        {
-            var i = actionArray.effects[idx];
-            string reply3 = "";
-            string prompt3Sent;
-            if (i == "Add Custom Status")
-            {
-                prompt3Sent = prompt3_CustomEffect.Replace("##No##",numbers[idx]);
-                prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true, typeof(CustomEffectParams));
-                yield return new WaitWhile( () => reply3 == "");
-                CustomEffectParams p = Decode<CustomEffectParams>(reply3);
-                
-                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
-                {
-                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                    AI_DebugCanvas.instance.AddWarning("Correction!");
-                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_startTurn;
-                    StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
-                    yield break;
-                }
-                var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
-                    p.value, p.buffname.ToLower());
-                actionDatas.Add(ad);
-            }
-            else
-            {
-                CardActionType actionType = StringToActionType(i);
-                prompt3Sent = prompt3_Normal.Replace("##EffectName##", i)
-                    .Replace("##No##",numbers[idx]);
-                prompt3Sent = prompt3Sent.Replace("or \"targetEnemy\" ", "");
-                prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
-                AI_IntegrationManager.instance.Request(prompt3Sent, str =>{reply3 = str;}, true, typeof(ActionParams));
-                yield return new WaitWhile( () => reply3 == "");
-                ActionParams p = Decode<ActionParams>(reply3);
-                
-                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
-                {
-                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                    AI_DebugCanvas.instance.AddWarning("Correction!");
-                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_startTurn;
-                    StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
-                    yield break;
-                }
-                
-                var ad = new CardActionData(actionType, StringToActionTarget(p.target),
-                    p.value, "");
-                actionDatas.Add(ad);
-            }
-        }
-
+        actionDatas = parsedActions;
         processingCanvas.EndProcessing();
-        Debug.Log("<color=cyan><b>Ally Turn Start: "+actionDatas.Count+" "+ (Time.time-tick).ToString("0.##") + "</b></color>");
+        Debug.Log("<color=cyan><b>Ally Turn Start: " + actionDatas.Count + " "
+                  + (Time.time - tick).ToString("0.##") + "</b></color>");
 
-        // --- Virtual Card Use ---
-        foreach (var i in actionDatas)
+        foreach (var actionData in actionDatas)
         {
-            var targetList = CardBase.DetermineTargets(self,null, 
+            var targetList = CardBase.DetermineTargets(self, null,
                 CombatManager.Instance.CurrentEnemiesList,
-                CombatManager.Instance.CurrentAlliesList, i);
-            Debug.Log("Action: " + i.CardActionType);
+                CombatManager.Instance.CurrentAlliesList, actionData);
+            Debug.Log("Action: " + actionData.CardActionType);
             foreach (var target in targetList)
-                CardActionProcessor.GetAction(i.CardActionType)
-                    .DoAction(new CardActionParameters(i.ActionValue,
-                        target,self,null, null, i.StrParameter));
+            {
+                CardActionProcessor.GetAction(actionData.CardActionType)
+                    .DoAction(new CardActionParameters(actionData.ActionValue,
+                        target, self, null, null, actionData.StrParameter));
+            }
             yield return new WaitForSeconds(1f);
         }
-        
-        
+
         callback?.Invoke();
     }
     public void AllyTurnStartEffects(CharacterBase self, Action callback)
@@ -325,116 +218,68 @@ public class AI_CardEffect : MonoBehaviour
         StartCoroutine(AllyTurnStartEffectsCoroutine(self, callback));
     }
 
-    IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActionName, string enemyActionDesc, Action callback)
+private IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActionName,
+        string enemyActionDesc, Action callback)
     {
-        
         processingCanvas.StartProcessing("Enemy Action Processing:");
         float tick = Time.time;
-        //Debug.Log("<color=cyan><b>Ally Turn Start</b></color>");
-        reply1 = "";
-        reply2 = "";
-        actionDatas = new();
-        
-        var userData = (enemySelf as EnemyBase).EnemyCharacterData;
 
+        var userData = (enemySelf as EnemyBase).EnemyCharacterData;
         userName = userData.CharacterName;
         userDesc = userData.CharacterDescription;
         userStatusStr = CharacterStatusString(enemySelf);
+
         prompt1Sent = prompt_EnemyTurn1.Replace("##EnemyDesc##", userDesc)
             .Replace("##EnemyCustomStatus##", userStatusStr)
             .Replace("##EnemyName##", userName)
-            .Replace("##EnemyActionName##", (enemySelf as EnemyBase).NextAbility.Name)
-            .Replace("##EnemyActionDesc##", (enemySelf as EnemyBase).NextAbility.Desc);
-        
-        AI_IntegrationManager.instance.Request(prompt1Sent, str =>{reply1 = str;}, true, typeof(ActionArray));
-        
-        yield return new WaitWhile( () => reply1 == "");
-        
-        ActionArray actionArray = Decode<ActionArray>(reply1);
-        
-        for(int idx = 0; idx < actionArray.effects.Length;idx++)
-        {
-            var i = actionArray.effects[idx];
-            if (StringToActionType(i) == CardActionType.Unknown)
-            {
-                Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                AI_DebugCanvas.instance.AddWarning("Correction!");
-                AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_effectType;
-                StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
-                yield break;
-            }
-        }
-        for(int idx = 0; idx < actionArray.effects.Length;idx++)
-        {
-            var i = actionArray.effects[idx];
-            string reply3 = "";
-            string prompt3Sent;
-            if (i == "Add Custom Status")
-            {
-                prompt3Sent = prompt3_CustomEffect_Enemy.Replace("##No##",numbers[idx]);
-                AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; }, true, typeof(CustomEffectParams));
-                yield return new WaitWhile(() => reply3 == "");
-                CustomEffectParams p = Decode<CustomEffectParams>(reply3);
-                
-                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
-                {
-                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                    AI_DebugCanvas.instance.AddWarning("Correction!");
-                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_enemy;
-                    StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
-                    yield break;
-                }
-                
-                var ad = new CardActionData(CardActionType.CustomEffect, StringToActionTarget(p.target),
-                    p.value, p.buffname.ToLower());
-                actionDatas.Add(ad);
-            }
-            else
-            {
-                CardActionType actionType = StringToActionType(i);
-                prompt3Sent = prompt3_Normal_Enemy.Replace("##EffectName##", i)
-                    .Replace("##No##",numbers[idx]);
-                prompt3Sent = prompt3Sent.Replace("##ValueMeaning##", ValueMeaning(actionType));
-                AI_IntegrationManager.instance.Request(prompt3Sent, str => { reply3 = str; }, true, typeof(ActionParams));
-                yield return new WaitWhile(() => reply3 == "");
-                ActionParams p = Decode<ActionParams>(reply3);
-                
-                if (StringToActionTarget(p.target) == ActionTargetType.Unknown)
-                {
-                    Debug.Log("<b><color=#FF2222>Correction!</b></color>");
-                    AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
-                    AI_DebugCanvas.instance.AddWarning("Correction!");
-                    AI_IntegrationManager.instance.pendingPrompts += correctionPrompt_enemy;
-                    StartCoroutine( EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
-                    yield break;
-                }
+            .Replace("##EnemyActionName##", enemyActionName)
+            .Replace("##EnemyActionDesc##", enemyActionDesc)
+            .Replace("##Specific##", prompt_specific);
 
-                var ad = new CardActionData(actionType, StringToActionTarget(p.target),
-                    p.value, "");
-                actionDatas.Add(ad);
-            }
+        SuperActions response = default;
+        bool requestSucceeded = false;
+        yield return StartCoroutine(RequestEffectsWithRetry(prompt1Sent, value =>
+        {
+            response = value;
+            requestSucceeded = true;
+        }));
 
+        if (!requestSucceeded)
+        {
+            actionDatas = new List<CardActionData>();
+            processingCanvas.EndProcessing();
+            callback?.Invoke();
+            yield break;
         }
 
-        Debug.Log("<color=#ff7799><b>EnemyTurn: " + actionDatas.Count + " " +
-                  (Time.time - tick).ToString("0.##") + "</b></color>");
-        
+        if (!TryBuildActionData(response, true, false, correctionPrompt_enemy,
+                out var parsedActions, out var correctionPrompt))
+        {
+            RegisterCorrection(correctionPrompt);
+            StartCoroutine(EnemyTurnCoroutine(enemySelf, enemyActionName, enemyActionDesc, callback));
+            yield break;
+        }
+
+        actionDatas = parsedActions;
+        Debug.Log("<color=#ff7799><b>EnemyTurn: " + actionDatas.Count + " "
+                  + (Time.time - tick).ToString("0.##") + "</b></color>");
+
         processingCanvas.EndProcessing();
-        // --- Virtual Card Use ---
-        foreach (var i in actionDatas)
+        foreach (var actionData in actionDatas)
         {
-            var targetList = CardBase.DetermineTargets(enemySelf,null, 
+            var targetList = CardBase.DetermineTargets(enemySelf, null,
                 CombatManager.Instance.CurrentEnemiesList,
-                CombatManager.Instance.CurrentAlliesList, i);
-            Debug.Log("Action: " + i.CardActionType);
+                CombatManager.Instance.CurrentAlliesList, actionData);
+            Debug.Log("Action: " + actionData.CardActionType);
             foreach (var target in targetList)
-                CardActionProcessor.GetAction(i.CardActionType)
-                    .DoAction(new CardActionParameters(i.ActionValue,
-                        target,enemySelf,null, null, i.StrParameter));
+            {
+                CardActionProcessor.GetAction(actionData.CardActionType)
+                    .DoAction(new CardActionParameters(actionData.ActionValue,
+                        target, enemySelf, null, null, actionData.StrParameter));
+            }
             yield return new WaitForSeconds(1f);
         }
+
         callback?.Invoke();
     }
 
@@ -474,9 +319,10 @@ public class AI_CardEffect : MonoBehaviour
         public string target;
         public int value;
     }
+
     public struct SuperActions
     {
-        SuperActionParams[] effects;
+        public SuperActionParams[] effects;
     }
     
     public static T Decode<T>(string stringData)
@@ -596,20 +442,18 @@ public class AI_CardEffect : MonoBehaviour
                 return "Deal Damage";
         }
     }
-    public static ActionTargetType StringToActionTarget(string str)
+public static ActionTargetType StringToActionTarget(string str)
     {
-        string s = str.ToLower();
-        s = s.Split(':')[0].Trim();
-        switch (s)
+        switch (NormalizeToken(str))
         {
             case "self": return ActionTargetType.Hero;
             case "targetenemy": return ActionTargetType.Enemy;
             case "allenemies": return ActionTargetType.AllEnemies;
-            case "hero" : return ActionTargetType.Hero;
+            case "hero": return ActionTargetType.Hero;
             case "enemyself": return ActionTargetType.EnemySelf;
             default:
                 Debug.LogError("Unknown card action target: " + str);
-                return ActionTargetType.AllEnemies;
+                return ActionTargetType.Unknown;
         }
     }
 
@@ -627,4 +471,108 @@ public class AI_CardEffect : MonoBehaviour
     }
     
     #endregion
+
+
+private bool TryBuildActionData(SuperActions response, bool enemyContext, bool allowTargetEnemy,
+        string invalidTargetPrompt, out List<CardActionData> result, out string correctionPrompt)
+    {
+        result = new List<CardActionData>();
+        correctionPrompt = correctionPrompt_effectType;
+
+        if (response.effects == null)
+            return false;
+
+        foreach (var effect in response.effects)
+        {
+            var actionType = StringToActionType(effect.effectType ?? "");
+            if (actionType == CardActionType.Unknown)
+                return false;
+
+            if (!IsAllowedTarget(effect.target, enemyContext, allowTargetEnemy))
+            {
+                correctionPrompt = invalidTargetPrompt;
+                return false;
+            }
+
+            string parameter = "";
+            if (actionType == CardActionType.CustomEffect)
+            {
+                parameter = (effect.buffname ?? "").Trim().ToLowerInvariant();
+                if (string.IsNullOrEmpty(parameter))
+                {
+                    correctionPrompt = "Every Add Custom Status effect must include a short, non-empty buffname. "
+                                       + "Please reprocess the complete action.\n";
+                    return false;
+                }
+            }
+
+            result.Add(new CardActionData(actionType, StringToActionTarget(effect.target),
+                effect.value, parameter));
+        }
+
+        return true;
+    }
+
+    private static bool IsAllowedTarget(string target, bool enemyContext, bool allowTargetEnemy)
+    {
+        string normalized = NormalizeToken(target);
+        if (enemyContext)
+            return normalized == "hero" || normalized == "enemyself" || normalized == "allenemies";
+
+        if (normalized == "self" || normalized == "allenemies")
+            return true;
+
+        return allowTargetEnemy && normalized == "targetenemy";
+    }
+
+    private void RegisterCorrection(string correctionPrompt)
+    {
+        Debug.Log("<b><color=#FF2222>Correction!</b></color>");
+        AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF2222>Correction!</b></color>\n";
+        AI_DebugCanvas.instance.AddWarning("Correction!");
+        AI_IntegrationManager.instance.pendingPrompts += correctionPrompt;
+    }
+
+    private static string NormalizeToken(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "";
+
+        return value.Split(':')[0].Trim().Replace(" ", "").ToLowerInvariant();
+    }
+
+
+private IEnumerator RequestEffectsWithRetry(string prompt, Action<SuperActions> successCallback)
+    {
+        int maxAttempts = Mathf.Max(1, AI_IntegrationManager.CardEffectRetryCount + 1);
+        int timeoutSeconds = Mathf.Max(1, AI_IntegrationManager.CardEffectTimeoutSeconds);
+
+        for (int attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            string reply = null;
+            string failure = null;
+
+            AI_IntegrationManager.instance.Request(prompt, str => reply = str, true, typeof(SuperActions),
+                (statusCode, message) => failure = statusCode + ": " + message,
+                timeoutSeconds);
+
+            yield return new WaitUntil(() => reply != null || failure != null);
+
+            if (reply != null)
+            {
+                successCallback?.Invoke(Decode<SuperActions>(reply));
+                yield break;
+            }
+
+            bool willRetry = attempt < maxAttempts;
+            string warning = willRetry ? "Retry" : "Failed";
+            AI_DebugCanvas.instance.AddWarning(warning);
+            AI_IntegrationManager.instance.debugStr += "\n<b><color=#FF8844>CardEffect "
+                + warning + " (" + attempt + "/" + maxAttempts + "): "
+                + failure + "</color></b>\n";
+
+            if (!willRetry)
+                yield break;
+        }
+    }
 }

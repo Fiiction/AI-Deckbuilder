@@ -69,14 +69,16 @@ public static class LLMService
     // ReSharper disable once MemberCanBePrivate.Global
     public static Action Request(IEnumerable<Message> messages, LLMParams parameters,
                                  Action<string> completeCallback, Action<long, string> failureCallback,
-                                 Action<string> updateCallback = null, bool replyWithJson = false, Type jsonType = null)
+                                 Action<string> updateCallback = null, bool replyWithJson = false,
+                                 Type jsonType = null, int timeoutOverride = -1)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
         Debug.Assert(messages != null, "Messages cannot be null.");
 
         if (updateCallback == null) {
-            return QuickRequest(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
+            return QuickRequest(messages, parameters, completeCallback, failureCallback, replyWithJson,
+                                jsonType, timeoutOverride);
         }
 
         // Throttle.
@@ -120,10 +122,13 @@ public static class LLMService
     }
 
     private static Action QuickRequest(IEnumerable<Message> messages, LLMParams parameters,
-                                       Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
+                                       Action<string> completeCallback, Action<long, string> failureCallback,
+                                       bool replyWithJson = false, Type jsonType = null,
+                                       int timeoutOverride = -1)
     {
         
-        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
+        var enumerator = QuickRequestCoroutine(messages, parameters, completeCallback, failureCallback,
+            replyWithJson, jsonType, timeoutOverride);
         ChatGptContainer.Instance.StartCoroutine(enumerator);
 
         void CancelCallback() {
@@ -135,9 +140,12 @@ public static class LLMService
 
     private static IEnumerator QuickRequestCoroutine(IEnumerable<Message> messages, LLMParams parameters,
                                                      Action<string> completeCallback,
-                                                     Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
+                                                     Action<long, string> failureCallback,
+                                                     bool replyWithJson = false, Type jsonType = null,
+                                                     int timeoutOverride = -1)
     {
-        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback, replyWithJson, jsonType);
+        QuickRequestBlocking(messages, parameters, completeCallback, failureCallback, replyWithJson,
+            jsonType, timeoutOverride);
         yield break;
     }
     private static void LogRequest(UnityWebRequest request)
@@ -155,7 +163,10 @@ public static class LLMService
         Debug.Log(log.ToString());
     }
     private static Action QuickRequestBlocking(IEnumerable<Message> messages, LLMParams parameters,
-                                               Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
+                                               Action<string> completeCallback,
+                                               Action<long, string> failureCallback,
+                                               bool replyWithJson = false, Type jsonType = null,
+                                               int timeoutOverride = -1)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
         Debug.Assert(!string.IsNullOrEmpty(parameters!.apiKey), "API key cannot be null or empty.");
@@ -212,7 +223,8 @@ public static class LLMService
         // }
 
         var requestRecord = new RequestRecord();
-        var request = GetWebRequest(requestJson, parameters, failureCallback, requestRecord);
+        var request = GetWebRequest(requestJson, parameters, failureCallback, requestRecord,
+            timeoutOverride);
         LogRequest(request);
         // Debug.Log("Request Sent");
         var cancelCallback = new Action(() => {
@@ -363,14 +375,15 @@ public static class LLMService
     }
 
     private static UnityWebRequest GetWebRequest(string requestJson, LLMParams parameters,
-                                                 Action<long, string> failureCallback, RequestRecord requestRecord)
+                                                 Action<long, string> failureCallback,
+                                                 RequestRecord requestRecord, int timeoutOverride = -1)
     {
         var baseUrl = parameters.url;
         Debug.Log("URL: " + baseUrl
         +"\nModel: " + parameters.modelName);
         var request = UnityWebRequest.Post(baseUrl, requestJson, "application/json");
         
-        request.timeout = parameters.timeout;
+        request.timeout = timeoutOverride > 0 ? timeoutOverride : parameters.timeout;
 
         try {
             var apiKey = parameters.apiKey;

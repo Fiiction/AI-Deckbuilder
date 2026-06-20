@@ -45,33 +45,84 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db81833cc9a238a4b93475a910009467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt1_withTarget: "The battle continues and the player, as ##PlayerName## ##PlayerCustomStatus##,
-    spends ##ManaSpent## mana to use following card:\r\n\r\n##CardName##: ##CardDesc##\n\r\n\rtargeting
-    following enemy character: ##EnemyName##, who is ##EnemyDesc####EnemyCustomStatus##.\r\n\r\nWhat
-    will happen? Please consider the card used in the past. \r\n\r\nAnswer with following
-    structure, what will be the effect(s) of this card?\r\n##Specific##\r\n\r\r\nPlease
-    reply with one single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal
-    Damage\", \"Draw\", \"Steal Life\"]\r\n}"
-  prompt1_noTarget: "The battle continues and the player, as ##PlayerName## ##PlayerCustomStatus##,
-    spends ##ManaSpent## mana to use following card:\r\n\r\n##CardName##: ##CardDesc##\n\r\nWhat
-    will happen? Please consider the card used in the past. \r\n\r\nAnswer with following
-    structure, what will be the effect(s) of this card?\n\r\n##Specific##\r\n\r\r\nPlease
-    reply with one single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", \"Deal
-    Damage\", \"Draw\", \"Steal Life\"]\r\n}\n"
+  prompt1_withTarget: 'The battle continues. The player is ##PlayerName##, described
+    as ##PlayerDesc## ##PlayerCustomStatus##.
+
+    They spend ##ManaSpent## mana
+    to play:
+
+    ##CardName##: ##CardDesc##
+
+
+    The selected enemy is ##EnemyName##,
+    described as ##EnemyDesc## ##EnemyCustomStatus##.
+
+    Determine all mechanical
+    effects of this card at once, considering prior cards and the current conversation.
+
+
+    For
+    this request, target must be exactly one of:
+
+    - "self": the player
+
+    -
+    "targetEnemy": the selected enemy
+
+    - "allEnemies": every enemy
+
+
+    ##Specific##'
+  prompt1_noTarget: 'The battle continues. The player is ##PlayerName##, described
+    as ##PlayerDesc## ##PlayerCustomStatus##.
+
+    They spend ##ManaSpent## mana
+    to play:
+
+    ##CardName##: ##CardDesc##
+
+
+    This card has no selected target.
+    Determine all mechanical effects of this card at once, considering prior cards
+    and the current conversation.
+
+
+    For this request, target must be exactly
+    one of:
+
+    - "self": the player
+
+    - "allEnemies": every enemy
+
+    Never
+    return "targetEnemy" because no enemy was selected.
+
+
+    ##Specific##'
   prompt2: "Now answer with following structure, what will be the effect(s) of this
     card?\r\n\r##Specific##\r\n\nPlease reply with one single json format:\r\n{\r\n\t\"effects\":
     [\"Deal Damage\", \"Deal Damage\", \"Draw\", \"Steal Life\"]\r\n}"
-  prompt_specific: "\nThe effect(s) can be one or more chosen from follow types:\r\n\r\n-
-    Deal Damage: Deal damage to target\r\n- Heal: Heal target\r\n- Add Block: Add
-    stacks of block, blocking same amount of upcoming damage\r\r\n- Draw: draw cards\r\n-
-    Gain Mana: gain mana to do more actions in this turn\r\n- Stun: stunning the
-    object, prevent it to move in following rounds\r\n- Exhaust: destroying the card
-    used permanently (Exhaust the card)\n- Add Custom Status: add/remove custom buff
-    or debuff to object. Please store any effects that need to be checked out in
-    the future as custom status\n\nThe object of each of these effects can be the
-    user, the targeted enemy or all enemies, which will be chosen later.\nYou can
-    choose one same effect 2 or more times, if it's dealt on different objects, or
-    casting 2 different custom effect at the same time.\r\n\r"
+  prompt_specific: "Return every effect in one response. Each effect object must
+    contain all four fields: \"effectType\", \"target\", \"value\", and \"buffname\".\n\nAllowed
+    effectType values and how to describe their sub-effect data:\n- \"Deal Damage\":
+    value is the exact damage amount.\n- \"Heal\": value is the exact health restored.\n-
+    \"Add Block\": value is the exact block gained.\n- \"Increase Strength\": value
+    is the exact strength gained; use a negative value to reduce strength.\n- \"Draw\":
+    value is the number of cards drawn.\n- \"Gain Mana\": value is the mana gained
+    for the current turn.\n- \"Steal Life\": value is both the damage dealt and the
+    health restored to the acting character.\n- \"Stun\": value is the number of
+    turns the target cannot act.\n- \"Exhaust\": destroys the card after use; use
+    value 0. Only choose this for a played card, never for turn-start or enemy-action
+    processing.\n- \"Add Custom Status\": buffname is a short lowercase status name;
+    value is the number of stacks added. Use a negative value to remove stacks.\n\nFor
+    every non-custom effect, buffname must be an empty string. Preserve the intended
+    execution order in the array. Repeated effect types are allowed when they have
+    different targets or represent separate effects. If nothing happens, return an
+    empty effects array.\n\nReturn JSON only, with exactly this shape:\n{\n  \"effects\":
+    [\n    {\n      \"effectType\": \"Deal Damage\",\n      \"target\": \"targetEnemy\",\n     
+    \"value\": 8,\n      \"buffname\": \"\"\n    },\n    {\n      \"effectType\":
+    \"Add Custom Status\",\n      \"target\": \"self\",\n      \"value\": 2,\n     
+    \"buffname\": \"focus\"\n    }\n  ]\n}"
   prompt3_Normal: "For the ##No## effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (Content in parentheses are comments. Target can only be chosen from \"self\",
@@ -86,23 +137,53 @@ MonoBehaviour:
     focus\", etc. it should be very brief.)\r\n\t\"target\": \"self\", (or \"targetEnemy\"
     or \"allEnemies\".  Do NOT use enemy's name.)\r\n\t\"value\": 3 (interger, indicates
     how many stacks of this status are casted on target. Minus value to clear) \r\n}\r\n"
-  prompt_StartTurn1: "Now player, ##PlayerDesc## ##PlayerCustomStatus##, starts a
-    new turn. This is the ##No## turn in this fight. There are following enemy(s)
-    in the scene:\n\n##EnemiesDesc##\n\r\nAccording the custom status the hero has
-    and cards they played, will there be effects at the start of the turn? You don't
-    need to mention the cards naturally drawn and mana natrually gain.\n\n##Specific##\n\r\nPlease
-    reply with one single json format:\r\n{\r\n\t\"effects\": [\"Deal Damage\", 
-    \"Draw\", \"Gain Mana\"]\r\n}\r\nif there won't be turn-start effects, reply
-    with:\r\n{\r\n\t\"effects\": []\r\n}"
-  prompt_EnemyTurn1: "Now an enemy, ##EnemyName##, ##EnemyDesc## ##EnemyCustomStatus##
-    takes its turn.\r\nIt want to perform an action, ##EnemyActionName##, ##EnemyActionDesc##.\r\nWhat
-    will be the effects of their status and actions?\r\n\r\nThe effect(s) can be
-    one or more chosen from follow types:\r\n\r\n- Deal Damage: Deal damage to the
-    or the enemy itself.\r\n- Heal: Heal someone.\r\n- Add Block: Add stacks of block,
-    blocking same amount of upcoming damage.\r\n- Add Custom Status: add custom buff
-    or debuff to object. Please store any effects that need to be checked out in
-    the future as custom status\r\n\r\nPlease reply with following json format:\r\n{\r\n\t\"effects\":
-    [\"Deal Damage\",  \"Add Custom Status\"]\r\n}\r"
+  prompt_StartTurn1: 'The player, described as ##PlayerDesc## ##PlayerCustomStatus##,
+    starts the ##No## turn of this fight.
+
+    Enemies currently present:
+
+    ##EnemiesDesc##
+
+
+    Determine
+    all effects that trigger now from existing custom statuses and previously played
+    cards. Do not include the normal card draw or normal mana refresh.
+
+
+    For
+    this request, target must be exactly one of:
+
+    - "self": the player
+
+    -
+    "allEnemies": every enemy
+
+
+    ##Specific##'
+  prompt_EnemyTurn1: 'The enemy ##EnemyName##, described as ##EnemyDesc## ##EnemyCustomStatus##,
+    takes its turn.
+
+    Its intended action is:
+
+    ##EnemyActionName##: ##EnemyActionDesc##
+
+
+    Determine
+    all mechanical effects caused by the enemy''s action and active statuses at once.
+
+
+    For
+    this request, target must be exactly one of:
+
+    - "hero": the player
+
+    -
+    "enemySelf": the acting enemy
+
+    - "allEnemies": every enemy unit
+
+
+    ##Specific##'
   prompt3_Normal_Enemy: "For the effect \"##EffectName##\", what's the target and
     the numeric value of this effect:\r\n\r\nPlease reply with following json format:
     (Content in parentheses are comments. Target can only be chosen from \"hero\",
@@ -120,27 +201,31 @@ MonoBehaviour:
     character's name.)\r\n\t\"value\": 3 (interger, indicates how many stacks of
     this status are casted on target) \r\n}\r\n"
   processingCanvas: {fileID: 1978969409886390374}
-  correctionPrompt_withTarget: 'Please notice that the target of the action can only
-    be chosen from from "self", "targetEnemy" and "allEnemies". We need to reprocess
-    the card.
+  correctionPrompt_withTarget: 'The complete response must use the new effects-object
+    JSON schema. Every target must be exactly "self", "targetEnemy", or "allEnemies".
+    Reprocess the entire card in one response.
 
 '
-  correctionPrompt_noTarget: 'Please notice that the target of the action can only
-    be chosen from from "self"  and "allEnemies". We need to reprocess the card.
+  correctionPrompt_noTarget: 'The complete response must use the new effects-object
+    JSON schema. Because the card has no selected target, every target must be exactly
+    "self" or "allEnemies". Reprocess the entire card in one response.
 
 '
-  correctionPrompt_startTurn: 'Please notice that the target of the action can only
-    be chosen from from "self"  and "allEnemies". We need to reprocess the effect.
+  correctionPrompt_startTurn: 'The complete response must use the new effects-object
+    JSON schema. Every turn-start target must be exactly "self" or "allEnemies".
+    Reprocess all turn-start effects in one response.
 
 '
-  correctionPrompt_enemy: 'Please notice that the target of the enemy''s action can
-    only be chosen from from "hero", "enemySelf" and "allEnemies". We need to reprocess
-    the enemy action.
+  correctionPrompt_enemy: 'The complete response must use the new effects-object
+    JSON schema. Every enemy-action target must be exactly "hero", "enemySelf", or
+    "allEnemies". Reprocess the entire enemy action in one response.
 
 '
-  correctionPrompt_effectType: 'Please the effect can only be chosen from "Deal Damage",
-    "Heal", "Add Block", "Draw", "Gain Mana", "Stun", "Destroy the Card", and "Add
-    Custom Status". We need to reprocess the action.
+  correctionPrompt_effectType: 'The complete response must use an effects array of
+    objects. effectType must be exactly one of "Deal Damage", "Heal", "Add Block",
+    "Increase Strength", "Draw", "Gain Mana", "Steal Life", "Stun", "Exhaust", or
+    "Add Custom Status". Include target, integer value, and buffname in every object.
+    Reprocess the entire action in one response.
 
 '
   actionDatas: []
@@ -482,7 +567,7 @@ MonoBehaviour:
     Please also design the illustration of these
     cards. They should look unique and distinctive in colors and other visual elements.
 
-    
+
 
     ##StableEnhance##
 
@@ -515,11 +600,11 @@ MonoBehaviour:
     add/remove custom buff or debuff to object. Please store any effects that need
     to be checked out in the future as custom status
 
-    
 
-    Please only include
-    forementioned effects. We do not support discarding, creating new cards or summoning
-    minions. Please avoid these effects in card design.
+
+    Please only include forementioned
+    effects. We do not support discarding, creating new cards or summoning minions.
+    Please avoid these effects in card design.
 
 '
   prompt_effects: "Please briefly introduce custom effects (buffs/debuffs) that could
