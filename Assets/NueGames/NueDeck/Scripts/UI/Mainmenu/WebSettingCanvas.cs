@@ -17,7 +17,7 @@ public class WebSettingCanvas : MonoBehaviour
     public TMP_InputField apikeyInputField;
     public TMP_InputField imgInputField;
     
-    public List<DeepseekParams> deepseekParamsList;
+    public List<LLMParams> deepseekParamsList;
 
     public bool setApiKey = true;
     public GameObject nextCanvas;
@@ -47,7 +47,7 @@ public class WebSettingCanvas : MonoBehaviour
 
     public void Go()
     {
-        var dp = new DeepseekParams(urlInputField.text, modelInputField.text, apikeyInputField.text);
+        var dp = new LLMParams(urlInputField.text, modelInputField.text, apikeyInputField.text);
         AI_IntegrationManager.activeParams = dp;
         AI_ImageGeneration.instance.SetServerAddress(imgInputField.text);
         gameObject.SetActive(false);

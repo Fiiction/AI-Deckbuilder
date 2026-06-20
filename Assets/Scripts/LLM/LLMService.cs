@@ -23,7 +23,7 @@ public struct Message {
     }
 }
 
-public static class Deepseek
+public static class LLMService
 {
     // public static string modelType = "deepseek-chat"; //deepseek-ai/DeepSeek-V3
     // public static string URL = "https://api.deepseek.com/chat/completions"; //https://api.siliconflow.cn/v1/chat/completions
@@ -45,7 +45,7 @@ public static class Deepseek
     /// <returns>A function that can be called to cancel the request.</returns>
     // ReSharper disable once MemberCanBePrivate.Global
     
-    public static Action Request(string prompt, DeepseekParams parameters, Action<string> completeCallback,
+    public static Action Request(string prompt, LLMParams parameters, Action<string> completeCallback,
                                  Action<long, string> failureCallback, Action<string> updateCallback = null)
     {
         return Request(new List<Message> { new Message { role = Role.User, text = prompt } }, parameters,
@@ -67,7 +67,7 @@ public static class Deepseek
     /// data is provided as a parameter.</param>
     /// <returns>A function that can be called to cancel the request.</returns>
     // ReSharper disable once MemberCanBePrivate.Global
-    public static Action Request(IEnumerable<Message> messages, DeepseekParams parameters,
+    public static Action Request(IEnumerable<Message> messages, LLMParams parameters,
                                  Action<string> completeCallback, Action<long, string> failureCallback,
                                  Action<string> updateCallback = null, bool replyWithJson = false, Type jsonType = null)
     {
@@ -119,7 +119,7 @@ public static class Deepseek
         _requestRecords.Clear();
     }
 
-    private static Action QuickRequest(IEnumerable<Message> messages, DeepseekParams parameters,
+    private static Action QuickRequest(IEnumerable<Message> messages, LLMParams parameters,
                                        Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
     {
         
@@ -133,7 +133,7 @@ public static class Deepseek
         return CancelCallback;
     }
 
-    private static IEnumerator QuickRequestCoroutine(IEnumerable<Message> messages, DeepseekParams parameters,
+    private static IEnumerator QuickRequestCoroutine(IEnumerable<Message> messages, LLMParams parameters,
                                                      Action<string> completeCallback,
                                                      Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
     {
@@ -154,7 +154,7 @@ public static class Deepseek
         log.AppendLine($"Body: {Encoding.UTF8.GetString(request.uploadHandler.data)}");
         Debug.Log(log.ToString());
     }
-    private static Action QuickRequestBlocking(IEnumerable<Message> messages, DeepseekParams parameters,
+    private static Action QuickRequestBlocking(IEnumerable<Message> messages, LLMParams parameters,
                                                Action<string> completeCallback, Action<long, string> failureCallback, bool replyWithJson = false, Type jsonType = null)
     {
         Debug.Assert(parameters != null, "Parameters cannot be null.");
@@ -270,7 +270,7 @@ public static class Deepseek
         return cancelCallback;
     }
 
-    private static IEnumerator Stream(IEnumerable<Message> messages, DeepseekParams parameters,
+    private static IEnumerator Stream(IEnumerable<Message> messages, LLMParams parameters,
                                       Action<string> updateCallback, Action<string> completeCallback,
                                       Action<long, string> failureCallback, RequestRecord requestRecord) {
         var requestObject = new RequestMessage
@@ -362,7 +362,7 @@ public static class Deepseek
         }
     }
 
-    private static UnityWebRequest GetWebRequest(string requestJson, DeepseekParams parameters,
+    private static UnityWebRequest GetWebRequest(string requestJson, LLMParams parameters,
                                                  Action<long, string> failureCallback, RequestRecord requestRecord)
     {
         var baseUrl = parameters.url;

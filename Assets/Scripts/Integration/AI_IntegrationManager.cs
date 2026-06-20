@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 public class AI_IntegrationManager : MonoBehaviour
 {
     public static AI_IntegrationManager instance;
-    public static DeepseekParams activeParams;
+    public static LLMParams activeParams;
     public string heroName = "Hanzo";
     public string heroDesc = "skillful Japanese archer with the power of dragon, Hanzo Shimada";
     public string heroStory = "";
@@ -28,7 +28,7 @@ public class AI_IntegrationManager : MonoBehaviour
 
     public string debugStr = "";
 
-    [SerializeField]public List<DeepseekParams> LLMParams = new();
+    [SerializeField]public List<LLMParams> LLMParams = new();
     [SerializeField, TextArea(8, 12)] private string initialPrompt;
     [SerializeField, TextArea(4, 12)] private string startGamePrompt;
     [SerializeField, TextArea(2, 4)] private string jsonCorrectionPrompt;
@@ -88,7 +88,7 @@ public class AI_IntegrationManager : MonoBehaviour
             Debug.LogError("Unfilled key found:\n" + str);
         _conversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("Request:\n" + str);
-        Deepseek.Request(_conversationSoFar, activeParams,
+        LLMService.Request(_conversationSoFar, activeParams,
             reply =>
             {
                 // if(Random.value<0.6f && jsonType != null)
@@ -124,7 +124,7 @@ public class AI_IntegrationManager : MonoBehaviour
         debugStr += "\n<b><color=#AAAAFF>Card Req</b></color>: \n" + str;
         _cardGenConversationSoFar.Add(new Message(str, Role.User));
         Debug.Log("<color=#FFAA66>Card Req</color>:\n" + str);
-        Deepseek.Request(_cardGenConversationSoFar, activeParams,
+        LLMService.Request(_cardGenConversationSoFar, activeParams,
             reply =>
             {
                 debugStr += "\n<b><color=#AAAAFF>Card Reply</b></color>: \n" + reply;

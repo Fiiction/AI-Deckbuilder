@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class DeepseekParams : ISerializationCallbackReceiver
+public class LLMParams : ISerializationCallbackReceiver
 {
     public string name;
     public string apiKey;
@@ -20,11 +20,11 @@ public class DeepseekParams : ISerializationCallbackReceiver
     [SerializeField, HideInInspector, FormerlySerializedAs("serialized")]
     private bool _serialized;
 
-    public DeepseekParams(string apiKey) {
+    public LLMParams(string apiKey) {
         this.apiKey = apiKey;
     }
 
-    public DeepseekParams(string _url, string _modelName, string _apiKey, float _temperature = 0.4f)
+    public LLMParams(string _url, string _modelName, string _apiKey, float _temperature = 0.4f)
     {
         url = _url;
         modelName = _modelName;
@@ -35,7 +35,7 @@ public class DeepseekParams : ISerializationCallbackReceiver
         throttle = -1;
         timeout = -1;
     }
-    public DeepseekParams(DeepseekParams parameters) {
+    public LLMParams(LLMParams parameters) {
         apiKey = parameters.apiKey;
         temperature = parameters.temperature;
         timeout = parameters.timeout;

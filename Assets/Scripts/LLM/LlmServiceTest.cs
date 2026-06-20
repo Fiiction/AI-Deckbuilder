@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine.Serialization;
 
-public class DeepseekTest : MonoBehaviour
+public class LlmServiceTest : MonoBehaviour
 {
     
-    [FormerlySerializedAs("chatGptParameters")] public DeepseekParams deepseekParams;
+    [FormerlySerializedAs("deepseekParams")] [FormerlySerializedAs("chatGptParameters")] public LLMParams llmParams;
     
     private List<Message> _conversationSoFar = new();
     void Send1()
@@ -18,7 +18,7 @@ public class DeepseekTest : MonoBehaviour
             "It should be hilarious and easy to understand by kids." +
             " Please directly reply with the title with no other words.";
         _conversationSoFar.Add(new Message(prompt, Role.User));
-        Deepseek.Request(_conversationSoFar, deepseekParams, str => Debug.Log("Deepseek Response: " + str), null, null);
+        LLMService.Request(_conversationSoFar, llmParams, str => Debug.Log("Deepseek Response: " + str), null, null);
     }
 
     
