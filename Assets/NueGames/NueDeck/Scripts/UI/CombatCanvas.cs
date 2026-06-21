@@ -18,6 +18,7 @@ namespace NueGames.NueDeck.Scripts.UI
         [SerializeField] private GameObject combatWinPanel;
         [SerializeField] private GameObject combatLosePanel;
         [SerializeField] private Button resetTurnButton;
+        [SerializeField] private Button resetLevelButton;
 
         public TextMeshProUGUI DrawPileTextField => drawPileTextField;
         public TextMeshProUGUI DiscardPileTextField => discardPileTextField;
@@ -32,7 +33,6 @@ private void Awake()
         {
             CombatWinPanel.SetActive(false);
             CombatLosePanel.SetActive(false);
-            EnsureResetTurnButton();
         }
         #endregion
 
@@ -60,50 +60,27 @@ private void Awake()
         #endregion
     
 
-private void EnsureResetTurnButton()
+
+
+private void Update()
         {
-            var endTurnTransform = transform.Find("EndTurnButton");
-            if (endTurnTransform == null)
-            {
-                Debug.LogWarning("Reset Turn button could not find EndTurnButton template.");
-                return;
-            }
-
-            var endTurnButton = endTurnTransform.GetComponent<Button>();
-            if (endTurnButton == null)
-                return;
-
-            // resetTurnButton = Instantiate(endTurnButton, endTurnTransform.parent);
-            // resetTurnButton.name = "ResetTurnButton";
-            resetTurnButton.onClick = new Button.ButtonClickedEvent();
-            
-            var resetCanvas = resetTurnButton.gameObject.AddComponent<Canvas>();
-            resetCanvas.overrideSorting = true;
-            resetCanvas.sortingOrder = 1000;
-            resetTurnButton.gameObject.AddComponent<GraphicRaycaster>();
-            resetTurnButton.onClick.AddListener(ResetTurn);
-
-            // var rect = resetTurnButton.GetComponent<RectTransform>();
-            // float spacing = Mathf.Max(180f, rect.sizeDelta.x + 20f);
-            // rect.anchoredPosition += Vector2.left * spacing;
-
-            // var label = resetTurnButton.GetComponentInChildren<TextMeshProUGUI>(true);
-            // if (label != null)
-            //     label.text = "Reset Turn";
-
-            resetTurnButton.interactable = false;
-        }
-
-        private void Update()
-        {
+            var controller = TurnResetController.Instance;
             if (resetTurnButton != null)
-                resetTurnButton.interactable = TurnResetController.Instance != null
-                                               && TurnResetController.Instance.CanReset;
+                resetTurnButton.interactable = controller != null && controller.CanReset;
+
+            if (resetLevelButton != null)
+                resetLevelButton.interactable = controller != null && controller.CanResetLevel;
         }
 
         public void ResetTurn()
         {
             TurnResetController.Instance?.ResetTurn();
         }
+
+public void ResetLevel()
+        {
+            TurnResetController.Instance?.ResetLevel();
+        }
+
 }
 }

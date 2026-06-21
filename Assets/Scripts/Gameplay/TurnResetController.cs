@@ -17,11 +17,20 @@ public sealed class TurnResetController : MonoBehaviour
 
     private CombatManager combatManager;
     private TurnSnapshot snapshot;
+    private TurnSnapshot levelSnapshot;
     private bool skipNextCapture;
 
     public bool IsResetting { get; private set; }
     public bool HasSnapshot => snapshot != null;
-    public bool CanReset => snapshot != null
+    public bool HasLevelSnapshot => levelSnapshot != null;
+    public bool CanResetLevel => levelSnapshot != null
+                                 && !IsResetting
+                                 && combatManager != null
+                                 && (combatManager.CurrentCombatStateType == CombatStateType.AllyTurn
+                                     || combatManager.CurrentCombatStateType == CombatStateType.EnemyTurn);
+
+    
+public bool CanReset => snapshot != null
                             && !IsResetting
                             && combatManager != null
                             && (combatManager.CurrentCombatStateType == CombatStateType.AllyTurn
@@ -58,20 +67,22 @@ public sealed class TurnResetController : MonoBehaviour
             return;
 
         snapshot = TurnSnapshot.Capture(combatManager);
+        if (levelSnapshot == null)
+            levelSnapshot = snapshot;
     }
 
-    public void ResetTurn()
+public void ResetTurn()
     {
         if (!CanReset)
             return;
 
-        StartCoroutine(ResetTurnCoroutine());
+        StartCoroutine(ResetTurnCoroutine(snapshot, true));
     }
 
-private IEnumerator ResetTurnCoroutine()
+private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
+        bool restoreCardGenerationState)
     {
         IsResetting = true;
-        var targetSnapshot = snapshot;
         var gameManager = GameManager.Instance;
         var collectionManager = CollectionManager.Instance;
         var handController = collectionManager.HandController;
@@ -116,7 +127,7 @@ private IEnumerator ResetTurnCoroutine()
         try
         {
             targetSnapshot.RestorePersistentData(gameManager);
-            targetSnapshot.RestoreAIState();
+            targetSnapshot.RestoreAIState(restoreCardGenerationState);
 
             RestorePiles(collectionManager, targetSnapshot);
             RestoreCharacters(targetSnapshot);
@@ -292,18 +303,20 @@ private IEnumerator ResetTurnCoroutine()
             persistent.AllyHealthDataList = allyHealth.Select(state => state.Restore()).ToList();
         }
 
-        public void RestoreAIState()
+        public void RestoreAIState(bool restoreCardGenerationState)
         {
             var ai = AI_IntegrationManager.instance;
             if (ai != null)
             {
                 ai._conversationSoFar = new List<Message>(conversation);
-                ai._cardGenConversationSoFar = new List<Message>(cardConversation);
+                if (restoreCardGenerationState)
+                    ai._cardGenConversationSoFar = new List<Message>(cardConversation);
                 ai.pendingPrompts = pendingPrompts;
                 ai.levelCnt = levelCnt;
                 ai.startGameMsgCnt = startGameMsgCnt;
                 ai.startTurnMsgCnt = startTurnMsgCnt;
-                ai.cardGenMessageMerged = cardGenMessageMerged;
+                if (restoreCardGenerationState)
+                    ai.cardGenMessageMerged = cardGenMessageMerged;
             }
 
             var cardEffect = AI_CardEffect.instance;
@@ -414,5 +427,15 @@ private IEnumerator ResetTurnCoroutine()
                 MaxHealth = maxHealth
             };
         }
+    }
+
+
+public void ResetLevel()
+    {
+        if (!CanResetLevel)
+            return;
+
+        snapshot = levelSnapshot;
+        StartCoroutine(ResetTurnCoroutine(levelSnapshot, false));
     }
 }
