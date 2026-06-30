@@ -1,3 +1,4 @@
+using AIDeckbuilder.CardRuntime;
 using System.Collections;
 using NueGames.NueDeck.Scripts.Data.Characters;
 using NueGames.NueDeck.Scripts.Data.Containers;
@@ -66,19 +67,43 @@ namespace NueGames.NueDeck.Scripts.Characters
         #endregion
         
         #region Action Routines
-        public virtual IEnumerator ActionRoutine()
+public virtual IEnumerator ActionRoutine()
         {
             if (characterStats.IsStunned)
                 yield break;
-            
+
             EnemyCanvas.IntentImage.gameObject.SetActive(false);
-            
-            bool waiting = true;
-            AI_CardEffect.instance.EnemyTurn(this,
-                NextAbility.Name, NextAbility.Desc, ()=>{waiting = false; });
             yield return StartCoroutine(GoCoroutine());
-            yield return new WaitWhile(() => waiting && !dead);
-            if(dead) yield break;
+            if (dead)
+                yield break;
+
+            var beforeAction = new CardBattleEventContext
+            {
+                Type = CardBattleEventType.BeforeEnemyAction,
+                Source = this,
+                Target = CombatManager.CurrentMainAlly,
+                ActiveCharacter = this
+            };
+            yield return CardBattleEventBus.PublishRoutine(beforeAction);
+            if (dead)
+                yield break;
+
+            if (!beforeAction.Cancelled)
+            {
+                if (NextAbility?.RuntimeProgram != null)
+                {
+                    yield return CardProgramExecutor.ExecuteProgram(NextAbility.RuntimeProgram,
+                        this, CombatManager.CurrentMainAlly,
+                        CombatManager.CurrentEnemiesList, CombatManager.CurrentAlliesList);
+                }
+                else
+                {
+                    Debug.LogWarning("Enemy ability has no offline program: " + NextAbility?.Name);
+                }
+            }
+
+            if (dead)
+                yield break;
             yield return StartCoroutine(BackCoroutine());
         }
 

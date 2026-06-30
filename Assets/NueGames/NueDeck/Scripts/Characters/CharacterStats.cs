@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NueGames.NueDeck.Scripts.Enums;
@@ -7,18 +7,20 @@ namespace NueGames.NueDeck.Scripts.Characters
 {
     public class CustomEffects
     {
-        string effectName;
+        public string DisplayName;
+        public string ColorHex;
         public int effectValue;
         public bool isNegative;
 
-        public CustomEffects(string _effectName, int _effectValue, bool _isNegative)
+        public CustomEffects(string effectName, int effectValue, bool isNegative,
+            string displayName = null, string colorHex = null)
         {
-            effectName = _effectName;
-            effectValue = _effectValue;
-            isNegative = _isNegative;
+            DisplayName = string.IsNullOrWhiteSpace(displayName) ? effectName : displayName;
+            ColorHex = string.IsNullOrWhiteSpace(colorHex) ? "#FFFFFF" : colorHex;
+            this.effectValue = effectValue;
+            this.isNegative = isNegative;
         }
     }
-    
     
     public class StatusStats
     { 
@@ -64,17 +66,20 @@ namespace NueGames.NueDeck.Scripts.Characters
         public Dictionary<string, CustomEffects> Effects = new ();
         
         #region Setup
-        public CharacterStats(int maxHealth, CharacterCanvas characterCanvas)
+public CharacterStats(int maxHealth, CharacterCanvas characterCanvas = null)
         {
             MaxHealth = maxHealth;
             CurrentHealth = maxHealth;
             SetAllStatus();
-            
-            OnHealthChanged += characterCanvas.UpdateHealthText;
-            OnStatusChanged += characterCanvas.UpdateStatusText;
-            OnStatusApplied += characterCanvas.ApplyStatus;
-            OnStatusCleared += characterCanvas.ClearStatus;
-            OnCustomEffectsChanged += characterCanvas.UpdateCustomEffects;
+
+            if (characterCanvas != null)
+            {
+                OnHealthChanged += characterCanvas.UpdateHealthText;
+                OnStatusChanged += characterCanvas.UpdateStatusText;
+                OnStatusApplied += characterCanvas.ApplyStatus;
+                OnStatusCleared += characterCanvas.ClearStatus;
+                OnCustomEffectsChanged += characterCanvas.UpdateCustomEffects;
+            }
         }
         
         private void SetAllStatus()
@@ -113,15 +118,42 @@ namespace NueGames.NueDeck.Scripts.Characters
             }
         }
 
-        public void ApplyCustomEffect(string effectName, int value)
+public void ApplyCustomEffect(string effectName, int value)
         {
-            if(Effects.ContainsKey(effectName))
-                Effects[effectName].effectValue += value;
+            if (string.IsNullOrWhiteSpace(effectName) || value == 0)
+                return;
+
+            int current = Effects.TryGetValue(effectName, out var effect) ? effect.effectValue : 0;
+            SetCustomEffect(effectName, current + value);
+        }
+
+public void SetCustomEffect(string effectName, int value,
+            string displayName = null, string colorHex = null)
+        {
+            if (string.IsNullOrWhiteSpace(effectName))
+                return;
+
+            if (value <= 0)
+            {
+                Effects.Remove(effectName);
+            }
+            else if (Effects.TryGetValue(effectName, out var effect))
+            {
+                effect.effectValue = value;
+                if (!string.IsNullOrWhiteSpace(displayName))
+                    effect.DisplayName = displayName;
+                if (!string.IsNullOrWhiteSpace(colorHex))
+                    effect.ColorHex = colorHex;
+            }
             else
-                Effects.Add(effectName, new CustomEffects(effectName, value, false));
-            
+            {
+                Effects.Add(effectName,
+                    new CustomEffects(effectName, value, false, displayName, colorHex));
+            }
+
             OnCustomEffectsChanged?.Invoke(Effects);
         }
+
         
         public void TriggerAllStatus()
         {

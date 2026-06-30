@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using AIDeckbuilder.CardRuntime;
 using System.Collections.Generic;
 using System.Text;
 using NueGames.NueDeck.Scripts.Enums;
@@ -26,7 +27,8 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
         private bool usableWithoutTarget;
 
         [SerializeField] private bool exhaustAfterPlay;
-        // [SerializeField] private List<CardActionData> cardActionDataList;
+                [SerializeField] private CardProgramData cardProgram;
+// [SerializeField] private List<CardActionData> cardActionDataList;
 
         // [Header("Description")]
         // [SerializeField] private List<CardDescriptionData> cardDescriptionDataList;
@@ -50,7 +52,9 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
 
         public bool ExhaustAfterPlay => exhaustAfterPlay;
 
-        #endregion
+                public CardProgramData CardProgram => cardProgram;
+        public bool HasExecutableProgram => cardProgram != null && cardProgram.IsExecutable;
+#endregion
 
         #region Methods
 
@@ -63,15 +67,15 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
 
         private static int generationCnt = 0;
         public CardData(string _name, string _desc, int _manaCost,
-            bool _needTarget, RarityType _rarity = RarityType.Common)
+            bool _needTarget, RarityType _rarity = RarityType.Common, CardProgramData _cardProgram = null)
         {
             cardName = _name;
-            id = "AI_" + (generationCnt++).ToString() +"_" + _name;
+            id = "AI_" + (generationCnt++).ToString() + "_" + _name;
             description = _desc;
             manaCost = _manaCost;
             usableWithoutTarget = !_needTarget;
             rarity = _rarity;
-            
+            cardProgram = _cardProgram;
         }
 
         public void SetCardSprite(Sprite _sprite)
@@ -79,7 +83,27 @@ namespace NueGames.NueDeck.Scripts.Data.Collection
             cardSprite = _sprite;
         }
 
-    }
+
+
+public void SetCardProgram(CardProgramData program)
+        {
+            cardProgram = program;
+        }
+
+
+public void Initialize(string newName, string newDescription, int newManaCost,
+            bool needsTarget, RarityType newRarity, CardProgramData program)
+        {
+            cardName = newName;
+            id = "AI_" + (generationCnt++).ToString() + "_" + newName;
+            description = newDescription;
+            manaCost = newManaCost;
+            usableWithoutTarget = !needsTarget;
+            rarity = newRarity;
+            cardProgram = program;
+            UpdateDescription();
+        }
+}
 
     [Serializable]
     public class CardActionData

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NueGames.NueDeck.Scripts.Managers;
 using Newtonsoft.Json;
+using AIDeckbuilder.CardRuntime;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -20,7 +21,11 @@ public class AI_IntegrationManager : MonoBehaviour
     public string heroName = "Hanzo";
     public string heroDesc = "skillful Japanese archer with the power of dragon, Hanzo Shimada";
     public string heroStory = "";
-    public string heroPrompts = "";
+    
+    public string heroPlaystyle = "";
+    public string heroMechanicPlan = "";
+    private int lastPlannedRewardLevel = -1;
+public string heroPrompts = "";
     public string pendingPrompts = "";
     public string initInformation = "";
     private int baseInitPercentage = 0;
@@ -144,37 +149,35 @@ public Action Request(string str, Action<string> callback, bool replyWithJson = 
         };
     }
 
-    public void CardQueueRequest(string str, Action<string> callback, bool replyWithJson = false, Type jsonType = null)
+public void CardQueueRequest(string requestText, Action<string> callback,
+        bool replyWithJson = false, Type jsonType = null)
     {
-        if(str.Contains("##"))
-            Debug.LogError("Unfilled key found:\n" + str);
-        
-        debugStr += "\n<b><color=#AAAAFF>Card Req</b></color>: \n" + str;
-        _cardGenConversationSoFar.Add(new Message(str, Role.User));
-        Debug.Log("<color=#FFAA66>Card Req</color>:\n" + str);
+        string finalRequest = pendingPrompts + "\n" + requestText;
+        pendingPrompts = "";
+        if (finalRequest.Contains("##"))
+            Debug.LogError("Unfilled key found:\n" + finalRequest);
+
+        debugStr += "\n<b><color=#AAAAFF>Card Req</b></color>: \n" + finalRequest;
+        _cardGenConversationSoFar.Add(new Message(finalRequest, Role.User));
+        Debug.Log("<color=#FFAA66>Card Req</color>:\n" + finalRequest);
         LLMService.Request(_cardGenConversationSoFar, activeParams,
             reply =>
             {
                 debugStr += "\n<b><color=#AAAAFF>Card Reply</b></color>: \n" + reply;
                 Debug.Log("Card Reply:\n" + reply);
                 _cardGenConversationSoFar.Add(new Message(reply, Role.AI));
-                if (replyWithJson && jsonType != null)
+                if (replyWithJson && jsonType != null && !IsValidJson(reply, jsonType))
                 {
-                    if (IsValidJson(reply, jsonType))
-                        callback.Invoke(reply);
-                    else
-                    {
-                        Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
-                        debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
-                        AI_DebugCanvas.instance.AddWarning("Json Correction!");
-                        pendingPrompts += jsonCorrectionPrompt + "\n";
-                        CardQueueRequest(str, callback, replyWithJson, jsonType);
-                    }
+                    Debug.Log("<b><color=#FF66CC> Json Correction! </b></color>");
+                    debugStr += "\n<b><color=#FF66CC> Json Correction! </b></color>\n";
+                    AI_DebugCanvas.instance.AddWarning("Json Correction!");
+                    pendingPrompts += jsonCorrectionPrompt + "\n";
+                    CardQueueRequest(requestText, callback, true, jsonType);
+                    return;
                 }
-                else
-                    callback.Invoke(reply);
+
+                callback?.Invoke(reply);
             }, null, null, replyWithJson);
-        
     }
 
     public void SendStartGamePrompt()
@@ -206,16 +209,25 @@ public Action Request(string str, Action<string> callback, bool replyWithJson = 
         //     startTurnMsgCnt = _conversationSoFar.Count;});
     }
 
-    public void OnEndGame()
+public void OnEndGame()
     {
         CutConversation(startGameMsgCnt);
-        if (levelCnt == 1)
-            AI_DeckGenerator.instance.GenerateEpicCards();
-        if (levelCnt == 2)
-            AI_DeckGenerator.instance.GenerateLegendCards();
         MergeCardGenMessages();
     }
-    public void InitialResponse(string s)
+
+public void OnRewardCardObtained()
+    {
+        if (lastPlannedRewardLevel == levelCnt)
+            return;
+
+        lastPlannedRewardLevel = levelCnt;
+        if (levelCnt == 1)
+            AI_DeckGenerator.instance.GenerateEpicCards();
+        else if (levelCnt == 2)
+            AI_DeckGenerator.instance.GenerateLegendCards();
+    }
+
+public void InitialResponse(string s)
     {
         baseInitPercentage += 20;
         initInformation += "basic information processed.\n";
@@ -223,23 +235,43 @@ public Action Request(string str, Action<string> callback, bool replyWithJson = 
 
         heroStory = heroReply.backgroundStory;
         heroPrompts = heroReply.prompt;
+        heroPlaystyle = heroReply.playstyle ?? "";
+        heroMechanicPlan = heroReply.mechanicPlan ?? "";
+        CardRuntimeDiagnostics.LogGeneration("HeroPlan", heroName, new
+        {
+            heroStory,
+            heroPrompts,
+            heroPlaystyle,
+            heroMechanicPlan
+        });
         AI_ImageGeneration.instance.GenerateHeroSprite();
         AI_DeckGenerator.instance.GenerateStartDeck();
     }
 
-    public void Init()
+public void Init()
     {
         initInformation = "";
         initPercentage = 0;
         _conversationSoFar.Clear();
         _cardGenConversationSoFar.Clear();
-        
-        int levelCnt = 0;
-        int startGameMsgCnt = -1;
-        int startTurnMsgCnt = -1;
-        int cardGenMessageMerged = -1;
+
+        levelCnt = 0;
+        startGameMsgCnt = -1;
+        startTurnMsgCnt = -1;
+        cardGenMessageMerged = -1;
+        lastPlannedRewardLevel = -1;
+        heroPlaystyle = "";
+        heroMechanicPlan = "";
+
         string initialPromptToSend = initialPrompt.Replace("##HeroName##", heroName);
         initialPromptToSend = initialPromptToSend.Replace("##HeroDesc##", heroDesc);
+        initialPromptToSend +=
+            "\n\nBefore designing cards, establish a coherent mechanical identity for this hero. "
+            + "Plan a turn-to-turn playstyle, two or three reusable statuses/tags, how cards set them up, "
+            + "and how other cards consume or transform them. Avoid a collection of unrelated effects. "
+            + "Your single JSON object must also include: "
+            + "\"playstyle\" (a concise gameplay loop) and "
+            + "\"mechanicPlan\" (planned statuses/tags plus setup/payoff relationships).";
         Request(initialPromptToSend, InitialResponse);
     }
     
@@ -290,31 +322,59 @@ public Action Request(string str, Action<string> callback, bool replyWithJson = 
     {
         public string backgroundStory;
         public string prompt;
+        public string playstyle;
+        public string mechanicPlan;
     }
     
 
     #endregion
     
     
-    public bool IsValidJson(string json, Type type)
+public bool IsValidJson(string json, Type type)
     {
-        
-        int st = json.IndexOf("{");
-        int ed = json.LastIndexOf("}");
-        json = json.Substring(st, ed-st+1);
-        
+        if (string.IsNullOrWhiteSpace(json) || type == null)
+            return false;
+
+        int start = json.IndexOf("{");
+        int end = json.LastIndexOf("}");
+        if (start < 0 || end < start)
+            return false;
+
+        json = json.Substring(start, end - start + 1);
         try
         {
             var settings = new JsonSerializerSettings
             {
-                MissingMemberHandling = MissingMemberHandling.Error
+                MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            var obj = JsonConvert.DeserializeObject(json, type, settings);
-            return true;
+            var value = JsonConvert.DeserializeObject(json, type, settings);
+            if (value is GeneratedCardSpec cardSpec)
+            {
+                var result = CardProgramCompiler.Compile(cardSpec);
+                if (!result.Success)
+                {
+                    Debug.LogWarning("Generated card rejected: " + string.Join(" | ", result.Errors));
+                    pendingPrompts += "\nThe previous card program failed semantic validation: "
+                                      + string.Join(" | ", result.Errors)
+                                      + "\nReturn the complete corrected card JSON.\n";
+                    return false;
+                }
+
+                if (!CardStatusRuntime.ValidateProgramDefinitions(result.Program, out string statusError))
+                {
+                    Debug.LogWarning("Generated card rejected: " + statusError);
+                    pendingPrompts += "\n" + statusError
+                                      + "\nReturn the complete corrected card JSON.\n";
+                    return false;
+                }
+            }
+
+            return value != null;
         }
-        catch (JsonException ex)
+        catch (JsonException exception)
         {
+            Debug.LogWarning("JSON validation failed: " + exception.Message);
             return false;
         }
     }

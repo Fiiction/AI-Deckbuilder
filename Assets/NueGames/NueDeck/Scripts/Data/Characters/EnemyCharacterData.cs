@@ -1,4 +1,5 @@
-﻿using System;
+using AIDeckbuilder.CardRuntime;
+using System;
 using System.Collections.Generic;
 using NueGames.NueDeck.Scripts.Characters;
 using NueGames.NueDeck.Scripts.Data.Containers;
@@ -49,6 +50,22 @@ namespace NueGames.NueDeck.Scripts.Data.Characters
         public string Name => name;
         public string Desc => desc;
         public EnemyIntentionData Intention => intention;
+
+        [NonSerialized] private CardProgramData runtimeProgram;
+        [NonSerialized] private string runtimeProgramKey;
+        public CardProgramData RuntimeProgram => runtimeProgram;
+
+        public bool HasRuntimeProgram(string cacheKey)
+        {
+            return runtimeProgram != null && string.Equals(runtimeProgramKey, cacheKey,
+                StringComparison.Ordinal);
+        }
+
+        public void SetRuntimeProgram(CardProgramData program, string cacheKey)
+        {
+            runtimeProgram = program;
+            runtimeProgramKey = cacheKey;
+        }
         // public List<EnemyActionData> ActionList => actionList;
         // public bool HideActionValue => hideActionValue;
     }

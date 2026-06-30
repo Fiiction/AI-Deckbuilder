@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NueGames.NueDeck.Scripts.Data.Containers;
@@ -87,15 +87,26 @@ namespace NueGames.NueDeck.Scripts.Characters
 
         public void UpdateCustomEffects(Dictionary<string, CustomEffects> effects)
         {
-            string s = "";
-            foreach (var i in effects)
+            string text = "";
+            foreach (var pair in effects)
             {
-                if(i.Value.effectValue == 0)
+                var effect = pair.Value;
+                if (effect == null || effect.effectValue == 0)
                     continue;
-                s+= i.Key + ": " + i.Value.effectValue + "\n";
+
+                string displayName = string.IsNullOrWhiteSpace(effect.DisplayName)
+                    ? pair.Key : effect.DisplayName;
+                string color = string.IsNullOrWhiteSpace(effect.ColorHex)
+                    ? "#FFFFFF" : effect.ColorHex;
+                text += "<color=" + color + ">" + displayName + ": "
+                        + effect.effectValue + "</color>\n";
             }
-            if(customEffectsText != null)
-                customEffectsText.text = s;
+
+            if (customEffectsText != null)
+            {
+                customEffectsText.richText = true;
+                customEffectsText.text = text;
+            }
         }
         
         public void UpdateStatusText(StatusType targetStatus, int value)

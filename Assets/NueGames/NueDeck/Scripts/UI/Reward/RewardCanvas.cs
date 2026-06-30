@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NueGames.NueDeck.Scripts.Card;
 using NueGames.NueDeck.Scripts.Data.Collection;
@@ -95,10 +95,12 @@ namespace NueGames.NueDeck.Scripts.UI.Reward
         
         #region Private Methods
 
-        private void GetCardReward(RewardContainer rewardContainer,int amount = 3)
+private void GetCardReward(RewardContainer rewardContainer, int amount = 3)
         {
-            for(int i = 0; i < amount; i++)
+            for (int i = 0; i < amount; i++)
                 GameManager.Instance.AddCardToDeck(rewardContainer.cardData);
+
+            AI_IntegrationManager.instance?.OnRewardCardObtained();
             _currentRewardsList.Remove(rewardContainer);
             Destroy(rewardContainer.gameObject);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using AIDeckbuilder.CardRuntime;
 using System.Collections;
 using System.Collections.Generic;
 using NueGames.NueDeck.Scripts.Characters;
@@ -93,31 +94,50 @@ namespace NueGames.NueDeck.Scripts.Card
         }
         
         //AI Card Actions
-        private IEnumerator CardAIUseRoutine(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies)
+private IEnumerator CardAIUseRoutine(CharacterBase self, CharacterBase targetCharacter,
+            List<EnemyBase> allEnemies, List<AllyBase> allAllies)
         {
-            if(aiPending) Debug.LogError("Multiple card ai use at same time!!");
+            if (aiPending)
+                Debug.LogError("Multiple card uses attempted at the same time.");
+
             float startTime = Time.time;
             aiPending = true;
             SpendMana(CardData.ManaCost);
+
+            if (CardData.HasExecutableProgram)
+            {
+                HideCard();
+                yield return CardProgramExecutor.ExecuteOnPlay(this, self, targetCharacter,
+                    allEnemies, allAllies);
+                aiPending = false;
+                Debug.Log("Offline CardEffect Time: " + (Time.time - startTime).ToString("0.##"));
+                CollectionManager.OnCardPlayed(this);
+                yield break;
+            }
+
+            // Compatibility path for pre-existing CardData assets that do not yet contain a program.
             aiCardEffectFinished = false;
-            aiCardActionDataList = new();
+            aiCardActionDataList = new List<CardActionData>();
             AI_CardEffect.instance.CardUse(this, self, targetCharacter, AICardEffectCallback);
-            
             yield return new WaitWhile(() => aiCardEffectFinished == false);
-            Debug.Log("CardEffect Time: " + (Time.time - startTime).ToString("0.##"));
+            Debug.Log("Legacy AI CardEffect Time: " + (Time.time - startTime).ToString("0.##"));
             aiPending = false;
             HideCard();
-            foreach (var playerAction in aiCardActionDataList)
+            for (int i = 0; i < aiCardActionDataList.Count; i++)
             {
+                var playerAction = aiCardActionDataList[i];
                 yield return new WaitForSeconds(playerAction.ActionDelay);
-                var targetList = DetermineTargets(self,targetCharacter, allEnemies, allAllies, playerAction);
-                Debug.Log("Action: " + playerAction.CardActionType);
+                var targetList = DetermineTargets(self, targetCharacter, allEnemies, allAllies, playerAction);
                 foreach (var target in targetList)
+                {
                     CardActionProcessor.GetAction(playerAction.CardActionType)
                         .DoAction(new CardActionParameters(playerAction.ActionValue,
-                            target,self,CardData,this, playerAction.StrParameter));
-                yield return new WaitForSeconds(1f);
+                            target, self, CardData, this, playerAction.StrParameter));
+                }
+                if (i < aiCardActionDataList.Count - 1)
+                    yield return new WaitForSeconds(CardProgramExecutor.EffectDelaySeconds);
             }
+
             CollectionManager.OnCardPlayed(this);
         }
         public static List<CharacterBase> DetermineTargets(CharacterBase self,CharacterBase targetCharacter, List<EnemyBase> allEnemies, List<AllyBase> allAllies,

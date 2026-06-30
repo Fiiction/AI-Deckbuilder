@@ -1,3 +1,5 @@
+
+using AIDeckbuilder.CardRuntime;
 using NueGames.NueDeck.Scripts.Card;
 using NueGames.NueDeck.Scripts.Data.Collection;
 using NueGames.NueDeck.Scripts.Data.Containers;
@@ -65,9 +67,21 @@ namespace NueGames.NueDeck.Scripts.Managers
             return clone;
         }
 
-        public void AddCardToDeck(CardData card)
+public void AddCardToDeck(CardData card)
         {
+            if (card == null)
+                return;
+
             PersistentGameplayData.CurrentCardsList.Add(card);
+            if (card.CardProgram != null)
+                CardStatusRuntime.RegisterProgram(card.CardProgram);
+            CardRuntimeDiagnostics.LogGeneration("OwnedCard", card.CardName, new
+            {
+                card.CardName,
+                card.CardDescription,
+                card.ManaCost,
+                Program = card.CardProgram
+            });
         }
         
         public void SetInitalHand()

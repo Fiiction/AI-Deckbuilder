@@ -1,4 +1,5 @@
 using System;
+using AIDeckbuilder.CardRuntime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,6 +137,8 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
             combatManager.turnIndex = targetSnapshot.turnIndex;
             CardBase.aiPending = false;
             Random.state = targetSnapshot.randomState;
+            CardBattleEventBus.RestoreState(targetSnapshot.cardRuntime);
+
 
             UIManager.Instance.SetCanvas(UIManager.Instance.RewardCanvas, false, true);
             UIManager.Instance.SetCanvas(UIManager.Instance.CombatCanvas, true, true);
@@ -180,8 +183,8 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
             var enemy = Instantiate(character.enemyData.EnemyPrefab, parent);
             enemy.BuildCharacter();
             enemy.UsedAbilityCount = character.enemyAbilityCount;
-            character.RestoreStats(enemy.characterStats);
             combatManager.CurrentEnemiesList.Add(enemy);
+            character.RestoreStats(enemy.characterStats);
         }
 
         for (int i = 0; i < state.allies.Count; i++)
@@ -191,8 +194,8 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
                 combatManager.AllyPosList.Count - 1)];
             var ally = Instantiate(character.allyPrefab, parent);
             ally.BuildCharacter();
-            character.RestoreStats(ally.characterStats);
             combatManager.CurrentAlliesList.Add(ally);
+            character.RestoreStats(ally.characterStats);
         }
     }
 
@@ -241,6 +244,8 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
         public int aiTurnCnt;
         public int aiCardInTurnCnt;
         public int cardsUsedInBattle;
+        public CardBattleRuntimeSnapshot cardRuntime;
+
 
         public static TurnSnapshot Capture(CombatManager combat)
         {
@@ -283,7 +288,9 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
                 cardGenMessageMerged = ai == null ? -1 : ai.cardGenMessageMerged,
                 aiTurnCnt = cardEffect == null ? 0 : cardEffect.turnCnt,
                 aiCardInTurnCnt = cardEffect == null ? 0 : cardEffect.cardInTurnCnt,
-                cardsUsedInBattle = cardEffect == null ? 0 : cardEffect.cardsUsedInBattle
+                cardsUsedInBattle = cardEffect == null ? 0 : cardEffect.cardsUsedInBattle,
+                cardRuntime = CardBattleEventBus.CaptureState()
+
             };
         }
 
@@ -340,6 +347,8 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
         public bool isStunned;
         public Dictionary<StatusType, StatusState> statuses;
         public Dictionary<string, int> customEffects;
+        public List<RuntimeCardStatusSnapshot> runtimeStatuses;
+
 
         public static CharacterState CaptureAlly(AllyBase ally, int index, List<AllyBase> allyPrefabs)
         {
@@ -372,7 +381,9 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
                         active = pair.Value.IsActive
                     }),
                 customEffects = character.characterStats.Effects.ToDictionary(pair => pair.Key,
-                    pair => pair.Value.effectValue)
+                    pair => pair.Value.effectValue),
+                runtimeStatuses = CardStatusRuntime.Capture(character)
+
             };
         }
 
@@ -392,9 +403,28 @@ private IEnumerator ResetTurnCoroutine(TurnSnapshot targetSnapshot,
             foreach (var pair in customEffects)
                 stats.ApplyCustomEffect(pair.Key, pair.Value);
 
+            var owner = FindOwner(stats);
+            if (owner)
+                CardStatusRuntime.Restore(owner, runtimeStatuses);
+
+
             stats.IsStunned = isStunned;
         }
-    }
+
+
+private static CharacterBase FindOwner(CharacterStats stats)
+        {
+            var combat = CombatManager.Instance;
+            if (combat == null)
+                return null;
+
+            foreach (var ally in combat.CurrentAlliesList)
+                if (ally && ReferenceEquals(ally.characterStats, stats)) return ally;
+            foreach (var enemy in combat.CurrentEnemiesList)
+                if (enemy && ReferenceEquals(enemy.characterStats, stats)) return enemy;
+            return null;
+        }
+}
 
     private sealed class StatusState
     {

@@ -1,4 +1,5 @@
 using System;
+using AIDeckbuilder.CardRuntime;
 using System.Collections;
 using System.Collections.Generic;
 using NueGames.NueDeck.Scripts.Characters;
@@ -45,7 +46,9 @@ namespace NueGames.NueDeck.Scripts.Managers
             }
         }
         
-        private CombatStateType _currentCombatStateType;
+        
+        private bool turnTransitionInProgress;
+private CombatStateType _currentCombatStateType;
         protected FxManager FxManager => FxManager.Instance;
         protected AudioManager AudioManager => AudioManager.Instance;
         protected GameManager GameManager => GameManager.Instance;
@@ -77,17 +80,27 @@ private void Awake()
 
         public void StartCombat()
         {
+            StartCoroutine(StartCombatRoutine());
+        }
+
+        private IEnumerator StartCombatRoutine()
+        {
+            CardBattleEventBus.ResetBattleState();
+
             BuildEnemies();
             AI_IntegrationManager.instance.SendStartGamePrompt();
             BuildAllies();
             backgroundContainer.OpenSelectedBackground();
-          
+
             CollectionManager.SetGameDeck();
             turnIndex = 0;
             UIManager.CombatCanvas.gameObject.SetActive(true);
             UIManager.InformationCanvas.gameObject.SetActive(true);
+
+            yield return EnemyProgramGenerator.PrepareEncounter(CurrentEnemiesList);
             CurrentCombatStateType = CombatStateType.AllyTurn;
         }
+
 
         public int turnIndex = 0;
         public void AllyTurnStarted()
@@ -103,55 +116,80 @@ private void Awake()
             GameManager.PersistentGameplayData.CanSelectCards = true;
         }
         
-        private void ExecuteCombatState(CombatStateType targetStateType)
+private void ExecuteCombatState(CombatStateType targetStateType)
         {
             switch (targetStateType)
             {
                 case CombatStateType.PrepareCombat:
                     break;
                 case CombatStateType.AllyTurn:
-                    
-                    TurnResetController.Instance?.CaptureBeforeAllyTurn();
-                    
-turnIndex++;
-                    
-                    GameManager.PersistentGameplayData.CurrentMana = GameManager.PersistentGameplayData.MaxMana;
-                   
-                    OnAllyTurnStarted?.Invoke();
-                    
-                    AI_IntegrationManager.instance.StartTurnCutConversation();
-                    if(turnIndex > 1)
-                        AI_CardEffect.instance.AllyTurnStartEffects(CurrentMainAlly, AllyTurnStarted);
-                    else
-                        AllyTurnStarted();
+                    StartCoroutine(AllyTurnStartRoutine());
                     break;
                 case CombatStateType.EnemyTurn:
-
-                    OnEnemyTurnStarted?.Invoke();
-                    
-                    CollectionManager.DiscardHand();
-                    
-                    StartCoroutine(nameof(EnemyTurnRoutine));
-                    
-                    GameManager.PersistentGameplayData.CanSelectCards = false;
-                    
+                    StartCoroutine(EnemyTurnStartRoutine());
                     break;
                 case CombatStateType.EndCombat:
-                    
                     GameManager.PersistentGameplayData.CanSelectCards = false;
-                    
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(targetStateType), targetStateType, null);
             }
         }
+
+private IEnumerator AllyTurnStartRoutine()
+        {
+            TurnResetController.Instance?.CaptureBeforeAllyTurn();
+            turnIndex++;
+            turnTransitionInProgress = true;
+            GameManager.PersistentGameplayData.CanSelectCards = false;
+            GameManager.PersistentGameplayData.CurrentMana =
+                GameManager.PersistentGameplayData.MaxMana;
+
+            OnAllyTurnStarted?.Invoke();
+            AI_IntegrationManager.instance.StartTurnCutConversation();
+
+            yield return CardBattleEventBus.PublishRoutine(new CardBattleEventContext
+            {
+                Type = CardBattleEventType.TurnStart,
+                ActiveCharacter = CurrentMainAlly,
+                Source = CurrentMainAlly,
+                Target = CurrentMainAlly
+            });
+
+            turnTransitionInProgress = false;
+            AllyTurnStarted();
+        }
+
         #endregion
 
         #region Public Methods
-        public void EndTurn()
+public void EndTurn()
         {
+            if (turnTransitionInProgress)
+                return;
+
+            turnTransitionInProgress = true;
+            GameManager.PersistentGameplayData.CanSelectCards = false;
+            StartCoroutine(EndTurnRoutine());
+        }
+
+private IEnumerator EndTurnRoutine()
+        {
+            if (CurrentMainAlly)
+            {
+                yield return CardBattleEventBus.PublishRoutine(new CardBattleEventContext
+                {
+                    Type = CardBattleEventType.TurnEnd,
+                    ActiveCharacter = CurrentMainAlly,
+                    Source = CurrentMainAlly,
+                    Target = CurrentMainAlly
+                });
+            }
+
+            turnTransitionInProgress = false;
             CurrentCombatStateType = CombatStateType.EnemyTurn;
         }
+
         public void OnAllyDeath(AllyBase targetAlly)
         {
             var targetAllyData = GameManager.PersistentGameplayData.AllyList.Find(x =>
@@ -280,27 +318,25 @@ turnIndex++;
         #endregion
         
         #region Routines
-        private IEnumerator EnemyTurnRoutine()
+private IEnumerator EnemyTurnRoutine()
         {
-            var waitDelay = new WaitForSeconds(0.6f);
             enemyTurnProcessing = true;
-            foreach (var currentEnemy in CurrentEnemiesList)
+            foreach (var currentEnemy in CurrentEnemiesList.ToArray())
             {
-                if(currentEnemy.dead)
+                if (!currentEnemy || currentEnemy.dead)
                     continue;
+
+                yield return new WaitForSeconds(CardProgramExecutor.CharacterPreActionDelaySeconds);
                 yield return currentEnemy.StartCoroutine(nameof(EnemyExample.ActionRoutine));
-                yield return waitDelay;
-                if(CurrentCombatStateType == CombatStateType.EndCombat)
+                if (CurrentCombatStateType == CombatStateType.EndCombat)
                     break;
             }
 
             enemyTurnProcessing = false;
-            foreach (var i in DiePendingEnemies)
-            {
-                CurrentEnemiesList.Remove(i);
-            }
+            foreach (var enemy in DiePendingEnemies)
+                CurrentEnemiesList.Remove(enemy);
             DiePendingEnemies.Clear();
-            
+
             if (CurrentCombatStateType != CombatStateType.EndCombat)
                 CurrentCombatStateType = CombatStateType.AllyTurn;
         }
@@ -309,9 +345,25 @@ turnIndex++;
 
 public void PrepareForTurnReset()
         {
+            CardStatusRuntime.ClearInstances();
+
             StopAllCoroutines();
             enemyTurnProcessing = false;
+            turnTransitionInProgress = false;
             DiePendingEnemies.Clear();
+            foreach (var enemy in CurrentEnemiesList.ToArray())
+            {
+                if (!enemy || enemy.dead)
+                    continue;
+                CardBattleEventBus.Publish(new CardBattleEventContext
+                {
+                    Type = CardBattleEventType.TurnEnd,
+                    ActiveCharacter = enemy,
+                    Source = enemy,
+                    Target = enemy
+                });
+            }
+
             OnAllyTurnStarted = null;
             OnEnemyTurnStarted = null;
             _currentCombatStateType = CombatStateType.PrepareCombat;
@@ -321,6 +373,32 @@ public void PrepareForTurnReset()
         public void RestartAllyTurnFromSnapshot()
         {
             CurrentCombatStateType = CombatStateType.AllyTurn;
+        }
+
+
+private IEnumerator EnemyTurnStartRoutine()
+        {
+            turnTransitionInProgress = true;
+            GameManager.PersistentGameplayData.CanSelectCards = false;
+            OnEnemyTurnStarted?.Invoke();
+
+            foreach (var enemy in CurrentEnemiesList.ToArray())
+            {
+                if (!enemy || enemy.dead)
+                    continue;
+
+                yield return CardBattleEventBus.PublishRoutine(new CardBattleEventContext
+                {
+                    Type = CardBattleEventType.TurnStart,
+                    ActiveCharacter = enemy,
+                    Source = enemy,
+                    Target = enemy
+                });
+            }
+
+            CollectionManager.DiscardHand();
+            yield return EnemyTurnRoutine();
+            turnTransitionInProgress = false;
         }
 }
 }

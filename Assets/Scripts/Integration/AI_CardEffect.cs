@@ -1,4 +1,5 @@
 using NueGames.NueDeck.Scripts.Enums;
+using AIDeckbuilder.CardRuntime;
 using NueGames.NueDeck.Scripts.Characters;
 using NueGames.NueDeck.Scripts.Data.Collection;
 using NueGames.NueDeck.Scripts.Managers;
@@ -197,8 +198,9 @@ private IEnumerator AllyTurnStartEffectsCoroutine(CharacterBase self, Action cal
         Debug.Log("<color=cyan><b>Ally Turn Start: " + actionDatas.Count + " "
                   + (Time.time - tick).ToString("0.##") + "</b></color>");
 
-        foreach (var actionData in actionDatas)
+        for (int i = 0; i < actionDatas.Count; i++)
         {
+            var actionData = actionDatas[i];
             var targetList = CardBase.DetermineTargets(self, null,
                 CombatManager.Instance.CurrentEnemiesList,
                 CombatManager.Instance.CurrentAlliesList, actionData);
@@ -209,7 +211,8 @@ private IEnumerator AllyTurnStartEffectsCoroutine(CharacterBase self, Action cal
                     .DoAction(new CardActionParameters(actionData.ActionValue,
                         target, self, null, null, actionData.StrParameter));
             }
-            yield return new WaitForSeconds(1f);
+            if (i < actionDatas.Count - 1)
+                yield return new WaitForSeconds(CardProgramExecutor.EffectDelaySeconds);
         }
 
         callback?.Invoke();
@@ -267,8 +270,9 @@ private IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActi
                   + (Time.time - tick).ToString("0.##") + "</b></color>");
 
         processingCanvas.EndProcessing();
-        foreach (var actionData in actionDatas)
+        for (int i = 0; i < actionDatas.Count; i++)
         {
+            var actionData = actionDatas[i];
             var targetList = CardBase.DetermineTargets(enemySelf, null,
                 CombatManager.Instance.CurrentEnemiesList,
                 CombatManager.Instance.CurrentAlliesList, actionData);
@@ -279,7 +283,8 @@ private IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActi
                     .DoAction(new CardActionParameters(actionData.ActionValue,
                         target, enemySelf, null, null, actionData.StrParameter));
             }
-            yield return new WaitForSeconds(1f);
+            if (i < actionDatas.Count - 1)
+                yield return new WaitForSeconds(CardProgramExecutor.EffectDelaySeconds);
         }
 
         callback?.Invoke();
@@ -362,24 +367,26 @@ private IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActi
     
     #region Convertion
 
-    public static string CharacterStatusString(CharacterBase cha)
+public static string CharacterStatusString(CharacterBase character)
     {
+        var legacyEffects = character.characterStats.Effects
+            .Where(pair => !CardStatusRuntime.IsRuntimeStatus(character, pair.Key))
+            .ToList();
 
-        string s = ", with ";
-        
-        if (cha.characterStats.Effects.Count == 0)
-            s = "";
-        else
-            foreach (var i in cha.characterStats.Effects)
+        string statusText = "";
+        if (legacyEffects.Count > 0)
+        {
+            statusText = ", with ";
+            foreach (var effect in legacyEffects)
             {
-                if(i.Value.effectValue == 1)
-                    s += "1 stack of " + i.Key + ", ";
-                else
-                    s += i.Value.effectValue +" stacks of " + i.Key + ", ";
+                statusText += effect.Value.effectValue == 1
+                    ? "1 stack of " + effect.Key + ", "
+                    : effect.Value.effectValue + " stacks of " + effect.Key + ", ";
             }
-        string t = ", health " +cha.characterStats.CurrentHealth
-                               + " / " + cha.characterStats.MaxHealth +", ";
-        return s + t;
+        }
+
+        return statusText + ", health " + character.characterStats.CurrentHealth
+               + " / " + character.characterStats.MaxHealth + ", ";
     }
     
     public static CardActionType StringToActionType(string str)
@@ -394,7 +401,6 @@ private IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActi
            case "increase strength": return CardActionType.IncreaseStrength;
            case "draw": return CardActionType.Draw;
            case "gain mana": return CardActionType.EarnMana;
-           case "steal life": return CardActionType.LifeSteal;
            case "stun": return CardActionType.Stun;
            case "destroy the card": return CardActionType.Exhaust;
            case "exhaust": return CardActionType.Exhaust;
@@ -415,7 +421,6 @@ private IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActi
             case CardActionType.IncreaseStrength: return "Increase Strength";
             case CardActionType.Draw: return "Draw";
             case CardActionType.EarnMana: return "Gain Mana";
-            case CardActionType.LifeSteal: return "Steal Life";
             case CardActionType.Stun: return "Stun";
             case CardActionType.Exhaust: return "Exhaust";
             case CardActionType.CustomEffect: return "Add Custom Status";
@@ -435,7 +440,6 @@ private IEnumerator EnemyTurnCoroutine(CharacterBase enemySelf, string enemyActi
             case CardActionType.IncreaseStrength: return "the amount of strength added";
             case CardActionType.Draw: return "the amount of cards drawn";
             case CardActionType.EarnMana: return "the amount of mana added for this turn";
-            case CardActionType.LifeSteal: return "the amount of damage dealt to the target and the amount of healing for the user";
             case CardActionType.Stun: return "the amount of turns that the target would not move";
             case CardActionType.Exhaust: return "(please return any integer, destroying card don't need a value parameter)";
             case CardActionType.CustomEffect: return "the stack of custom effect casted to the target";
